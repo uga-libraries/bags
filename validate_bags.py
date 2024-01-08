@@ -1,9 +1,15 @@
-# Find and validate all bags at any level in a directory structure.
-# Only print final results and any errors to terminal. Otherwise, there is a lot of information printed to the terminal which makes a lot to scroll through to find the final validation result.
+"""Validate all bags at any level in a directory structure and print the result
 
-# Bags should be named with the convention 'name_bag'.
+Use this script to skip reading through the extra text printed by bagit.py validation.
+Bags must be named with "_bag" on the end to be detected as a bag by the script.
 
-# Usage: python3 /path/script /path/bag_directory
+Parameters:
+    bag_directory (required): path to the directory with the bags
+
+Returns:
+    If the bag is valid, it will print the bag name and that it is valid.
+    If the bag is invalid, it will print the bag name, that it is invalid, and the error message
+"""
 
 import os
 import subprocess
@@ -24,8 +30,7 @@ for root, directory, folder in os.walk(bags):
 
         if 'is invalid' in str(validation.stderr):
             print("\nBag invalid: ", root)
-            print(validation.stderr)
+            print(validation.stderr.decode('utf-8'))
 
         else:
             print("\nBag valid: ", root)
-        

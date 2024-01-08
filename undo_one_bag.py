@@ -1,6 +1,15 @@
-# Undo a specified bag. Common usage is if bagged files when they were received and later what to do appraisal and delete some.
+"""Remove content from a specified bag
 
-# Usage: python3 /path/script /path/bag
+The bag may or may not follow the naming convention of ending with "_bag".
+
+Parameter:
+    bag (required): path to the bag
+
+Returns:
+    Nothing.
+    All content originally in the bag will be in the folder, without the bag manifests or directory structure.
+    If the bag was originally named ending in "_bag", that ending will be removed.
+"""
 
 import os
 import sys
