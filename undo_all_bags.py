@@ -27,7 +27,6 @@ def delete_bag_metadata(bag_folder):
         if doc.endswith('.txt'):
             os.remove(f'{bag_folder}/{doc}')
 
-
 # Indicate the directory that contains bags.
 bags = sys.argv[1]
 os.chdir(bags)
