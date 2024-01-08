@@ -48,3 +48,7 @@ For each file in the directory:
 1. Confirms it is a bag, based on naming convention of ending with "_bag".
 2. Validates the bag using bagit.py.
 3. Prints to the terminal the bag name, if it is valid or invalid, an any error message.
+
+## Author
+
+Adriane Hanson, Head of Digital Stewardship, University of Georgia
