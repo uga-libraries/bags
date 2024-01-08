@@ -4,7 +4,6 @@
 # Usage: python3 /path/script /path/bag_directory
 
 import os
-import subprocess
 import sys
 
 # Indicate the directory that contains bags.
