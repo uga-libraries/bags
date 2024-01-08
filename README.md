@@ -8,6 +8,22 @@ Includes removing content from a bag or batch of bags and validating a batch of 
 Related script: [Unpack AIPs](https://github.com/uga-libraries/unpack-aips),
 used to get AIPs from the preservation system ready to share with users.
 
+## Getting Started
+
+### Dependencies
+
+These scripts only use standard Python libraries and have no special dependencies.
+
+### Script Arguments
+
+undo_all_bags.py
+* bag_directory (required): path to directory that contains the bags. Bag folder names should end with "_bag".
+
+undo_one_bag.py
+* bag (required): path to the bag.
+
+validate_bags.py
+* bag_directory (required): path to the directory that contains the bag. Bag folder names should end with "_bag". 
 
 # undo_bags
 Remove content from bags. Deletes the manifests, moves content from the data folder into the parent directory, deletes the data folder, and renames the parent directory to remove \'_bag\'. There is a script that will do a single bag and a script to do all bags located within a single folder.
