@@ -1,7 +1,15 @@
-# Find and undo all bags at any level in a directory structure.
-# Bags should be named with the convention 'name_bag'.
+"""Remove content from all bags at any level in a directory structure
 
-# Usage: python3 /path/script /path/bag_directory
+Bags should follow the naming convention of ending with "_bag".
+
+Parameter:
+    bag_directory (required): path to the directory with the bags
+
+Returns:
+    Nothing.
+    All content originally in bags will be in folders without the "_bag" ending
+    and without the bag manifests or directory structure.
+"""
 
 import os
 import sys
