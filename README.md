@@ -25,6 +25,12 @@ undo_one_bag.py
 validate_bags.py
 * bag_directory (required): path to the directory that contains the bag. Bag folder names should end with "_bag". 
 
+### Testing
+
+There are unit tests for each script in the tests folder.
+The scripts do not have functions, so the only tests are for each entire script.
+The tests for undo_one_bag.py are incomplete: see [Issue 1](https://github.com/uga-libraries/bags/issues/1)
+
 ## Workflow
 
 undo_all_bags.py and undo_one_bag.py
