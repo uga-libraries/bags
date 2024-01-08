@@ -1,4 +1,12 @@
-# Quick scripts to work with Library of Congress bags.
+# Quick scripts to work with Library of Congress bags
+
+## Overview
+
+Scripts to perform simple actions on Library of Congress bags.
+Includes removing content from a bag or batch of bags and validating a batch of bags.
+
+Related script: [Unpack AIPs](https://github.com/uga-libraries/unpack-aips),
+used to get AIPs from the preservation system ready to share with users.
 
 
 # undo_bags
