@@ -14,6 +14,20 @@ Returns:
 import os
 import sys
 
+
+def delete_bag_metadata(bag_folder):
+    """Deletes the bag metadata files, which are all text files directly within the bag folder
+
+    Parameters:
+        bag_folder: path to the bag folder
+
+    Returns: nothing
+    """
+    for doc in os.listdir(bag_folder):
+        if doc.endswith('.txt'):
+            os.remove(f'{bag_folder}/{doc}')
+
+
 # Indicate the directory that contains bags.
 bags = sys.argv[1]
 os.chdir(bags)
@@ -24,10 +38,8 @@ for root, directory, folder in os.walk('.'):
     # Use root variable to have the full filepath.
     if root.endswith('_bag'):
 
-        # Delete the bag metadata files, which are all text files.
-        for doc in os.listdir(root):
-            if doc.endswith('.txt'):
-                os.remove(f'{root}/{doc}')
+        # Delete the bag metadata files.
+        delete_bag_metadata(root)
 
         # Move the contents from the data folder into the parent directory.
         for item in os.listdir(f'{root}/data'):
