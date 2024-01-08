@@ -25,12 +25,26 @@ undo_one_bag.py
 validate_bags.py
 * bag_directory (required): path to the directory that contains the bag. Bag folder names should end with "_bag". 
 
-# undo_bags
-Remove content from bags. Deletes the manifests, moves content from the data folder into the parent directory, deletes the data folder, and renames the parent directory to remove \'_bag\'. There is a script that will do a single bag and a script to do all bags located within a single folder.
+## Workflow
 
-A common usage is if files are bagged to be stored for some time before additional steps are taken, e.g. bagging a new donation to be processed at a later date. When the files are to be worked on again, the bag is validated to ensure the files are unchanged from their time in storage and then the files are unbagged to be worked on. Once that work is complete, they will be bagged again.
+undo_all_bags.py and undo_one_bag.py
 
-# validate_batch
-Validate all bags within a single folder and display a summary of the results in the terminal. The summary includes the bag name, if it is valid or invalid, and for invalid ones the error message.
+These scripts are used to removed files from all bags in a specified directory or a specified bag.
+They are most commonly used when files are bagged for storage and later need to be worked on.
+After validating the bag(s), the content is removed from the bags for further processing.
 
-Use this instead of bagit.py's validation to get a summary of if all the bags are valid without having to scroll through all the additional text displayed in the terminal by bagit.py.
+For each bag:
+1. Deletes the bag manifests.
+2. Moves the content from the data folder into the parent directory.
+3. Deletes the data folder.
+4. Renames the parent directory to remove "_bag".
+
+validate_bags.py
+
+This script validates all bags in a specified directory and prints the results to the terminal.
+Use this instead of bagit.py's validation because bagit.py prints a lot of extra text during validation.
+
+For each file in the directory:
+1. Confirms it is a bag, based on naming convention of ending with "_bag".
+2. Validates the bag using bagit.py.
+3. Prints to the terminal the bag name, if it is valid or invalid, an any error message.
