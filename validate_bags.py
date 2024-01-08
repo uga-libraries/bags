@@ -24,7 +24,7 @@ for root, directory, folder in os.walk(bags):
 
         if 'is invalid' in str(validation.stderr):
             print("\nBag invalid: ", root)
-            print(validation.stderr)
+            print(validation.stderr.decode('utf-8'))
 
         else:
             print("\nBag valid: ", root)
