@@ -23,6 +23,13 @@ if __name__ == '__main__':
                               delimiter='  ', names=['md5', 'paths'], engine='python')
 
     # Makes a dataframe with the relative paths of files in the data folder, starting with data.
+    data_paths = []
+    data_path = os.path.join(bag_path, 'data')
+    for root, dirs, files in os.walk(os.path.join(bag_path, 'data')):
+        for file in files:
+            relative_path = os.path.relpath(os.path.join(root, file), bag_path)
+            data_paths.append(relative_path)
+    data_df = pd.DataFrame([data_paths], columns=['paths'])
 
     # Compares the manifest to the files in the data folder.
 
