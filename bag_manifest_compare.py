@@ -19,8 +19,10 @@ if __name__ == '__main__':
     bag_path = sys.argv[1]
 
     # Reads the bag manifest into a dataframe.
+    manifest_df = pd.read_csv(os.path.join(bag_path, 'manifest-md5.txt'),
+                              delimiter='  ', names=['md5', 'paths'], engine='python')
 
-    # Makes a dataframe with the files in the data folder.
+    # Makes a dataframe with the relative paths of files in the data folder, starting with data.
 
     # Compares the manifest to the files in the data folder.
 
