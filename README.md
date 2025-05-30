@@ -22,6 +22,9 @@ undo_all_bags.py
 undo_one_bag.py
 * bag (required): path to the bag.
 
+update_bag.py
+* bag_path (required): path to the bag.
+
 validate_bags.py
 * bag_directory (required): path to the directory that contains the bag. Bag folder names should end with "_bag". 
 
@@ -44,6 +47,14 @@ For each bag:
 2. Moves the content from the data folder into the parent directory.
 3. Deletes the data folder.
 4. Renames the parent directory to remove "_bag".
+
+update_bags.py
+
+This script updates the manifest in a bag to match what is currently in the data folder
+and validates the bag, printing the result.
+
+It was developed for use in born-digital accessioning and processing,
+for when additional appraisal is done after the content is bagged and before it can be made into AIPs.
 
 validate_bags.py
 
