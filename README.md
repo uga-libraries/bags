@@ -16,11 +16,14 @@ These scripts only use standard Python libraries and have no special dependencie
 
 ### Script Arguments
 
+bag_manifest_compare.py
+* bag_path (required): path to the bag (folder that ends in "_bag")
+
 undo_all_bags.py
 * bag_directory (required): path to directory that contains the bags. Bag folder names should end with "_bag".
 
 undo_one_bag.py
-* bag (required): path to the bag.
+* bag (required): path to the bag (folder that ends in "_bag")
 
 update_bag.py
 * bag_path (required): path to the bag.
@@ -35,6 +38,14 @@ The scripts do not have functions, so the only tests are for each entire script.
 The tests for undo_one_bag.py are incomplete: see [Issue 1](https://github.com/uga-libraries/bags/issues/1)
 
 ## Workflow
+
+bag_manifest_compare.py
+
+This script compares the file paths in the bag manifest to the files in the bag data folder
+and makes a report of any path only in one location.
+
+It was developed for investigating further when a bag validation error message is that the number of files changed
+but does not indicate which files were added or deleted since the bag was made.
 
 undo_all_bags.py and undo_one_bag.py
 
