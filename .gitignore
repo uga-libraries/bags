@@ -1,3 +1,4 @@
 
 .idea/
 tests/__pycache__/test_update_bag.cpython-311.pyc
+tests/__pycache__/test_bag_manifest_compare.cpython-311.pyc
