@@ -38,4 +38,11 @@ if __name__ == '__main__':
     df_compare = manifest_df.merge(data_df, how='outer', indicator='True')
     df_compare = df_compare[df_compare['True'] != 'both']
 
+    # Updates column and value names to be more human-readable.
+    df_compare.rename(columns={'True': 'path_location'}, inplace=True)
+    df_compare['path_location'] = df_compare['path_location'].str.replace('left_only', 'manifest', regex=False)
+    df_compare['path_location'] = df_compare['path_location'].str.replace('right_only', 'data', regex=False)
+
     # Saves paths only in the manifest or only in the data folder to a csv in the parent directory of the bag.
+    report_path = os.path.join(os.path.dirname(bag_path), f'{os.path.basename(bag_path)}_manifest_compare_report.csv')
+    df_compare.to_csv(report_path, index=False)
