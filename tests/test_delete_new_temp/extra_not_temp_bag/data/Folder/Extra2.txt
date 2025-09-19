@@ -1,0 +1,2 @@
+Placeholder for a file added after bagging.
+Not a temp file and will not be deleted.
