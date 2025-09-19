@@ -31,7 +31,7 @@ def find_extra_files(bag):
     data_df = pd.DataFrame(data_paths, columns=['Data_Paths'])
 
     # Read the bag manifest into a dataframe.
-    manifest_df = pd.read_csv(os.path.join(bag, 'manifest-md5.txt'), sep='  ', names=['MD5', 'Manifest_Paths'])
+    manifest_df = pd.read_csv(os.path.join(bag, 'manifest-md5.txt'), sep='  ', engine='python', names=['MD5', 'Manifest_Paths'])
 
     # Compare the data path list and the bag manifest, and return those only in the data path list.
     return 'TBD'
