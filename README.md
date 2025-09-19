@@ -11,7 +11,8 @@ used to get AIPs from the preservation system ready to share with users.
 
 ### Dependencies
 
-bagit library
+- bagit python library
+- pandas python library
 
 ### Script Arguments
 
