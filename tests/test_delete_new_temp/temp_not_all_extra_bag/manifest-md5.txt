@@ -1,0 +1,5 @@
+ea4bb057a39ebf800b2454858b250c7c  data/.Document.txt
+9bbb645e9de06e395b58e38b228af276  data/Document.tmp
+4bb51d0461698119344eb0c54dbabb89  data/Document.txt
+4bb51d0461698119344eb0c54dbabb89  data/Folder/Document.txt
+12622d1ed59ea551e31beb40a5a8723c  data/Folder/Thumbs.db

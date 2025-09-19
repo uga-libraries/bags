@@ -3,7 +3,6 @@
 ## Overview
 
 Scripts to perform simple actions on Library of Congress bags.
-Includes removing content from a bag or batch of bags and validating a batch of bags.
 
 Related script: [Unpack AIPs](https://github.com/uga-libraries/unpack-aips),
 used to get AIPs from the preservation system ready to share with users.
@@ -12,11 +11,15 @@ used to get AIPs from the preservation system ready to share with users.
 
 ### Dependencies
 
-These scripts only use standard Python libraries and have no special dependencies.
+- bagit python library
+- pandas python library
 
 ### Script Arguments
 
 bag_manifest_compare.py
+* bag_path (required): path to the bag (folder that ends in "_bag")
+
+delete_new_temp.py
 * bag_path (required): path to the bag (folder that ends in "_bag")
 
 undo_all_bags.py
@@ -34,7 +37,7 @@ validate_bags.py
 ### Testing
 
 There are unit tests for each script in the tests folder.
-The scripts do not have functions, so the only tests are for each entire script.
+The scripts do not have functions, or just simple functions, so the only tests are for each entire script.
 The tests for undo_one_bag.py are incomplete: see [Issue 1](https://github.com/uga-libraries/bags/issues/1)
 
 ## Workflow
@@ -46,6 +49,20 @@ and makes a report of any path only in one location.
 
 It was developed for investigating further when a bag validation error message is that the number of files changed
 but does not indicate which files were added or deleted since the bag was made.
+
+### delete_new_temp.py
+
+This script finds temporary files that are not in the manifest, deletes them, and validates the bag.
+It does not delete temporary files that are in the manifest or non-temporary file that are not in the manifest.
+It does not try to validate if some files are missing from the manifest and not deleted, 
+but instead prints those files to review if they should be considered temporary or if the bag needs to be updated.
+
+It was developed for fixing errors when checking bags that have been in storage for some time.
+We've found that some temporary files, especially .DS_Store and Thumbs.db, are generated on the Digital Production Hub
+even if the folder hasn't been opened recently.
+
+The temp files are removed, so we can check if the rest of the files are valid.
+Otherwise, bag validation stops when the file count doesn't match and does not check the MD5.
 
 ### undo_all_bags.py and undo_one_bag.py
 
