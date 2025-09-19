@@ -19,16 +19,17 @@ class MyTestCase(unittest.TestCase):
 
     def tearDown(self):
         """Delete copies of test data, if made"""
-        bags = ['test_extra_not_temp_bag', 'test_extra_temp_bag', 'test_no_extra_bag']
+        bags = ['test_extra_not_temp_bag', 'test_extra_temp_bag', 'test_not_valid_bag']
         for bag in bags:
-            if os.path.exists(os.path.join(os.getcwd(), bag)):
-                shutil.rmtree(os.path.join(os.getcwd(), bag))
+            bag_path = os.path.join(os.getcwd(), 'test_delete_new_temp', bag)
+            if os.path.exists(bag_path):
+                shutil.rmtree(bag_path)
 
     def test_extra_not_temp(self):
         # Make a copy of the test data, since the script deletes files.
         script_path = os.path.join('', '..', 'delete_new_temp.py')
-        bag_path = os.path.join(os.getcwd(), 'extra_not_temp_bag')
-        new_bag_path = os.path.join(os.getcwd(), 'test_extra_not_temp_bag')
+        bag_path = os.path.join(os.getcwd(), 'test_delete_new_temp', 'extra_not_temp_bag')
+        new_bag_path = os.path.join(os.getcwd(), 'test_delete_new_temp', 'test_extra_not_temp_bag')
         shutil.copytree(bag_path, new_bag_path)
         printed = subprocess.run(f'python {script_path} {new_bag_path}', capture_output=True, text=True, shell=True)
 
@@ -45,8 +46,8 @@ class MyTestCase(unittest.TestCase):
     def test_extra_temp(self):
         # Make a copy of the test data, since the script deletes files.
         script_path = os.path.join('', '..', 'delete_new_temp.py')
-        bag_path = os.path.join(os.getcwd(), 'extra_temp_bag')
-        new_bag_path = os.path.join(os.getcwd(), 'test_extra_temp_bag')
+        bag_path = os.path.join(os.getcwd(), 'test_delete_new_temp', 'extra_temp_bag')
+        new_bag_path = os.path.join(os.getcwd(), 'test_delete_new_temp', 'test_extra_temp_bag')
         shutil.copytree(bag_path, new_bag_path)
         printed = subprocess.run(f'python {script_path} {new_bag_path}', capture_output=True, text=True, shell=True)
 
@@ -59,22 +60,25 @@ class MyTestCase(unittest.TestCase):
         expected = "\nBag is valid\n"
         self.assertEqual(expected, printed.stdout, "Problem with test for extra_temp, printed")
 
-    def test_no_extra(self):
+    def test_not_valid(self):
         # Make a copy of the test data, since the script deletes files.
         script_path = os.path.join('', '..', 'delete_new_temp.py')
-        bag_path = os.path.join(os.getcwd(), 'no_extra_bag')
-        new_bag_path = os.path.join(os.getcwd(), 'test_no_extra_bag')
+        bag_path = os.path.join(os.getcwd(), 'test_delete_new_temp', 'not_valid_bag')
+        new_bag_path = os.path.join(os.getcwd(), 'test_delete_new_temp', 'test_not_valid_bag')
         shutil.copytree(bag_path, new_bag_path)
         printed = subprocess.run(f'python {script_path} {new_bag_path}', capture_output=True, text=True, shell=True)
 
         # Test for the directory contents.
         result = make_directory_list(new_bag_path)
         expected = ['data\\Document.txt', 'data\\Folder\\Document.txt']
-        self.assertEqual(expected, result, "Problem with test for no_extra, directory")
+        self.assertEqual(expected, result, "Problem with test for not_valid, directory")
 
         # Test for the printed information.
-        expected = "\nBag is valid\n"
-        self.assertEqual(expected, printed.stdout, "Problem with test for no_extra, printed")
+        expected = ('\nBag is not valid\nBag validation failed: data\Document.txt md5 validation failed: '
+                    'expected="4xx51d0000698119300eb0c54dbaxx89" found="4bb51d0461698119344eb0c54dbabb89"; '
+                    'data\Folder\Document.txt md5 validation failed: expected="4xx51d0000698119300eb0c54dbaxx89" '
+                    'found="4bb51d0461698119344eb0c54dbabb89"\n')
+        self.assertEqual(expected, printed.stdout, "Problem with test for not_valid, printed")
 
 
 if __name__ == '__main__':
