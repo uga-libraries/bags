@@ -39,7 +39,7 @@ The tests for undo_one_bag.py are incomplete: see [Issue 1](https://github.com/u
 
 ## Workflow
 
-bag_manifest_compare.py
+### bag_manifest_compare.py
 
 This script compares the file paths in the bag manifest to the files in the bag data folder
 and makes a report of any path only in one location.
@@ -47,7 +47,7 @@ and makes a report of any path only in one location.
 It was developed for investigating further when a bag validation error message is that the number of files changed
 but does not indicate which files were added or deleted since the bag was made.
 
-undo_all_bags.py and undo_one_bag.py
+### undo_all_bags.py and undo_one_bag.py
 
 These scripts are used to removed files from all bags in a specified directory or a specified bag.
 They are most commonly used when files are bagged for storage and later need to be worked on.
@@ -59,7 +59,7 @@ For each bag:
 3. Deletes the data folder.
 4. Renames the parent directory to remove "_bag".
 
-update_bags.py
+### update_bags.py
 
 This script updates the manifest in a bag to match what is currently in the data folder
 and validates the bag, printing the result.
@@ -67,7 +67,7 @@ and validates the bag, printing the result.
 It was developed for use in born-digital accessioning and processing,
 for when additional appraisal is done after the content is bagged and before it can be made into AIPs.
 
-validate_bags.py
+### validate_bags.py
 
 This script validates all bags in a specified directory and prints the results to the terminal.
 Use this instead of bagit.py's validation because bagit.py prints a lot of extra text during validation.
