@@ -23,6 +23,12 @@ def find_extra_files(bag):
     """
     # List of file paths in the data folder, saved as a dataframe to compare to manifest.
     # To match the manifest, it needs to start at data.
+    data_paths = []
+    for root, dirs, files in os.walk(os.path.join(bag, 'data')):
+        for file in files:
+            root_from_data = re.search(rf"{'data'}.*", root).group()
+            data_paths.append(os.path.join(root_from_data, file))
+    data_df = pd.DataFrame(data_paths, columns=['Data_Paths'])
 
     # Read the bag manifest into a dataframe.
 
