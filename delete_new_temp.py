@@ -57,6 +57,20 @@ def find_extra_files(bag):
     return extras
 
 
+def validate_bag(bag):
+    """Validates a bag that had all extra files deleted and prints the result
+    Parameter: bag (string) - path to bag
+    Returns: None
+    """
+    bag_instance = bagit.Bag(bag)
+    try:
+        bag_instance.validate()
+        print("\nBag is valid")
+    except bagit.BagValidationError as errors:
+        print("\nBag is not valid")
+        print(errors)
+
+
 if __name__ == '__main__':
     # Get bag_path from script argument.
     bag_path = sys.argv[1]
@@ -72,7 +86,7 @@ if __name__ == '__main__':
     if len(not_deleted) == 0:
         validate_bag(bag_path)
     else:
-        print("After deleting temp files, there are still files left in the data folder that are not in the manifest:")
+        print("\nAfter deleting temp files, there are still files left in the data folder that are not in the manifest:")
         for file_path in not_deleted:
             print(f'\t* {file_path}')
 
