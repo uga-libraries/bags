@@ -14,6 +14,23 @@ import re
 import sys
 
 
+def delete_temp(bag, extra_list):
+    """Delete any temp files from the bag and return a list of the ones that were not deleted,
+    using the same criteria as the general aip script
+    Parameter: extra_list (list) - list of paths for files that are not in the bag manifest
+    Returns: not_temp (list) - list of paths for files that were not temp and therefore not deleted
+    """
+    not_temp = []
+    delete_list = [".DS_Store", "._.DS_Store", "Thumbs.db"]
+    for file_path in extra_list:
+        file_name = file_path.split('/')[-1]
+        if file_name in delete_list or file_name.endswith('.tmp') or file_name.startswith('.'):
+            os.remove(f'{bag}/{file_path}')
+        else:
+            not_temp.append(file_path)
+    return not_temp
+
+
 def find_extra_files(bag):
     """Find files (based on full file path) that are in the bag data folder and not the manifest
     Parameter: bag (string) - path to bag
@@ -48,5 +65,6 @@ if __name__ == '__main__':
     extra_files = find_extra_files(bag_path)
 
     # Delete any extra files that are temp files and print the path for any other files.
+    not_deleted = delete_temp(bag_path, extra_files)
 
     # Validate the bag and print the results.
