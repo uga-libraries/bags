@@ -86,7 +86,7 @@ if __name__ == '__main__':
     if len(not_deleted) == 0:
         validate_bag(bag_path)
     else:
-        print("\nAfter deleting temp files, there are still files left in the data folder that are not in the manifest:")
+        print("\nAfter deleting temp files, there are still files in the data folder that are not in the manifest:")
         for file_path in not_deleted:
             print(f'\t* {file_path}')
 
