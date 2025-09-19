@@ -36,7 +36,6 @@ def find_extra_files(bag):
     # Compare the data path list and the bag manifest, and return those only in the data path list.
     data_only = data_df.merge(manifest_df, how='left')
     extras = data_only['Paths'].tolist()
-    print(extras)
     return extras
 
 
