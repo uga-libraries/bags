@@ -67,4 +67,12 @@ if __name__ == '__main__':
     # Delete any extra files that are temp files and print the path for any other files.
     not_deleted = delete_temp(bag_path, extra_files)
 
-    # Validate the bag and print the results.
+    # If all extra files were deleted, validate the bag and print the results.
+    # Otherwise, print the files that were not deleted.
+    if len(not_deleted) == 0:
+        validate_bag(bag_path)
+    else:
+        print("After deleting temp files, there are still files left in the data folder that are not in the manifest:")
+        for file_path in not_deleted:
+            print(f'\t* {file_path}')
+
