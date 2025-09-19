@@ -15,7 +15,8 @@ import sys
 
 if __name__ == '__main__':
     # Get bag_path from script argument.
-
+    bag_path = sys.argv[1]
+    
     # Find any files that are in the bag data folder but not in the manifest (extra files).
 
     # Delete any extra files that are temp files and print the path for any other files.
