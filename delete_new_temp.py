@@ -28,13 +28,16 @@ def find_extra_files(bag):
         for file in files:
             root_from_data = re.search(rf"{'data'}.*", root).group()
             data_paths.append(os.path.join(root_from_data, file))
-    data_df = pd.DataFrame(data_paths, columns=['Data_Paths'])
+    data_df = pd.DataFrame(data_paths, columns=['Paths'])
 
     # Read the bag manifest into a dataframe.
-    manifest_df = pd.read_csv(os.path.join(bag, 'manifest-md5.txt'), sep='  ', engine='python', names=['MD5', 'Manifest_Paths'])
+    manifest_df = pd.read_csv(os.path.join(bag, 'manifest-md5.txt'), sep='  ', engine='python', names=['MD5', 'Paths'])
 
     # Compare the data path list and the bag manifest, and return those only in the data path list.
-    return 'TBD'
+    data_only = data_df.merge(manifest_df, how='left')
+    extras = data_only['Paths'].tolist()
+    print(extras)
+    return extras
 
 
 if __name__ == '__main__':
