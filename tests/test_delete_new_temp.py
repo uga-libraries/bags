@@ -61,9 +61,9 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual(expected, result, "Problem with test for extra_temp, directory")
 
         # Test for the printed information.
-        expected = (f"Deleting {new_bag_path}/data/.Document.txt\n"
-                    f"Deleting {new_bag_path}/data/Document.tmp\n"
-                    f"Deleting {new_bag_path}/data/Folder/Thumbs.db\n"
+        expected = (f"Delete {new_bag_path}/data/.Document.txt\n"
+                    f"Delete {new_bag_path}/data/Document.tmp\n"
+                    f"Delete {new_bag_path}/data/Folder/Thumbs.db\n"
                     f"\nBag is valid\n")
         self.assertEqual(expected, printed.stdout, "Problem with test for extra_temp, printed")
 
@@ -84,8 +84,8 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual(expected, result, "Problem with test for extra_temp_with_spaces, directory")
 
         # Test for the printed information.
-        expected = (f"Deleting {new_bag_path}/data/Document  Temp.tmp\n"
-                    f"Deleting {new_bag_path}/data/Folder  Title/Document.tmp\n"
+        expected = (f"Delete {new_bag_path}/data/Document  Temp.tmp\n"
+                    f"Delete {new_bag_path}/data/Folder  Title/Document.tmp\n"
                     f"\nBag is valid\n")
         self.assertEqual(expected, printed.stdout, "Problem with test for extra_temp_with_spaces, printed")
 
@@ -127,7 +127,7 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual(expected, result, "Problem with test for temp_not_all_extra, directory")
 
         # Test for the printed information.
-        expected = (f"Deleting {new_bag_path}/data/Folder/.Document.txt\n"
+        expected = (f"Delete {new_bag_path}/data/Folder/.Document.txt\n"
                     f"\nBag is valid\n")
         self.assertEqual(expected, printed.stdout, "Problem with test for temp_not_all_extra, printed")
 

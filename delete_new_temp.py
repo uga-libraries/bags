@@ -15,10 +15,13 @@ import re
 import sys
 
 
-def delete_temp(bag, extra_list):
+def delete_temp(bag, extra_list, mode):
     """Delete any temp files from the bag and return a list of the ones that were not deleted,
     using the same criteria as the general aip script
-    Parameter: extra_list (list) - list of paths for files that are not in the bag manifest
+    Parameters:
+        bag (string) - path to bag, needed to make full path for file
+        extra_list (list) - list of paths for files that are not in the bag manifest
+        mode (string) - preview or delete, determines if the files should just be printed or actually deleted
     Returns: not_temp (list) - list of paths for files that were not temp and therefore not deleted
     """
     not_temp = []
@@ -26,8 +29,9 @@ def delete_temp(bag, extra_list):
     for file_path in extra_list:
         file_name = file_path.split('/')[-1]
         if file_name in delete_list or file_name.endswith('.tmp') or file_name.startswith('.'):
-            print(f'Deleting {bag}/{file_path}')
-            os.remove(f'{bag}/{file_path}')
+            print(f'Delete {bag}/{file_path}')
+            if mode == 'delete':
+                os.remove(f'{bag}/{file_path}')
         else:
             not_temp.append(file_path)
     return not_temp
@@ -85,14 +89,15 @@ if __name__ == '__main__':
     extra_files = find_extra_files(bag_path)
 
     # Delete any extra files that are temp files and print the path for any other files.
-    not_deleted = delete_temp(bag_path, extra_files)
+    not_deleted = delete_temp(bag_path, extra_files, script_mode)
 
-    # If all extra files were deleted, validate the bag and print the results.
+    # If the script is in delete mode and all extra files were deleted, validate the bag and print the results.
     # Otherwise, print the files that were not deleted.
-    if len(not_deleted) == 0:
-        validate_bag(bag_path)
-    else:
-        print("\nAfter deleting temp files, there are still files in the data folder that are not in the manifest:")
-        for path in not_deleted:
-            print(f'\t* {path}')
+    if script_mode == 'delete':
+        if len(not_deleted) == 0:
+            validate_bag(bag_path)
+        else:
+            print("\nAfter deleting temp files, there are still files in the data folder that are not in the manifest:")
+            for path in not_deleted:
+                print(f'\t* {path}')
 
