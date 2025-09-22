@@ -25,6 +25,7 @@ def delete_temp(bag, extra_list):
     for file_path in extra_list:
         file_name = file_path.split('/')[-1]
         if file_name in delete_list or file_name.endswith('.tmp') or file_name.startswith('.'):
+            print(f'Deleting {bag}/{file_path}')
             os.remove(f'{bag}/{file_path}')
         else:
             not_temp.append(file_path)
