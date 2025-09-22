@@ -26,6 +26,7 @@ class MyTestCase(unittest.TestCase):
                 shutil.rmtree(bag_path)
 
     def test_extra_not_temp(self):
+        """Test for when files were added after bagging, but they are not temp files and are not deleted"""
         # Make a copy of the test data, since the script deletes files.
         script_path = os.path.join('', '..', 'delete_new_temp.py')
         bag_path = os.path.join(os.getcwd(), 'test_delete_new_temp', 'extra_not_temp_bag')
@@ -44,6 +45,8 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual(expected, printed.stdout, "Problem with test for extra_not_temp, printed")
 
     def test_extra_temp(self):
+        """Test for when files were added after bagging, all are temp files that will be deleted,
+        and the bag will be valid after the deletion"""
         # Make a copy of the test data, since the script deletes files.
         script_path = os.path.join('', '..', 'delete_new_temp.py')
         bag_path = os.path.join(os.getcwd(), 'test_delete_new_temp', 'extra_temp_bag')
@@ -57,10 +60,14 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual(expected, result, "Problem with test for extra_temp, directory")
 
         # Test for the printed information.
-        expected = "\nBag is valid\n"
+        expected = (f"Deleting {new_bag_path}/data/.Document.txt\n"
+                    f"Deleting {new_bag_path}/data/Document.tmp\n"
+                    f"Deleting {new_bag_path}/data/Folder/Thumbs.db\n"
+                    f"\nBag is valid\n")
         self.assertEqual(expected, printed.stdout, "Problem with test for extra_temp, printed")
 
     def test_not_valid(self):
+        """Test for a bag with no extra files but that is not valid from the start"""
         # Make a copy of the test data, since the script deletes files.
         script_path = os.path.join('', '..', 'delete_new_temp.py')
         bag_path = os.path.join(os.getcwd(), 'test_delete_new_temp', 'not_valid_bag')
@@ -81,6 +88,8 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual(expected, printed.stdout, "Problem with test for not_valid, printed")
 
     def test_temp_not_all_extra(self):
+        """Test for a bag with some temp files that are in the manifest and should not be deleted
+        and a temp file added after bagging that should be deleted, after which the bag will validate"""
         # Make a copy of the test data, since the script deletes files.
         script_path = os.path.join('', '..', 'delete_new_temp.py')
         bag_path = os.path.join(os.getcwd(), 'test_delete_new_temp', 'temp_not_all_extra_bag')
@@ -95,7 +104,8 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual(expected, result, "Problem with test for temp_not_all_extra, directory")
 
         # Test for the printed information.
-        expected = "\nBag is valid\n"
+        expected = (f"Deleting {new_bag_path}/data/Folder/.Document.txt\n"
+                    f"\nBag is valid\n")
         self.assertEqual(expected, printed.stdout, "Problem with test for temp_not_all_extra, printed")
 
 
