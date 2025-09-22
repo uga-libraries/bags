@@ -71,7 +71,7 @@ def reminder(mode):
     Parameter: mode (string) - preview or delete, determines if the files should just be printed or actually deleted
     Returns: None"""
     if mode == 'delete':
-        print('\nRunning in script_mode "delete", which will delete temp files and validate the bag.')
+        print('\nRunning in script_mode "delete", which will delete extra temp files and validate the bag.')
     elif mode == 'preview':
         print('\nRunning in script_mode "preview", which will print files that would be deleted but changes nothing.')
     else:

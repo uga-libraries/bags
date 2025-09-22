@@ -41,7 +41,7 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual(expected, result, "Problem with test for extra_not_temp, directory")
 
         # Test for the printed information.
-        expected = ('\nRunning in script_mode "delete", which will delete temp files and validate the bag.\n'
+        expected = ('\nRunning in script_mode "delete", which will delete extra temp files and validate the bag.\n'
                     '\nAfter deleting temp files, there are still files in the data folder that are not in the manifest:\n'
                     '\t* data/Extra.txt\n\t* data/Folder/Extra2.txt\n')
         self.assertEqual(expected, printed.stdout, "Problem with test for extra_not_temp, printed")
@@ -83,7 +83,7 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual(expected, result, "Problem with test for extra_temp, directory")
 
         # Test for the printed information.
-        expected = ('\nRunning in script_mode "delete", which will delete temp files and validate the bag.\n'
+        expected = ('\nRunning in script_mode "delete", which will delete extra temp files and validate the bag.\n'
                     f'Delete {new_bag_path}/data/.Document.txt\n'
                     f'Delete {new_bag_path}/data/Document.tmp\n'
                     f'Delete {new_bag_path}/data/Folder/Thumbs.db\n'
@@ -133,7 +133,7 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual(expected, result, "Problem with test for extra_temp_with_spaces, directory")
 
         # Test for the printed information.
-        expected = ('\nRunning in script_mode "delete", which will delete temp files and validate the bag.\n'
+        expected = ('\nRunning in script_mode "delete", which will delete extra temp files and validate the bag.\n'
                     f'Delete {new_bag_path}/data/Document  Temp.tmp\n'
                     f'Delete {new_bag_path}/data/Folder  Title/Document.tmp\n'
                     f'\nBag is valid\n')
@@ -154,7 +154,7 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual(expected, result, "Problem with test for not_valid, directory")
 
         # Test for the printed information.
-        expected = ('\nRunning in script_mode "delete", which will delete temp files and validate the bag.\n'
+        expected = ('\nRunning in script_mode "delete", which will delete extra temp files and validate the bag.\n'
                     '\nBag is not valid\nBag validation failed: data\Document.txt md5 validation failed: '
                     'expected="4xx51d0000698119300eb0c54dbaxx89" found="4bb51d0461698119344eb0c54dbabb89"; '
                     'data\Folder\Document.txt md5 validation failed: expected="4xx51d0000698119300eb0c54dbaxx89" '
@@ -178,7 +178,7 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual(expected, result, "Problem with test for temp_not_all_extra, directory")
 
         # Test for the printed information.
-        expected = ('\nRunning in script_mode "delete", which will delete temp files and validate the bag.\n'
+        expected = ('\nRunning in script_mode "delete", which will delete extra temp files and validate the bag.\n'
                     f'Delete {new_bag_path}/data/Folder/.Document.txt\n'
                     f'\nBag is valid\n')
         self.assertEqual(expected, printed.stdout, "Problem with test for temp_not_all_extra, printed")
