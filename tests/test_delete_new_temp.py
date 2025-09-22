@@ -33,7 +33,7 @@ class MyTestCase(unittest.TestCase):
         bag_path = os.path.join(os.getcwd(), 'test_delete_new_temp', 'extra_not_temp_bag')
         new_bag_path = os.path.join(os.getcwd(), 'test_delete_new_temp', 'test_extra_not_temp_bag')
         shutil.copytree(bag_path, new_bag_path)
-        printed = subprocess.run(f'python {script_path} {new_bag_path}', capture_output=True, text=True, shell=True)
+        printed = subprocess.run(f'python {script_path} {new_bag_path} delete', capture_output=True, text=True, shell=True)
 
         # Test for the directory contents.
         result = make_directory_list(new_bag_path)
@@ -53,7 +53,7 @@ class MyTestCase(unittest.TestCase):
         bag_path = os.path.join(os.getcwd(), 'test_delete_new_temp', 'extra_temp_bag')
         new_bag_path = os.path.join(os.getcwd(), 'test_delete_new_temp', 'test_extra_temp_bag')
         shutil.copytree(bag_path, new_bag_path)
-        printed = subprocess.run(f'python {script_path} {new_bag_path}', capture_output=True, text=True, shell=True)
+        printed = subprocess.run(f'python {script_path} {new_bag_path} delete', capture_output=True, text=True, shell=True)
 
         # Test for the directory contents.
         result = make_directory_list(new_bag_path)
@@ -76,7 +76,7 @@ class MyTestCase(unittest.TestCase):
         bag_path = os.path.join(os.getcwd(), 'test_delete_new_temp', 'extra_temp_with_spaces_bag')
         new_bag_path = os.path.join(os.getcwd(), 'test_delete_new_temp', 'test_extra_temp_with_spaces_bag')
         shutil.copytree(bag_path, new_bag_path)
-        printed = subprocess.run(f'python {script_path} {new_bag_path}', capture_output=True, text=True, shell=True)
+        printed = subprocess.run(f'python {script_path} {new_bag_path} delete', capture_output=True, text=True, shell=True)
 
         # Test for the directory contents.
         result = make_directory_list(new_bag_path)
@@ -96,7 +96,7 @@ class MyTestCase(unittest.TestCase):
         bag_path = os.path.join(os.getcwd(), 'test_delete_new_temp', 'not_valid_bag')
         new_bag_path = os.path.join(os.getcwd(), 'test_delete_new_temp', 'test_not_valid_bag')
         shutil.copytree(bag_path, new_bag_path)
-        printed = subprocess.run(f'python {script_path} {new_bag_path}', capture_output=True, text=True, shell=True)
+        printed = subprocess.run(f'python {script_path} {new_bag_path} delete', capture_output=True, text=True, shell=True)
 
         # Test for the directory contents.
         result = make_directory_list(new_bag_path)
@@ -118,7 +118,7 @@ class MyTestCase(unittest.TestCase):
         bag_path = os.path.join(os.getcwd(), 'test_delete_new_temp', 'temp_not_all_extra_bag')
         new_bag_path = os.path.join(os.getcwd(), 'test_delete_new_temp', 'test_temp_not_all_extra_bag')
         shutil.copytree(bag_path, new_bag_path)
-        printed = subprocess.run(f'python {script_path} {new_bag_path}', capture_output=True, text=True, shell=True)
+        printed = subprocess.run(f'python {script_path} {new_bag_path} delete', capture_output=True, text=True, shell=True)
 
         # Test for the directory contents.
         result = make_directory_list(new_bag_path)

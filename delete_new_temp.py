@@ -2,6 +2,7 @@
 
 Parameter:
     bag_path (required): path to the bag (folder that ends in "_bag")
+    script_mode (required): preview (print what will delete) or delete (actually delete)
 
 Returns:
     Prints any files that are not in the manifest but did not quality as temporary files
@@ -78,6 +79,7 @@ def validate_bag(bag):
 if __name__ == '__main__':
     # Get bag_path from script argument.
     bag_path = sys.argv[1]
+    script_mode = sys.argv[2]
 
     # Find any files that are in the bag data folder but not in the manifest (extra files).
     extra_files = find_extra_files(bag_path)
