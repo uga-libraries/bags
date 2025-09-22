@@ -46,6 +46,27 @@ class MyTestCase(unittest.TestCase):
                     '\t* data/Extra.txt\n\t* data/Folder/Extra2.txt\n')
         self.assertEqual(expected, printed.stdout, "Problem with test for extra_not_temp, printed")
 
+    def test_extra_not_temp_preview(self):
+        """Test for when files were added after bagging, but they are not temp files, in preview mode"""
+        # Make a copy of the test data, since the script deletes files.
+        script_path = os.path.join('', '..', 'delete_new_temp.py')
+        bag_path = os.path.join(os.getcwd(), 'test_delete_new_temp', 'extra_not_temp_bag')
+        new_bag_path = os.path.join(os.getcwd(), 'test_delete_new_temp', 'test_extra_not_temp_bag')
+        shutil.copytree(bag_path, new_bag_path)
+        printed = subprocess.run(f'python {script_path} {new_bag_path} preview', capture_output=True, text=True, shell=True)
+
+        # Test for the directory contents.
+        result = make_directory_list(new_bag_path)
+        expected = ['data\\Document.txt', 'data\\Extra.txt', 'data\\Folder\\Document.txt', 'data\\Folder\\Extra2.txt']
+        self.assertEqual(expected, result, "Problem with test for extra_not_temp_preview, directory")
+
+        # Test for the printed information.
+        expected = ('\nRunning in script_mode "preview", which will print files that would be deleted but changes nothing.\n'
+                    '\nPreview of files to delete is complete.\n'
+                    'Files that would have been deleted are listed above.\n'
+                    'There are 2 files that are not in the manifest and are not temp.\n')
+        self.assertEqual(expected, printed.stdout, "Problem with test for extra_not_temp_preview, printed")
+
     def test_extra_temp(self):
         """Test for when files were added after bagging, all are temp files that will be deleted,
         and the bag will be valid after the deletion"""
@@ -68,6 +89,32 @@ class MyTestCase(unittest.TestCase):
                     f'Delete {new_bag_path}/data/Folder/Thumbs.db\n'
                     '\nBag is valid\n')
         self.assertEqual(expected, printed.stdout, "Problem with test for extra_temp, printed")
+
+    def test_extra_temp_preview(self):
+        """Test for when files were added after bagging and the script is in preview mode,
+        so they'll be printed but not deleted"""
+        # Make a copy of the test data, since the script deletes files.
+        script_path = os.path.join('', '..', 'delete_new_temp.py')
+        bag_path = os.path.join(os.getcwd(), 'test_delete_new_temp', 'extra_temp_bag')
+        new_bag_path = os.path.join(os.getcwd(), 'test_delete_new_temp', 'test_extra_temp_bag')
+        shutil.copytree(bag_path, new_bag_path)
+        printed = subprocess.run(f'python {script_path} {new_bag_path} preview', capture_output=True, text=True, shell=True)
+
+        # Test for the directory contents.
+        result = make_directory_list(new_bag_path)
+        expected = ['data\\.Document.txt', 'data\\Document.tmp', 'data\\Document.txt',
+                    'data\\Folder\\Document.txt', 'data\\Folder\\Thumbs.db']
+        self.assertEqual(expected, result, "Problem with test for extra_temp_preview, directory")
+
+        # Test for the printed information.
+        expected = ('\nRunning in script_mode "preview", which will print files that would be deleted but changes nothing.\n'
+                    f'Delete {new_bag_path}/data/.Document.txt\n'
+                    f'Delete {new_bag_path}/data/Document.tmp\n'
+                    f'Delete {new_bag_path}/data/Folder/Thumbs.db\n'
+                    '\nPreview of files to delete is complete.\n'
+                    'Files that would have been deleted are listed above.\n'
+                    'There are 0 files that are not in the manifest and are not temp.\n')
+        self.assertEqual(expected, printed.stdout, "Problem with test for extra_temp_preview, printed")
 
     def test_extra_temp_with_spaces(self):
         """Test for when files were added after bagging, all are temp files that will be deleted,
