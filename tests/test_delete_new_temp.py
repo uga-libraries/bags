@@ -19,7 +19,8 @@ class MyTestCase(unittest.TestCase):
 
     def tearDown(self):
         """Delete copies of test data, if made"""
-        bags = ['test_extra_not_temp_bag', 'test_extra_temp_bag', 'test_not_valid_bag', 'test_temp_not_all_extra_bag']
+        bags = ['test_extra_not_temp_bag', 'test_extra_temp_bag', 'test_extra_temp_with_spaces_bag',
+                'test_not_valid_bag', 'test_temp_not_all_extra_bag']
         for bag in bags:
             bag_path = os.path.join(os.getcwd(), 'test_delete_new_temp', bag)
             if os.path.exists(bag_path):
@@ -65,6 +66,28 @@ class MyTestCase(unittest.TestCase):
                     f"Deleting {new_bag_path}/data/Folder/Thumbs.db\n"
                     f"\nBag is valid\n")
         self.assertEqual(expected, printed.stdout, "Problem with test for extra_temp, printed")
+
+    def test_extra_temp_with_spaces(self):
+        """Test for when files were added after bagging, all are temp files that will be deleted,
+        there are folders and files with double spaces (impacts manifest parsing),
+        and the bag will be valid after the deletion"""
+        # Make a copy of the test data, since the script deletes files.
+        script_path = os.path.join('', '..', 'delete_new_temp.py')
+        bag_path = os.path.join(os.getcwd(), 'test_delete_new_temp', 'extra_temp_with_spaces_bag')
+        new_bag_path = os.path.join(os.getcwd(), 'test_delete_new_temp', 'test_extra_temp_with_spaces_bag')
+        shutil.copytree(bag_path, new_bag_path)
+        printed = subprocess.run(f'python {script_path} {new_bag_path}', capture_output=True, text=True, shell=True)
+
+        # Test for the directory contents.
+        result = make_directory_list(new_bag_path)
+        expected = ['data\\Document.txt', 'data\\Folder  Title\\New  Document.txt']
+        self.assertEqual(expected, result, "Problem with test for extra_temp_with_spaces, directory")
+
+        # Test for the printed information.
+        expected = (f"Deleting {new_bag_path}/data/Document  Temp.tmp\n"
+                    f"Deleting {new_bag_path}/data/Folder  Title/Document.tmp\n"
+                    f"\nBag is valid\n")
+        self.assertEqual(expected, printed.stdout, "Problem with test for extra_temp_with_spaces, printed")
 
     def test_not_valid(self):
         """Test for a bag with no extra files but that is not valid from the start"""
