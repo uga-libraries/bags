@@ -66,6 +66,19 @@ def find_extra_files(bag):
     return extras
 
 
+def reminder(mode):
+    """Prints a reminder of what the selected script mode does
+    Parameter: mode (string) - preview or delete, determines if the files should just be printed or actually deleted
+    Returns: None"""
+    if mode == 'delete':
+        print('\nRunning in script_mode "delete", which will delete temp files and validate the bag.')
+    elif mode == 'preview':
+        print('\nRunning in script_mode "preview", which will print files that would be deleted but changes nothing.')
+    else:
+        print(f'\nscript_mode {mode} is not "delete" or "preview".')
+        sys.exit()
+
+
 def validate_bag(bag):
     """Validates a bag that had all extra files deleted and prints the result
     Parameter: bag (string) - path to bag
@@ -84,6 +97,9 @@ if __name__ == '__main__':
     # Get bag_path from script argument.
     bag_path = sys.argv[1]
     script_mode = sys.argv[2]
+
+    # Print reminder of script mode functionality.
+    reminder(script_mode)
 
     # Find any files that are in the bag data folder but not in the manifest (extra files).
     extra_files = find_extra_files(bag_path)
