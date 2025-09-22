@@ -21,6 +21,7 @@ bag_manifest_compare.py
 
 delete_new_temp.py
 * bag_path (required): path to the bag (folder that ends in "_bag")
+* script_mode (required): preview (print what will delete) or delete (actually delete)
 
 undo_all_bags.py
 * bag_directory (required): path to directory that contains the bags. Bag folder names should end with "_bag".
@@ -56,6 +57,9 @@ This script finds temporary files that are not in the manifest, deletes them, an
 It does not delete temporary files that are in the manifest or non-temporary file that are not in the manifest.
 It does not try to validate if some files are missing from the manifest and not deleted, 
 but instead prints those files to review if they should be considered temporary or if the bag needs to be updated.
+
+The script can also be run in preview mode, in which case it prints files to be deleted but deletes nothing.
+This allows the archivist to check the script is deleting the correct files before doing the deletion.
 
 It was developed for fixing errors when checking bags that have been in storage for some time.
 We've found that some temporary files, especially .DS_Store and Thumbs.db, are generated on the Digital Production Hub
