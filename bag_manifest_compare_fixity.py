@@ -44,6 +44,21 @@ def make_data_df(bag):
     return df_data
 
 
+def make_manifest_df(bag):
+    """Get the md5 and path from the bag md5 manifest and save to a dataframe
+    Parameter: bag (string) - path to bag
+    Returns: df_manifest (DataFrame) - columns Manifest_MD5, Manifest_Path
+    """
+    # In the manifest, each row is "MD5  data/path" and there is no header row.
+    # The separator includes data because paths may also include a double space,
+    # and data needs to be added back for easier comparison with data_df.
+    manifest_path = os.path.join(bag, 'manifest-md5.txt')
+    df_manifest = pd.read_csv(manifest_path, sep='  data', engine='python', dtype=str)
+    df_manifest.columns = ['Manifest_MD5', 'Manifest_Path']
+    df_manifest['Manifest_Path'] = 'data' + df_manifest['Manifest_Path']
+    return df_manifest
+
+
 if __name__ == '__main__':
 
     # Get bag_path from script argument.
@@ -53,6 +68,7 @@ if __name__ == '__main__':
     data_df = make_data_df(bag_path)
 
     # Read the bag md5 manifest to a dataframe.
+    manifest_df = make_manifest_df(bag_path)
 
     # Compare the bag and manifest dataframes.
 
