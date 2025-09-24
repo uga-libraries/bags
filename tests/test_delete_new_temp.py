@@ -43,7 +43,8 @@ class MyTestCase(unittest.TestCase):
         # Test for the printed information.
         expected = ('\nRunning in script_mode "delete", which will delete extra temp files and validate the bag.\n'
                     '\nAfter deleting temp files, there are still files in the data folder that are not in the manifest:\n'
-                    '\t* data/Extra.txt\n\t* data/Folder/Extra2.txt\n')
+                    '\t* data/Extra.txt\n'
+                    '\t* data/Folder/Extra2.txt\n')
         self.assertEqual(expected, printed.stdout, "Problem with test for extra_not_temp, printed")
 
     def test_extra_not_temp_preview(self):
@@ -64,7 +65,9 @@ class MyTestCase(unittest.TestCase):
         expected = ('\nRunning in script_mode "preview", which will print files that would be deleted but changes nothing.\n'
                     '\nPreview of files to delete is complete.\n'
                     'Files that would have been deleted are listed above.\n'
-                    'There are 2 files that are not in the manifest and are not temp.\n')
+                    'There are 2 files that are not in the manifest and are not temp.\n'
+                    '\t* data/Extra.txt\n'
+                    '\t* data/Folder/Extra2.txt\n')
         self.assertEqual(expected, printed.stdout, "Problem with test for extra_not_temp_preview, printed")
 
     def test_extra_temp(self):
