@@ -120,4 +120,6 @@ if __name__ == '__main__':
         print("\nPreview of files to delete is complete.")
         print("Files that would have been deleted are listed above.")
         print(f"There are {len(not_deleted)} files that are not in the manifest and are not temp.")
+        for path in not_deleted:
+            print(f'\t* {path}')
 
