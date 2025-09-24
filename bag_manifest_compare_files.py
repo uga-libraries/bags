@@ -1,7 +1,7 @@
-"""Compares the files in a bag manifest to the files in the data folder
-and creates a report of files in only one location
+"""Compares the files in a bag manifest to the files in the data folder and creates a report of files in only one spot
 
 Use this script after a bag validation error that indicates a different number of expected files
+Use bag_manifest_compare_fixity.py instead when the validation error is the same number of files but a different size
 
 Parameters:
     bag_path (required): path to the bag folder
