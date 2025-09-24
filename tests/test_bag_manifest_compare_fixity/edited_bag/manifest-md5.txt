@@ -1,0 +1,3 @@
+47ae221bd3711ce37e4487bfec08a3ee  data/File_1.txt
+673711fb4102a49ee1700eaccc4efe10  data/File_2.txt
+7f52bb6641d0d471856d704f670356e9  data/File_3.txt
