@@ -1,4 +1,4 @@
-"""Compares the fixity of files in a bag manifest to the data folder and creates a report of file differences,
+"""Compares the fixity of files in a bag manifest to the data folder and creates a report of differences,
 which includes files that are only in the manifest, only in the data folder, or in both places with different fixity.
 
 Use this script after a bag validation error that indicates the size has changed.
@@ -10,7 +10,7 @@ Parameters:
     bag_path (required): path to the bag folder
 
 Returns:
-    BAGNAME_manifest_compare_report.csv (saved to the parent folder of the bag
+    bag_manifest_compare_fixity_report.csv (saved to the parent folder of the bag_path)
 """
 import hashlib
 import os
@@ -95,7 +95,7 @@ def save_log(df_diff, bag):
     Returns: None (saves a CSV in the parent folder of the bag)
     """
     bag_dir = pathlib.Path(bag)
-    log_path = os.path.join(bag_dir.parent, 'bag_manifest_fixity_comparison.csv')
+    log_path = os.path.join(bag_dir.parent, 'bag_manifest_compare_fixity_report.csv')
 
     # Dataframe is sorted by path to group files with changed fixity,
     # as opposed to files that are only in one of the two sources.

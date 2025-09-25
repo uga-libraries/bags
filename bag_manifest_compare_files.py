@@ -1,13 +1,13 @@
-"""Compares the files in a bag manifest to the files in the data folder and creates a report of files in only one spot
+"""Compares the files in a bag manifest to the files in the data folder and creates a report of files in only one spot.
 
-Use this script after a bag validation error that indicates a different number of expected files
-Use bag_manifest_compare_fixity.py instead when the validation error is the same number of files but a different size
+Use this script after a bag validation error that indicates a different number of expected files.
+Use bag_manifest_compare_fixity.py instead when the validation error is the same number of files but a different size.
 
 Parameters:
     bag_path (required): path to the bag folder
 
 Returns:
-    BAGNAME_manifest_compare_report.csv
+    bag_manifest_compare_files_report.csv (saved to the parent folder of the bag_path)
 """
 import os
 import pandas as pd
@@ -44,5 +44,5 @@ if __name__ == '__main__':
     df_compare['path_location'] = df_compare['path_location'].str.replace('right_only', 'data', regex=False)
 
     # Saves paths only in the manifest or only in the data folder to a csv in the parent directory of the bag.
-    report_path = os.path.join(os.path.dirname(bag_path), f'{os.path.basename(bag_path)}_manifest_compare_report.csv')
+    report_path = os.path.join(os.path.dirname(bag_path), 'bag_manifest_compare_files_report.csv')
     df_compare.to_csv(report_path, index=False)
