@@ -11,28 +11,35 @@ Returns:
 """
 import os
 import pandas as pd
+import re
 import sys
+
+
+def make_data_df(bag):
+    """Get the path for every file in the bag's data folder and save to a dataframe
+    Parameter: bag (string) - path to bag
+    Returns: df_data (DataFrame) - column Data_Path
+    """
+    # File paths in the dataframe start with data and have forward slashes to match the manifest.
+    data_folder_list = []
+    for root, dirs, files in os.walk(os.path.join(bag, 'data')):
+        for file in files:
+            root_from_data = re.search(rf"{'data'}.*", root).group()
+            root_from_data = root_from_data.replace('\\', '/')
+            data_folder_list.append(f'{root_from_data}/{file}')
+    df_data = pd.DataFrame(data_folder_list, columns=['Path'])
+    return df_data
 
 
 if __name__ == '__main__':
 
     bag_path = sys.argv[1]
+    data_df = make_data_df(bag_path)
 
     # Reads the bag manifest into a dataframe, removing the md5 column which isn't needed for this process.
     manifest_df = pd.read_csv(os.path.join(bag_path, 'manifest-md5.txt'),
                               delimiter='  ', names=['md5', 'paths'], engine='python')
     manifest_df.drop(['md5'], axis=1, inplace=True)
-
-    # Makes a dataframe with the relative paths of files in the data folder, starting with data.
-    # Direction of slash is changed to match the bagit manifest.
-    data_paths = []
-    data_path = os.path.join(bag_path, 'data')
-    for root, dirs, files in os.walk(os.path.join(bag_path, 'data')):
-        for file in files:
-            relative_path = os.path.relpath(os.path.join(root, file), bag_path)
-            relative_path = relative_path.replace('\\', '/')
-            data_paths.append(relative_path)
-    data_df = pd.DataFrame(data_paths, columns=['paths'])
 
     # Compares the manifest to the files in the data folder, removing any rows that match.
     df_compare = manifest_df.merge(data_df, how='outer', indicator='True')

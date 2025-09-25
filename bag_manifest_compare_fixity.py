@@ -105,10 +105,7 @@ def save_log(df_diff, bag):
 
 if __name__ == '__main__':
 
-    # Get bag_path from script argument.
     bag_path = sys.argv[1]
-
-    # Create a dataframe with the file path and md5 for every file in the data folder.
     data_df = make_data_df(bag_path)
 
     # Read the bag md5 manifest to a dataframe.
