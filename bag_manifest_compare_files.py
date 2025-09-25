@@ -45,7 +45,7 @@ def make_data_df(bag):
             root_from_data = re.search(rf"{'data'}.*", root).group()
             root_from_data = root_from_data.replace('\\', '/')
             data_folder_list.append(f'{root_from_data}/{file}')
-    df_data = pd.DataFrame(data_folder_list, columns=['Path'], dtype=str)
+    df_data = pd.DataFrame(data_folder_list, columns=['Path'])
     return df_data
 
 
@@ -58,10 +58,9 @@ def make_manifest_df(bag):
     # The separator includes data because paths may also include a double space,
     # and data needs to be added back for easier comparison with data_df.
     manifest_path = os.path.join(bag, 'manifest-md5.txt')
-    df_manifest = pd.read_csv(manifest_path, sep='  data', engine='python', dtype=str)
-    df_manifest.columns = ['MD5', 'Path']
-    df_manifest.drop(columns=['MD5'], inplace=True)
+    df_manifest = pd.read_csv(manifest_path, sep='  data', engine='python', names=['MD5', 'Path'])
     df_manifest['Path'] = 'data' + df_manifest['Path']
+    df_manifest.drop(columns=['MD5'], inplace=True)
     return df_manifest
 
 

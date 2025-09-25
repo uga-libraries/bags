@@ -68,7 +68,7 @@ def make_data_df(bag):
                 data_folder_list.append([md5_generated, filepath_from_data])
             except FileNotFoundError:
                 data_folder_list.append(['FileNotFoundError-cannot-calculate-md5', filepath_from_data])
-    df_data = pd.DataFrame(data_folder_list, columns=['Data_MD5', 'Data_Path'], dtype=str)
+    df_data = pd.DataFrame(data_folder_list, columns=['Data_MD5', 'Data_Path'])
     return df_data
 
 
@@ -81,8 +81,8 @@ def make_manifest_df(bag):
     # The separator includes data because paths may also include a double space,
     # and data needs to be added back for easier comparison with data_df.
     manifest_path = os.path.join(bag, 'manifest-md5.txt')
-    df_manifest = pd.read_csv(manifest_path, sep='  data', engine='python', dtype=str)
-    df_manifest.columns = ['Manifest_MD5', 'Manifest_Path']
+    df_manifest = pd.read_csv(manifest_path, sep='  data', engine='python', names=['Manifest_MD5', 'Manifest_Path'])
+    df_manifest.columns =
     df_manifest['Manifest_Path'] = 'data' + df_manifest['Manifest_Path']
     return df_manifest
 
