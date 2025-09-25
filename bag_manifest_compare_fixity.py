@@ -82,7 +82,6 @@ def make_manifest_df(bag):
     # and data needs to be added back for easier comparison with data_df.
     manifest_path = os.path.join(bag, 'manifest-md5.txt')
     df_manifest = pd.read_csv(manifest_path, sep='  data', engine='python', names=['Manifest_MD5', 'Manifest_Path'])
-    df_manifest.columns =
     df_manifest['Manifest_Path'] = 'data' + df_manifest['Manifest_Path']
     return df_manifest
 
