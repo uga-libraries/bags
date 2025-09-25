@@ -18,7 +18,7 @@ import sys
 def make_data_df(bag):
     """Get the path for every file in the bag's data folder and save to a dataframe
     Parameter: bag (string) - path to bag
-    Returns: df_data (DataFrame) - column Data_Path
+    Returns: df_data (DataFrame) - column Path
     """
     # File paths in the dataframe start with data and have forward slashes to match the manifest.
     data_folder_list = []
@@ -27,19 +27,31 @@ def make_data_df(bag):
             root_from_data = re.search(rf"{'data'}.*", root).group()
             root_from_data = root_from_data.replace('\\', '/')
             data_folder_list.append(f'{root_from_data}/{file}')
-    df_data = pd.DataFrame(data_folder_list, columns=['Path'])
+    df_data = pd.DataFrame(data_folder_list, columns=['Path'], dtype=str)
     return df_data
+
+
+def make_manifest_df(bag):
+    """Get the path from the bag md5 manifest and save to a dataframe
+    Parameter: bag (string) - path to bag
+    Returns: df_manifest (DataFrame) - column Path
+    """
+    # In the manifest, each row is "MD5  data/path" and there is no header row.
+    # The separator includes data because paths may also include a double space,
+    # and data needs to be added back for easier comparison with data_df.
+    manifest_path = os.path.join(bag, 'manifest-md5.txt')
+    df_manifest = pd.read_csv(manifest_path, sep='  data', engine='python', dtype=str)
+    df_manifest.columns = ['MD5', 'Path']
+    df_manifest.drop(columns=['MD5'], inplace=True)
+    df_manifest['Path'] = 'data' + df_manifest['Path']
+    return df_manifest
 
 
 if __name__ == '__main__':
 
     bag_path = sys.argv[1]
     data_df = make_data_df(bag_path)
-
-    # Reads the bag manifest into a dataframe, removing the md5 column which isn't needed for this process.
-    manifest_df = pd.read_csv(os.path.join(bag_path, 'manifest-md5.txt'),
-                              delimiter='  ', names=['md5', 'paths'], engine='python')
-    manifest_df.drop(['md5'], axis=1, inplace=True)
+    manifest_df = make_manifest_df(bag_path)
 
     # Compares the manifest to the files in the data folder, removing any rows that match.
     df_compare = manifest_df.merge(data_df, how='outer', indicator='True')

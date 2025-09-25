@@ -107,8 +107,6 @@ if __name__ == '__main__':
 
     bag_path = sys.argv[1]
     data_df = make_data_df(bag_path)
-
-    # Read the bag md5 manifest to a dataframe.
     manifest_df = make_manifest_df(bag_path)
 
     # Compare the bag and manifest dataframes.
