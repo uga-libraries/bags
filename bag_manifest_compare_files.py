@@ -15,6 +15,23 @@ import re
 import sys
 
 
+def compare_df(df_data, df_manifest):
+    """Make a df with all files that do not match between the data folder and manifest
+    Parameters: Dataframes with file paths start with data
+    Returns: df_compare (DataFrame) - columns Path, Source
+    """
+    # Compares the manifest to the files in the data folder, removing any rows that match.
+    # The comparison column Path is named the same in both dataframes.
+    df_compare = df_data.merge(df_manifest, how='outer', indicator='Source')
+    df_compare = df_compare[df_compare['Source'] != 'both']
+
+    # Updates the source names to be more human-readable.
+    df_compare['Source'] = df_compare['Source'].str.replace('left_only', 'Data Folder', regex=False)
+    df_compare['Source'] = df_compare['Source'].str.replace('right_only', 'Manifest', regex=False)
+
+    return df_compare
+
+
 def make_data_df(bag):
     """Get the path for every file in the bag's data folder and save to a dataframe
     Parameter: bag (string) - path to bag
@@ -52,15 +69,9 @@ if __name__ == '__main__':
     bag_path = sys.argv[1]
     data_df = make_data_df(bag_path)
     manifest_df = make_manifest_df(bag_path)
+    differences_df = compare_df(data_df, manifest_df)
 
-    # Compares the manifest to the files in the data folder, removing any rows that match.
-    df_compare = manifest_df.merge(data_df, how='outer', indicator='True')
-    df_compare = df_compare[df_compare['True'] != 'both']
 
-    # Updates column and value names to be more human-readable.
-    df_compare.rename(columns={'True': 'path_location'}, inplace=True)
-    df_compare['path_location'] = df_compare['path_location'].str.replace('left_only', 'manifest', regex=False)
-    df_compare['path_location'] = df_compare['path_location'].str.replace('right_only', 'data', regex=False)
 
     # Saves paths only in the manifest or only in the data folder to a csv in the parent directory of the bag.
     report_path = os.path.join(os.path.dirname(bag_path), 'bag_manifest_compare_files_report.csv')

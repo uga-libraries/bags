@@ -108,8 +108,6 @@ if __name__ == '__main__':
     bag_path = sys.argv[1]
     data_df = make_data_df(bag_path)
     manifest_df = make_manifest_df(bag_path)
-
-    # Compare the bag and manifest dataframes.
     differences_df = compare_df(data_df, manifest_df)
 
     # Make a log of the differences.
