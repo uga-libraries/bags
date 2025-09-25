@@ -15,6 +15,7 @@ Returns:
 import hashlib
 import os
 import pandas as pd
+import pathlib
 import re
 import sys
 
@@ -22,20 +23,28 @@ import sys
 def compare_df(df_data, df_manifest):
     """Make a df with all files that do not match fixity between the data folder and manifest
     Parameters: DataFrames with MD5 and file paths starting with data
-    Returns: df_diff (DataFrame) - columns MD5, Path, Source"""
-
+    Returns: df_diff (DataFrame) - columns MD5, Path, Source
+    """
     # Just merging on fixity, so the paths may not be exactly aligned in the case of duplicates.
     # After merging, column Source has left_only if it is only in df_data and right_only if it is only in df_manifest.
     # If it has both, that means the MD5 matched, and it will not be included in the log.
     df_compare = df_data.merge(df_manifest, how='outer', left_on='Data_MD5', right_on='Manifest_MD5', indicator='Source')
 
-    # Makes separate dataframes for fixity only in one of each of the dataframes,
-    # so they can be reformatted and merged into a dataframe with three columns,
-    # not separate fixity and path columns for each of the dataframes.
+    # Makes and reformats separate dataframes for fixity only in one of each of the dataframes,
+    # so they can be merged into a dataframe with three columns, not separate fixity and path columns for each source.
     df_data_only = df_compare[df_compare['Source'] == 'left_only'].copy()
     df_data_only.drop(columns=['Manifest_MD5', 'Manifest_Path'], inplace=True)
+    df_data_only.rename(columns={'Data_MD5': 'MD5', 'Data_Path': 'Path'}, inplace=True)
     df_data_only['Source'] = 'Data Folder'
-    return df_data_only
+
+    df_manifest_only = df_compare[df_compare['Source'] == 'right_only'].copy()
+    df_manifest_only.drop(columns=['Data_MD5', 'Data_Path'], inplace=True)
+    df_manifest_only.rename(columns={'Manifest_MD5': 'MD5', 'Manifest_Path': 'Path'}, inplace=True)
+    df_manifest_only['Source'] = 'Manifest'
+
+    # Combines the two dataframes. It now has three columns: MD5, Path, and Source.
+    df_diff = pd.concat([df_data_only, df_manifest_only], ignore_index=True)
+    return df_diff
 
 
 def make_data_df(bag):
@@ -91,8 +100,7 @@ if __name__ == '__main__':
 
     # Compare the bag and manifest dataframes.
     differences_df = compare_df(data_df, manifest_df)
-    print(differences_df)
 
     # Make a log of the differences.
+    save_log(differences_df, bag_path)
 
-    # Print a summary of the result.
