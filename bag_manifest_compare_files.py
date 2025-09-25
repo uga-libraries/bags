@@ -11,6 +11,7 @@ Returns:
 """
 import os
 import pandas as pd
+import pathlib
 import re
 import sys
 
@@ -64,15 +65,22 @@ def make_manifest_df(bag):
     return df_manifest
 
 
+def save_report(df_diff, bag):
+    """Save the rows for each file that didn't match between the data folder and manifest to a csv
+    Parameters:
+        df_diff (DataFrame) - Columns Path, Source
+        bag (string) - path to bag, to get location for saving the report
+    Returns: None (saves a CSV in the parent folder of the bag)
+    """
+    bag_dir = pathlib.Path(bag)
+    report_path = os.path.join(bag_dir.parent, 'bag_manifest_compare_files_report.csv')
+    df_diff.to_csv(report_path, index=False)
+
+
 if __name__ == '__main__':
 
     bag_path = sys.argv[1]
     data_df = make_data_df(bag_path)
     manifest_df = make_manifest_df(bag_path)
     differences_df = compare_df(data_df, manifest_df)
-
-
-
-    # Saves paths only in the manifest or only in the data folder to a csv in the parent directory of the bag.
-    report_path = os.path.join(os.path.dirname(bag_path), 'bag_manifest_compare_files_report.csv')
-    df_compare.to_csv(report_path, index=False)
+    save_report(differences_df, bag_path)

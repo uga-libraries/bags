@@ -87,20 +87,20 @@ def make_manifest_df(bag):
     return df_manifest
 
 
-def save_log(df_diff, bag):
+def save_report(df_diff, bag):
     """Save the rows for each file that didn't match between the data folder and manifest to a csv
     Parameters:
         df_diff (DataFrame) - Columns MD5, Path, Source
-        bag (string) - path to bag, to get location for saving the log
+        bag (string) - path to bag, to get location for saving the report
     Returns: None (saves a CSV in the parent folder of the bag)
     """
     bag_dir = pathlib.Path(bag)
-    log_path = os.path.join(bag_dir.parent, 'bag_manifest_compare_fixity_report.csv')
+    report_path = os.path.join(bag_dir.parent, 'bag_manifest_compare_fixity_report.csv')
 
     # Dataframe is sorted by path to group files with changed fixity,
     # as opposed to files that are only in one of the two sources.
     df_diff.sort_values(by='Path', inplace=True)
-    df_diff.to_csv(log_path, index=False)
+    df_diff.to_csv(report_path, index=False)
 
 
 if __name__ == '__main__':
@@ -109,6 +109,4 @@ if __name__ == '__main__':
     data_df = make_data_df(bag_path)
     manifest_df = make_manifest_df(bag_path)
     differences_df = compare_df(data_df, manifest_df)
-
-    # Make a log of the differences.
-    save_log(differences_df, bag_path)
+    save_report(differences_df, bag_path)
