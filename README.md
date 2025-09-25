@@ -19,6 +19,9 @@ used to get AIPs from the preservation system ready to share with users.
 bag_manifest_compare_files.py
 * bag_path (required): path to the bag (folder that ends in "_bag")
 
+bag_manifest_compare_fixity.py
+* bag_path (required): path to the bag (folder that ends in "_bag")
+
 delete_new_temp.py
 * bag_path (required): path to the bag (folder that ends in "_bag")
 * script_mode (required): preview (print what will delete) or delete (actually delete)
@@ -52,6 +55,16 @@ It was developed for investigating further when a bag validation error message i
 but does not indicate which files were added or deleted since the bag was made.
 
 It is faster than bag_manifest_compare_fixity.py, which is used when the file count is the same and size is different.
+
+### bag_manifest_compare_fixity.py
+
+This script compares the MD5s in the bag manifest to the MD5s of files in the bag data folder
+and makes a report of any differences, either because the fixity changed or the file is only in one location.
+
+It was developed for investigating further when a bag validation error message is that the size changed
+but the number of files has not.
+
+It is slower than bag_manifest_compare_files.py, which is used when the file count is different.
 
 ### delete_new_temp.py
 
