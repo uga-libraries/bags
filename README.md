@@ -83,6 +83,11 @@ even if the folder hasn't been opened recently.
 The temp files are removed, so we can check if the rest of the files are valid.
 Otherwise, bag validation stops when the file count doesn't match and does not check the MD5.
 
+Standardized language for the preservation log:
+
+Updated bag for accession 20##.##.ER to remove temp files generated after bagging with delete_new_temp.py. 1 Thumbs.db was deleted. The bag is valid.
+Updated bag for accession 20##.##.ER to remove temp files generated after bagging with delete_new_temp.py. 1 Thumbs.db was deleted. The bag is not valid. [insert error message]
+
 ### undo_all_bags.py and undo_one_bag.py
 
 These scripts are used to removed files from all bags in a specified directory or a specified bag.
