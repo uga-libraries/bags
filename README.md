@@ -22,6 +22,9 @@ bag_manifest_compare_files.py
 bag_manifest_compare_fixity.py
 * bag_path (required): path to the bag (folder that ends in "_bag")
 
+delete_thumbs_db.py
+* bag_path (required): path to the bag (folder that ends in "_bag")
+ 
 delete_new_temp.py
 * bag_path (required): path to the bag (folder that ends in "_bag")
 * script_mode (required): preview (print what will delete) or delete (actually delete)
@@ -87,6 +90,14 @@ Standardized language for the preservation log:
 
 Updated bag for accession 20##.##.ER to remove temp files generated after bagging with delete_new_temp.py. 1 Thumbs.db was deleted. The bag is valid.
 Updated bag for accession 20##.##.ER to remove temp files generated after bagging with delete_new_temp.py. 1 Thumbs.db was deleted. The bag is not valid. [insert error message]
+
+### delete_thumbs_db.py
+
+This script deletes Thumbs.db anywhere in the bag, regardless of if there were in the manifest or not,
+updates the bag, and validates the bag.
+
+It should only be used after delete_new_temp.py or one of the bag manifest compare scripts shows that
+Thumbs.db are the only reason the bag is not validating, because it updates the bag.
 
 ### undo_all_bags.py and undo_one_bag.py
 
