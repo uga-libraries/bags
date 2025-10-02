@@ -26,6 +26,14 @@ def delete_thumbs(bag):
                 os.remove(os.path.join(root, file))
 
 
+def update_bag(bag):
+    """Update the bag so any Thumbs.db that were part of the manifest are removed
+    Parameter: bag (string) - path to bag
+    Returns: None"""
+    bag_inst = bagit.Bag(bag)
+    bag_inst.save(manifests=True)
+
+
 if __name__ == '__main__':
 
     # Get bag_path from script argument.
@@ -35,6 +43,7 @@ if __name__ == '__main__':
     delete_thumbs(bag_path)
 
     # Update the bag.
+    update_bag(bag_path)
 
-    # Validate the bag.
+    # Validate the bag and print the result.
     validate_bag(bag_path)
