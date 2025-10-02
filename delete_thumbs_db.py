@@ -16,12 +16,23 @@ import sys
 from delete_new_temp import validate_bag
 
 
+def delete_thumbs(bag):
+    """Delete any Thumbs.db files in the bag
+    Parameter: bag (string) - path to bag
+    Returns: None"""
+    for root, dirs, files in os.walk(bag):
+        for file in files:
+            if file == 'Thumbs.db':
+                os.remove(os.path.join(root, file))
+
+
 if __name__ == '__main__':
 
     # Get bag_path from script argument.
     bag_path = sys.argv[1]
 
     # Delete any Thumbs.db in the bag's data folder.
+    delete_thumbs(bag_path)
 
     # Update the bag.
 
