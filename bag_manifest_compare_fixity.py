@@ -21,11 +21,17 @@ import re
 import sys
 
 
-def compare_df(df_data, df_manifest):
+def compare_df(bag, df_manifest):
     """Make a df with all files that do not match fixity between the data folder and manifest
-    Parameters: DataFrames with MD5 and file paths starting with data
+    Parameters:
+         bag (string) - path to bag, where data_md5.csv is
+         df_manifest (Pandas dataframe) - dataframe with MD5 and file paths starting with data
     Returns: df_diff (DataFrame) - columns MD5, Path, Source
     """
+    # Reads the CSV with MD5s for files in the data folder into a dataframe.
+    data_csv = os.path.join(os.path.dirname(bag), 'data_md5.csv')
+    df_data = pd.read_csv(data_csv, names=['Data_MD5', 'Data_Path'])
+
     # Just merging on fixity, so the paths may not be exactly aligned in the case of duplicates.
     # After merging, column Source has left_only if it is only in df_data and right_only if it is only in df_manifest.
     # If it has both, that means the MD5 matched, and it will not be included in the log.
@@ -118,5 +124,5 @@ if __name__ == '__main__':
     bag_path = sys.argv[1]
     make_data_md5_csv(bag_path)
     manifest_df = make_manifest_df(bag_path)
-    differences_df = compare_df(data_df, manifest_df)
+    differences_df = compare_df(bag_path, manifest_df)
     save_report(differences_df, bag_path)
