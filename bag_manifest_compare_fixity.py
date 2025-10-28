@@ -60,22 +60,34 @@ def make_data_md5_csv(bag):
     Parameter: bag (string) - path to bag
     Returns: None
     """
-    # Make file paths start with data and have forward slashes to match the manifest.
-    # If the file path is too long, fixity cannot be calculated (FileNotFoundError).
+    # Determine if this is a restart based on if data_md5.csv is already present,
+    # and if so, make a list of file paths already in the CSV.
     data_csv = os.path.join(os.path.dirname(bag), 'data_md5.csv')
+    restart = os.path.exists(data_csv)
+    path_list=[]
+    if restart:
+        df_data = pd.read_csv(data_csv, names=['Data_MD5', 'Data_Path'])
+        path_list = df_data['Data_Path'].tolist()
+
+    # Get the MD5 and path for every file in the data folder, updating the path to match the bag manifest formatting.
+    # During a restart, this is only done for files that are not already in data_md5.csv.
     for root, dirs, files in os.walk(os.path.join(bag, 'data')):
         for file in files:
+            # Make file paths start with data and have forward slashes to match the bag manifest.
             filepath = os.path.join(root, file)
             root_from_data = re.search(rf"{'data'}.*", root).group()
             root_from_data = root_from_data.replace('\\', '/')
             filepath_from_data = f'{root_from_data}/{file}'
-            try:
-                with open(filepath, 'rb') as open_file:
-                    data = open_file.read()
-                    md5_generated = hashlib.md5(data).hexdigest()
-                save_md5(data_csv, [md5_generated, filepath_from_data])
-            except FileNotFoundError:
-                save_md5(data_csv, ['FileNotFoundError-cannot-calculate-md5', filepath_from_data])
+            # Only get the MD5 if it is not a restart OR if it is a restart and the file isn't in the csv yet.
+            if restart == False or filepath_from_data not in path_list:
+                try:
+                    with open(filepath, 'rb') as open_file:
+                        data = open_file.read()
+                        md5_generated = hashlib.md5(data).hexdigest()
+                    save_md5(data_csv, [md5_generated, filepath_from_data])
+                # If the file path is too long, fixity cannot be calculated (FileNotFoundError).
+                except FileNotFoundError:
+                    save_md5(data_csv, ['FileNotFoundError-cannot-calculate-md5', filepath_from_data])
 
 
 def make_manifest_df(bag):
