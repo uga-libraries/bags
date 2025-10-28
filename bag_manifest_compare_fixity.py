@@ -12,6 +12,7 @@ Parameters:
 Returns:
     bag_manifest_compare_fixity_report.csv (saved to the parent folder of the bag_path)
 """
+import csv
 import hashlib
 import os
 import pandas as pd
@@ -49,12 +50,14 @@ def compare_df(df_data, df_manifest):
 
 def make_data_df(bag):
     """Get the md5 and path for every file in the bag's data folder and save to a dataframe
+    Also save to a CSV to allow the script to restart, if needed
     Parameter: bag (string) - path to bag
     Returns: df_data (DataFrame) - columns Data_MD5, Data_Path
     """
     # File paths in the dataframe start with data and have forward slashes to match the manifest.
     # If the file path is too long, fixity cannot be calculated (FileNotFoundError).
     data_folder_list = []
+    data_csv = os.path.join(os.path.dirname(bag), 'data_md5.csv')
     for root, dirs, files in os.walk(os.path.join(bag, 'data')):
         for file in files:
             filepath = os.path.join(root, file)
@@ -66,8 +69,10 @@ def make_data_df(bag):
                     data = open_file.read()
                     md5_generated = hashlib.md5(data).hexdigest()
                 data_folder_list.append([md5_generated, filepath_from_data])
+                save_md5(data_csv, [md5_generated, filepath_from_data])
             except FileNotFoundError:
                 data_folder_list.append(['FileNotFoundError-cannot-calculate-md5', filepath_from_data])
+                save_md5(data_csv, ['FileNotFoundError-cannot-calculate-md5', filepath_from_data])
     df_data = pd.DataFrame(data_folder_list, columns=['Data_MD5', 'Data_Path'])
     return df_data
 
@@ -84,6 +89,17 @@ def make_manifest_df(bag):
     df_manifest = pd.read_csv(manifest_path, sep='  data', engine='python', names=['Manifest_MD5', 'Manifest_Path'])
     df_manifest['Manifest_Path'] = 'data' + df_manifest['Manifest_Path']
     return df_manifest
+
+
+def save_md5(csv_path, row):
+    """Save a row to a csv with the md5 of a file in the data folder to allow the script to restart
+    Parameters:
+        csv_path (string) - path to csv, in parent folder of the bag
+        row (list) - md5 and filepath for a single file
+    """
+    with open(csv_path, 'a', newline='') as file:
+        writer = csv.writer(file)
+        writer.writerow(row)
 
 
 def save_report(df_diff, bag):
