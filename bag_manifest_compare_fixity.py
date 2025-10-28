@@ -48,15 +48,14 @@ def compare_df(df_data, df_manifest):
     return df_diff
 
 
-def make_data_df(bag):
-    """Get the md5 and path for every file in the bag's data folder and save to a dataframe
-    Also save to a CSV to allow the script to restart, if needed
+def make_data_md5_csv(bag):
+    """Get the md5 and path for every file in the bag's data folder and save to a CSV
+    To allow restarting, if the CSV exists, it only calculates the MD5 for files not in the CSV yet
     Parameter: bag (string) - path to bag
-    Returns: df_data (DataFrame) - columns Data_MD5, Data_Path
+    Returns: None
     """
-    # File paths in the dataframe start with data and have forward slashes to match the manifest.
+    # Make file paths start with data and have forward slashes to match the manifest.
     # If the file path is too long, fixity cannot be calculated (FileNotFoundError).
-    data_folder_list = []
     data_csv = os.path.join(os.path.dirname(bag), 'data_md5.csv')
     for root, dirs, files in os.walk(os.path.join(bag, 'data')):
         for file in files:
@@ -68,13 +67,9 @@ def make_data_df(bag):
                 with open(filepath, 'rb') as open_file:
                     data = open_file.read()
                     md5_generated = hashlib.md5(data).hexdigest()
-                data_folder_list.append([md5_generated, filepath_from_data])
                 save_md5(data_csv, [md5_generated, filepath_from_data])
             except FileNotFoundError:
-                data_folder_list.append(['FileNotFoundError-cannot-calculate-md5', filepath_from_data])
                 save_md5(data_csv, ['FileNotFoundError-cannot-calculate-md5', filepath_from_data])
-    df_data = pd.DataFrame(data_folder_list, columns=['Data_MD5', 'Data_Path'])
-    return df_data
 
 
 def make_manifest_df(bag):
@@ -121,7 +116,7 @@ def save_report(df_diff, bag):
 if __name__ == '__main__':
 
     bag_path = sys.argv[1]
-    data_df = make_data_df(bag_path)
+    make_data_md5_csv(bag_path)
     manifest_df = make_manifest_df(bag_path)
     differences_df = compare_df(data_df, manifest_df)
     save_report(differences_df, bag_path)
