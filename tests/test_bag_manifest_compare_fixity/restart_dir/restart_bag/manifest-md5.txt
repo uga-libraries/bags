@@ -1,0 +1,5 @@
+a31ad967b49226c29700a71e20e91ad6  data/File_1.txt
+89c60670864545fbc6b508503ef67ccb  data/File_1a.txt
+1864a668ff2218ba2b23c576347b9386  data/Folder/File_2.txt
+3d6407ca6b6c62b25f5e090918d8549e  data/Folder/File_2a.txt
+bb93fde70b35637aa1489695d38917ae  data/Folder/File_2b.txt
