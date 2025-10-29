@@ -2,6 +2,7 @@
 Tests for the script bag_manifest_compare_fixity.py, which makes a report of fixity differences.
 """
 import os
+import shutil
 import subprocess
 import unittest
 from test_bag_manifest_compare_files import csv_to_list
@@ -11,9 +12,16 @@ class MyTestCase(unittest.TestCase):
 
     def tearDown(self):
         """Deletes the manifest compare report and data_md5.csv, if it was made"""
+        # For most tests, the files are in the same location, with the same name.
         filenames = ['bag_manifest_compare_fixity_report.csv', 'data_md5.csv']
         for filename in filenames:
             file_path = os.path.join(os.getcwd(), 'test_bag_manifest_compare_fixity', filename)
+            if os.path.exists(file_path):
+                os.remove(file_path)
+
+        # For the restart test, the files have the same names but are in a different location.
+        for filename in filenames:
+            file_path = os.path.join(os.getcwd(), 'test_bag_manifest_compare_fixity', 'restart_dir', filename)
             if os.path.exists(file_path):
                 os.remove(file_path)
 
@@ -90,6 +98,33 @@ class MyTestCase(unittest.TestCase):
                     ['dbed2c145ec5a3ef5877753abefdabf6', 'data/File_2.txt'],
                     ['7f52bb6641d0d471856d704f670356e9', 'data/File_3.txt']]
         self.assertEqual(expected, result, "Problem with test for edited, data md5")
+
+    def test_restart(self):
+        """Test for a bag that already has data_md5.csv started"""
+
+        # Makes variables needed and runs the script.
+        script_path = os.path.join('..', 'bag_manifest_compare_fixity.py')
+        bag_path = os.path.join(os.getcwd(), 'test_bag_manifest_compare_fixity', 'restart_dir', 'restart_bag')
+        shutil.copy(os.path.join(os.getcwd(), 'test_bag_manifest_compare_fixity', 'restart_dir', 'data_md5_copy.csv'),
+                    os.path.join(os.getcwd(), 'test_bag_manifest_compare_fixity', 'restart_dir', 'data_md5.csv'))
+        subprocess.run(f'python {script_path} {bag_path}')
+
+        # Tests the manifest compare report has the correct information.
+        report_path = os.path.join(os.getcwd(), 'test_bag_manifest_compare_fixity', 'restart_dir',
+                                   'bag_manifest_compare_fixity_report.csv')
+        result = csv_to_list(report_path)
+        expected = [['MD5', 'Path', 'Source']]
+        self.assertEqual(expected, result, "Problem with test for restart, compare report")
+
+        # Tests the data_md5.csv has the correction information.
+        report_path = os.path.join(os.getcwd(), 'test_bag_manifest_compare_fixity', 'restart_dir', 'data_md5.csv')
+        result = csv_to_list(report_path)
+        expected = [['a31ad967b49226c29700a71e20e91ad6', 'data/File_1.txt'],
+                    ['1864a668ff2218ba2b23c576347b9386', 'data/Folder/File_2.txt'],
+                    ['89c60670864545fbc6b508503ef67ccb', 'data/File_1a.txt'],
+                    ['3d6407ca6b6c62b25f5e090918d8549e', 'data/Folder/File_2a.txt'],
+                    ['bb93fde70b35637aa1489695d38917ae', 'data/Folder/File_2b.txt']]
+        self.assertEqual(expected, result, "Problem with test for restart, data md5")
 
 
 if __name__ == '__main__':
