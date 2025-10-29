@@ -67,7 +67,11 @@ and makes a report of any differences, either because the fixity changed or the 
 It was developed for investigating further when a bag validation error message is that the size changed
 but the number of files has not.
 
-It is slower than bag_manifest_compare_files.py, which is used when the file count is different.
+It is slower than bag_manifest_compare_files.py, which is used when the file count is different
+and preview mode of delete_new_temp.py shows the difference is not temp files.
+
+Because this script can run for a long time to calculate the MD5 of larger accessions, the script can be restarted.
+Run the script again with the same parameter, and it will continue creating data_md5.csv where it left off.
 
 ### delete_new_temp.py
 
