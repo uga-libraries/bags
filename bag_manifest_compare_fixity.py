@@ -25,15 +25,15 @@ import re
 import sys
 
 
-def compare_df(bag, df_manifest):
+def compare_df(df_manifest, output):
     """Make a df with all files that do not match fixity between the data folder and bag manifest
     Parameters:
-         bag (string) - path to bag, for getting the location of data_md5.csv
          df_manifest (Pandas dataframe) - dataframe with MD5 and file paths from bag manifest
+         output (string) - path to the folder with the data_md5.csv (the parent folder of the bag)
     Returns: df_diff (DataFrame) - columns MD5, Path, Source
     """
     # Reads the CSV with MD5s for files in the data folder into a dataframe.
-    data_csv = os.path.join(os.path.dirname(bag), 'data_md5.csv')
+    data_csv = os.path.join(output, 'data_md5.csv')
     df_data = pd.read_csv(data_csv, names=['Data_MD5', 'Data_Path'])
 
     # Just merging on fixity, so the paths may not be exactly aligned in the case of duplicates.
@@ -58,15 +58,17 @@ def compare_df(bag, df_manifest):
     return df_diff
 
 
-def make_data_md5_csv(bag):
+def make_data_md5_csv(bag, output):
     """Get the MD5 and path for every file in the bag's data folder and save to a CSV in the parent folder of the bag
     To allow restarting, if the CSV exists, it only calculates the MD5 for files not in the CSV yet.
-    Parameter: bag (string) - path to bag
+    Parameter:
+        bag (string) - path to bag
+        output (string) - path for where to save data_md5.csv (the parent folder of the bag)
     Returns: None
     """
     # Determine if this is a restart based on if data_md5.csv is already present,
     # and if so, make a list of file paths already in the CSV.
-    data_csv = os.path.join(os.path.dirname(bag), 'data_md5.csv')
+    data_csv = os.path.join(output, 'data_md5.csv')
     restart = os.path.exists(data_csv)
     path_list = []
     if restart:
@@ -121,16 +123,14 @@ def save_md5(csv_path, row):
         writer.writerow(row)
 
 
-def save_report(df_diff, bag):
+def save_report(df_diff, output):
     """Save the rows for each file that didn't match between the data folder and bag manifest to a CSV
     Parameters:
         df_diff (DataFrame) - Columns MD5, Path, Source
-        bag (string) - path to bag, to get location for saving the report
+        output (string) - path for where to save the report (the parent folder of the bag)
     Returns: None
     """
-    # Report is saved in the parent folder of the bag.
-    bag_dir = pathlib.Path(bag)
-    report_path = os.path.join(bag_dir.parent, 'bag_manifest_compare_fixity_report.csv')
+    report_path = os.path.join(output, 'bag_manifest_compare_fixity_report.csv')
 
     # Dataframe is sorted by path to group files with changed fixity.
     df_diff.sort_values(by='Path', inplace=True)
@@ -140,7 +140,9 @@ def save_report(df_diff, bag):
 if __name__ == '__main__':
 
     bag_path = sys.argv[1]
-    make_data_md5_csv(bag_path)
+    output_path = os.path.dirname(bag_path)
+
+    make_data_md5_csv(bag_path, output_path)
     manifest_df = make_manifest_df(bag_path)
-    differences_df = compare_df(bag_path, manifest_df)
-    save_report(differences_df, bag_path)
+    differences_df = compare_df(manifest_df, output_path)
+    save_report(differences_df, output_path)
