@@ -29,12 +29,13 @@ def validate_bag(bag_path):
 
 if __name__ == '__main__':
 
-    # Get bag_directory from script argument.
     bag_dir = sys.argv[1]
-
-    # For each folder in bag_dir, makes a bag, renames, and validates the bag.
     for folder in os.listdir(bag_dir):
         folder_path = os.path.join(bag_dir, folder)
+
+        # Make bag and rename it to add "_bag" according to standard naming conventions.
         bagit.make_bag(folder_path, checksums=['md5'])
         os.replace(folder_path, f'{folder_path}_bag')
+
+        # Validate the bag.
         error = validate_bag(f'{folder_path}_bag')
