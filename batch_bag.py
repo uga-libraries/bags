@@ -49,13 +49,14 @@ if __name__ == '__main__':
     for folder in os.listdir(bag_dir):
         folder_path = os.path.join(bag_dir, folder)
 
-        # Skip the log file or folders that are big enough that the subfolders will be bags instead.
-        # They are still added to the log for double checking they should be been skipped
-        if folder_path.endswith('bag_validation_log.csv') or folder_path.endswith('_bags'):
+        # Skip files or folders that are big enough that the subfolders will be bags instead.
+        # They are still added to the log for checking that they should be been skipped
+        if os.path.isfile(folder_path) or folder_path.endswith('_bags'):
             make_log(folder_path, "Skipped")
             continue
 
         # Make bag and rename it to add "_bag" according to standard naming conventions.
+        # Since these are for the backlog and not for preservation, we only use the MD5 checksum.
         bagit.make_bag(folder_path, checksums=['md5'])
         os.replace(folder_path, f'{folder_path}_bag')
 
