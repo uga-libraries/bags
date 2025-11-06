@@ -22,6 +22,9 @@ bag_manifest_compare_files.py
 bag_manifest_compare_fixity.py
 * bag_path (required): path to the bag (folder that ends in "_bag")
 
+batch_bag.py
+* bag_directory (required): path to the directory that contains the folders to bag.
+
 delete_thumbs_db.py
 * bag_path (required): path to the bag (folder that ends in "_bag")
  
@@ -72,6 +75,14 @@ and preview mode of delete_new_temp.py shows the difference is not temp files.
 
 Because this script can run for a long time to calculate the MD5 of larger accessions, the script can be restarted.
 Run the script again with the same parameter, and it will continue creating data_md5.csv where it left off.
+
+### batch_bag.py
+
+This script makes a bag with MD5 fixity from each folder in the bag_directory, validates it, and logs the results.
+This script is primarily used in the accessioning workflow when an accession is too big for a single bag.
+
+Loose files should be put into folders prior to running the script.
+The script will skip any files and any folder that ends with _bags, where it is the subfolders that will be bagged.
 
 ### delete_new_temp.py
 
