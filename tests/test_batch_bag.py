@@ -2,6 +2,7 @@ import os
 import shutil
 import subprocess
 import unittest
+from test_bag_manifest_compare_files import csv_to_list
 
 
 def make_directory_list(path):
@@ -36,6 +37,13 @@ class MyTestCase(unittest.TestCase):
         result = make_directory_list(bag_dir)
         expected = ['aip1_bag', 'aip2_bag', 'data', 'data', 'aip2_subfolder']
         self.assertEqual(expected, result, "Problem with test for bag_all, directory")
+
+        # Test for the log contents.
+        result = csv_to_list(os.path.join(bag_dir, 'bag_validation_log.csv'))
+        expected = [['Bag', 'Valid?', 'Notes'],
+                    ['aip1_bag', 'True', 'Valid'],
+                    ['aip2_bag', 'True', 'Valid']]
+        self.assertEqual(expected, result, "Problem with test for bag_all, log")
 
 
 if __name__ == '__main__':
