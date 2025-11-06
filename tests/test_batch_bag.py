@@ -60,7 +60,7 @@ class MyTestCase(unittest.TestCase):
         # Test for the directory contents.
         result = make_directory_list(bag_dir)
         expected = ['folder1_bag', 'folder2_bags', 'folder3_bag', 'data', 'folder2a', 'folder2b', 'data']
-        self.assertEqual(expected, result, "Problem with test for bag_all, directory")
+        self.assertEqual(expected, result, "Problem with test for skip_bags, directory")
 
         # Test for the log contents.
         result = csv_to_list(os.path.join(bag_dir, 'bag_validation_log.csv'))
@@ -69,7 +69,33 @@ class MyTestCase(unittest.TestCase):
                     ['folder1_bag', 'True', 'Valid'],
                     ['folder2_bags', 'False', 'Skipped'],
                     ['folder3_bag', 'True', 'Valid']]
-        self.assertEqual(expected, result, "Problem with test for bag_all, log")
+        self.assertEqual(expected, result, "Problem with test for skip_bags, log")
+
+    def test_skip_files(self):
+        """Test for when the bag_dir includes loose files (not bagged)"""
+        # Make a copy of the test data (script edits files).
+        shutil.copytree(os.path.join(os.getcwd(), 'test_batch_bag', 'skip_files'),
+                        os.path.join(os.getcwd(), 'test_batch_bag', 'bag_dir'))
+
+        # Make variables and run the script.
+        script_path = os.path.join('..', 'batch_bag.py')
+        bag_dir = os.path.join(os.getcwd(), 'test_batch_bag', 'bag_dir')
+        subprocess.run(f'python {script_path} {bag_dir}', shell=True)
+
+        # Test for the directory contents.
+        # This is just testing for folders, so it won't list the loose files.
+        result = make_directory_list(bag_dir)
+        expected = ['aip1_bag', 'data']
+        self.assertEqual(expected, result, "Problem with test for skip_files, directory")
+
+        # Test for the log contents.
+        result = csv_to_list(os.path.join(bag_dir, 'bag_validation_log.csv'))
+        expected = [['Bag', 'Valid?', 'Notes'],
+                    ['a test file.txt', 'False', 'Skipped'],
+                    ['aip1_bag', 'True', 'Valid'],
+                    ['bag_validation_log.csv', 'False', 'Skipped'],
+                    ['Test_File.txt', 'False', 'Skipped']]
+        self.assertEqual(expected, result, "Problem with test for skip_files, log")
 
 
 if __name__ == '__main__':
