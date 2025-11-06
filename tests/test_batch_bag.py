@@ -5,7 +5,7 @@ import unittest
 from test_bag_manifest_compare_files import csv_to_list
 
 
-def make_directory_list(path):
+def make_folder_list(path):
     """Makes a list of all the folders in the bag_dir"""
     dir_list = []
     for root, dirs, files in os.walk(path):
@@ -34,7 +34,7 @@ class MyTestCase(unittest.TestCase):
         subprocess.run(f'python {script_path} {bag_dir}', shell=True)
 
         # Test for the directory contents.
-        result = make_directory_list(bag_dir)
+        result = make_folder_list(bag_dir)
         expected = ['aip1_bag', 'aip2_bag', 'data', 'data', 'aip2_subfolder']
         self.assertEqual(expected, result, "Problem with test for bag_all, directory")
 
@@ -58,7 +58,7 @@ class MyTestCase(unittest.TestCase):
         subprocess.run(f'python {script_path} {bag_dir}', shell=True)
 
         # Test for the directory contents.
-        result = make_directory_list(bag_dir)
+        result = make_folder_list(bag_dir)
         expected = ['folder1_bag', 'folder2_bags', 'folder3_bag', 'data', 'folder2a', 'folder2b', 'data']
         self.assertEqual(expected, result, "Problem with test for skip_bags, directory")
 
@@ -84,7 +84,7 @@ class MyTestCase(unittest.TestCase):
 
         # Test for the directory contents.
         # This is just testing for folders, so it won't list the loose files.
-        result = make_directory_list(bag_dir)
+        result = make_folder_list(bag_dir)
         expected = ['aip1_bag', 'data']
         self.assertEqual(expected, result, "Problem with test for skip_files, directory")
 
