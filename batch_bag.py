@@ -10,12 +10,27 @@ Returns:
     Log
 """
 import bagit
+import csv
 import os
 import sys
 
 
+def make_log(bag_path, note, header=False):
+    """Make or add to a log with validation results for each bag"""
+    if header:
+        log_path = os.path.join(bag_path, 'bag_validation_log.csv')
+        with open(log_path, 'w', newline='') as log:
+            log_writer = csv.writer(log)
+            log_writer.writerow(['Bag', 'Valid?', 'Notes'])
+    else:
+        log_path = os.path.join(os.path.dirname(bag_path), 'bag_validation_log.csv')
+        with open(log_path, 'a', newline='') as log:
+            log_writer = csv.writer(log)
+            log_writer.writerow([os.path.basename(bag_path), note == 'Valid', note])
+
+
 def validate_bag(bag_path):
-    """Validates a bag and returns the result
+    """Validate a bag and returns the result
     Parameter: bag (string) - path to bag
     Returns: None
     """
@@ -30,12 +45,18 @@ def validate_bag(bag_path):
 if __name__ == '__main__':
 
     bag_dir = sys.argv[1]
+    make_log(bag_dir, None, header=True)
     for folder in os.listdir(bag_dir):
         folder_path = os.path.join(bag_dir, folder)
+
+        # Skip the log file.
+        if folder_path.endswith('bag_validation_log.csv'):
+            continue
 
         # Make bag and rename it to add "_bag" according to standard naming conventions.
         bagit.make_bag(folder_path, checksums=['md5'])
         os.replace(folder_path, f'{folder_path}_bag')
 
         # Validate the bag.
-        error = validate_bag(f'{folder_path}_bag')
+        bagit_output = validate_bag(f'{folder_path}_bag')
+        make_log(f'{folder_path}_bag', bagit_output)
