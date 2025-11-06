@@ -26,7 +26,7 @@ for root, directory, folder in os.walk(bags):
 
         # Save the validation results to a variable.
         # Print a summary of the results to the terminal.
-        validation = subprocess.run(f'bagit.py --validate "{root}"', stderr=subprocess.PIPE, shell=True)
+        validation = subprocess.run(f'python -m bagit --validate "{root}"', stderr=subprocess.PIPE, shell=True)
 
         if 'is invalid' in str(validation.stderr):
             print("\nBag invalid: ", root)
