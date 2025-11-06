@@ -24,20 +24,19 @@ The tests for undo_one_bag.py are incomplete: see [Issue 1](https://github.com/u
 
 ### bag_manifest_compare_files.py
 
-This script compares the file paths in the bag manifest to the files in the bag data folder
-and makes a report of any path only in one location.
+Purpose: compare the file paths in the bag manifest to the files in the bag data folder and make a report of any path only in one location.
 
 Argument: bag_path (required): path to the bag (folder that ends in "_bag")
 
-It was developed for investigating further when a bag validation error message is that the number of files changed
-but does not indicate which files were added or deleted since the bag was made.
+It was developed for investigating further when a bag validation error message is that the number of files changed,
+since bagit not indicate which files were added or deleted since the bag was made.
 
 It is faster than bag_manifest_compare_fixity.py, which is used when the file count is the same and size is different.
 
 ### bag_manifest_compare_fixity.py
 
-This script compares the MD5s in the bag manifest to the MD5s of files in the bag data folder
-and makes a report of any differences, either because the fixity changed or the file is only in one location.
+Purpose: compare the MD5s in the bag manifest to the MD5s of files in the bag data folder and make a report of the differences, 
+either because the fixity changed or the file is only in one location.
 
 Argument: bag_path (required): path to the bag (folder that ends in "_bag")
 
@@ -52,20 +51,17 @@ Run the script again with the same parameter, and it will continue creating data
 
 ### batch_bag.py
 
-This script makes a bag with MD5 fixity from each folder in the bag_directory, validates it, and logs the results.
-This script is primarily used in the accessioning workflow when an accession is too big for a single bag.
+Purpose: make a bag with MD5 fixity from each folder in the bag_directory, validate it, and log the results.
 
 Argument: bag_directory (required): path to the directory that contains the folders to bag.
 
+This script is primarily used in the accessioning workflow when an accession is too big for a single bag.
 Loose files should be put into folders prior to running the script.
 The script will skip any files and any folder that ends with _bags, where it is the subfolders that will be bagged.
 
 ### delete_new_temp.py
 
-This script finds temporary files that are not in the manifest, deletes them, and validates the bag.
-It does not delete temporary files that are in the manifest or non-temporary file that are not in the manifest.
-It does not try to validate if some files are missing from the manifest and not deleted, 
-but instead prints those files to review if they should be considered temporary or if the bag needs to be updated.
+Purpose: find temporary files that are not in the manifest, delete them (if delete mode), and validate the bag.
 
 Arguments:
 * bag_path (required): path to the bag (folder that ends in "_bag")
@@ -78,6 +74,10 @@ It was developed for fixing errors when checking bags that have been in storage 
 We've found that some temporary files, especially .DS_Store and Thumbs.db, are generated on the Digital Production Hub
 even if the folder hasn't been opened recently.
 
+It does not delete temporary files that are in the manifest or non-temporary file that are not in the manifest.
+It does not try to validate if some files are missing from the manifest and not deleted, 
+but instead prints those files to review if they should be considered temporary or if the bag needs to be updated.
+
 The temp files are removed, so we can check if the rest of the files are valid.
 Otherwise, bag validation stops when the file count doesn't match and does not check the MD5.
 
@@ -88,8 +88,7 @@ Updated bag for accession 20##.##.ER to remove temp files generated after baggin
 
 ### delete_thumbs_db.py
 
-This script deletes Thumbs.db anywhere in the bag, regardless of if there were in the manifest or not,
-updates the bag, and validates the bag.
+Purpose: delete Thumbs.db anywhere in the bag, update the bag, and validate the bag.
 
 Argument: bag_path (required): path to the bag (folder that ends in "_bag")
 
@@ -98,11 +97,12 @@ Thumbs.db are the only reason the bag is not validating, because it updates the 
 
 ### undo_all_bags.py
 
-These scripts are used to removed files from all bags in a specified directory or a specified bag.
-They are most commonly used when files are bagged for storage and later need to be worked on.
-After validating the bag(s), the content is removed from the bags for further processing.
+Purpose: remove files from each bag in bag_directory.
 
 Argument: bag_directory (required): path to directory that contains the bags. Bag folder names should end with "_bag".
+
+It is most commonly used when files are bagged for storage and later need to be worked on.
+After validating the bag(s), the content is removed from the bags for further processing.
 
 For each bag:
 1. Deletes the bag manifests.
@@ -112,11 +112,12 @@ For each bag:
 
 ### undo_one_bag.py
 
-This script is used to removed files from a specified bag.
-It is most commonly used when files are bagged for storage and later need to be worked on.
-After validating the bag, the content is removed from the bags for further processing.
+Purpose: remove files from the bag.
 
 Argument: bag (required): path to the bag (folder that ends in "_bag")
+
+It is most commonly used when files are bagged for storage and later need to be worked on.
+After validating the bag, the content is removed from the bags for further processing.
 
 For each bag:
 1. Deletes the bag manifests.
@@ -124,22 +125,23 @@ For each bag:
 3. Deletes the data folder.
 4. Renames the parent directory to remove "_bag".
 
-### update_bags.py
+### update_bag.py
 
-This script updates the manifest in a bag to match what is currently in the data folder
-and validates the bag, printing the result.
+Purpose: Update the manifest in a bag to match what is currently in the data folder and validates the bag.
 
 Argument: bag_path (required): path to the bag.
 
 It was developed for use in born-digital accessioning and processing,
 for when additional appraisal is done after the content is bagged and before it can be made into AIPs.
+The validation result is printed to the terminal.
 
 ### validate_bags.py
 
-This script validates all bags in a specified directory and prints the results to the terminal.
-Use this instead of bagit.py's validation because bagit.py prints a lot of extra text during validation.
+Purpose: validate every bag in bag_directory.
 
 Argument bag_directory (required): path to the directory that contains the bag. Bag folder names should end with "_bag". 
+
+Use this instead of bagit.py's validation because bagit.py prints a lot of extra text during validation.
 
 For each file in the directory:
 1. Confirms it is a bag, based on naming convention of ending with "_bag".
