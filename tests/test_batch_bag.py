@@ -42,7 +42,33 @@ class MyTestCase(unittest.TestCase):
         result = csv_to_list(os.path.join(bag_dir, 'bag_validation_log.csv'))
         expected = [['Bag', 'Valid?', 'Notes'],
                     ['aip1_bag', 'True', 'Valid'],
-                    ['aip2_bag', 'True', 'Valid']]
+                    ['aip2_bag', 'True', 'Valid'],
+                    ['bag_validation_log.csv', 'False', 'Skipped']]
+        self.assertEqual(expected, result, "Problem with test for bag_all, log")
+
+    def test_skip_bags(self):
+        """Test for when not all folders should be bagged"""
+        # Make a copy of the test data (script edits files).
+        shutil.copytree(os.path.join(os.getcwd(), 'test_batch_bag', 'skip_bags'),
+                        os.path.join(os.getcwd(), 'test_batch_bag', 'bag_dir'))
+
+        # Make variables and run the script.
+        script_path = os.path.join('..', 'batch_bag.py')
+        bag_dir = os.path.join(os.getcwd(), 'test_batch_bag', 'bag_dir')
+        subprocess.run(f'python {script_path} {bag_dir}', shell=True)
+
+        # Test for the directory contents.
+        result = make_directory_list(bag_dir)
+        expected = ['folder1_bag', 'folder2_bags', 'folder3_bag', 'data', 'folder2a', 'folder2b', 'data']
+        self.assertEqual(expected, result, "Problem with test for bag_all, directory")
+
+        # Test for the log contents.
+        result = csv_to_list(os.path.join(bag_dir, 'bag_validation_log.csv'))
+        expected = [['Bag', 'Valid?', 'Notes'],
+                    ['bag_validation_log.csv', 'False', 'Skipped'],
+                    ['folder1_bag', 'True', 'Valid'],
+                    ['folder2_bags', 'False', 'Skipped'],
+                    ['folder3_bag', 'True', 'Valid']]
         self.assertEqual(expected, result, "Problem with test for bag_all, log")
 
 
