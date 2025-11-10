@@ -5,7 +5,7 @@ Because it can run for a long time to calculate the MD5 of larger accessions, th
 Run the script again with the same parameter, and it will continue creating data_md5.csv where it left off.
 
 Use this script after a bag validation error that indicates the size has changed.
-Use bag_manifest_compare_files.py instead when the error is a different number of files, which is faster.
+Use compare_files.py instead when the error is a different number of files, which is faster.
 
 This script is modeled after the function validate_bag_manifest() in validate_fixity.py in the hub-monitoring repo.
 
@@ -13,7 +13,7 @@ Parameters:
     bag_path (required): path to the bag folder
 
 Returns:
-    bag_manifest_compare_fixity_report.csv (saved to the parent folder of the bag_path)
+    compare_fixity_report.csv (saved to the parent folder of the bag_path)
     data_md5.csv (saved to the parent folder of the bag_path)
 """
 import csv
@@ -130,7 +130,7 @@ def save_report(df_diff, output):
         output (string) - path for where to save the report (the parent folder of the bag)
     Returns: None
     """
-    report_path = os.path.join(output, 'bag_manifest_compare_fixity_report.csv')
+    report_path = os.path.join(output, 'compare_fixity_report.csv')
 
     # Dataframe is sorted by path to group files with changed fixity.
     # If the dataframe is empty, a general message is saved to the report instead.

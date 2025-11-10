@@ -1,5 +1,5 @@
 """
-Tests for the script bag_manifest_compare_files.py, which makes a report of files only in the manifest or data folder.
+Tests for the script compare_files.py, which makes a report of files only in the manifest or data folder.
 """
 import os
 import subprocess
@@ -11,7 +11,7 @@ class MyTestCase(unittest.TestCase):
 
     def tearDown(self):
         """Deletes the manifest compare report, if it was made"""
-        report_path = os.path.join(os.getcwd(), 'test_bag_manifest_compare_files', 'bag_manifest_compare_files_report.csv')
+        report_path = os.path.join(os.getcwd(), 'test_compare_files', 'compare_files_report.csv')
         if os.path.exists(report_path):
             os.remove(report_path)
 
@@ -19,12 +19,12 @@ class MyTestCase(unittest.TestCase):
         """Test for when files were added since the bag was made"""
 
         # Makes variables needed and runs the script.
-        script_path = os.path.join('..', 'bag_manifest_compare_files.py')
-        bag_path = os.path.join(os.getcwd(), 'test_bag_manifest_compare_files', 'add_bag')
+        script_path = os.path.join('..', 'compare_files.py')
+        bag_path = os.path.join(os.getcwd(), 'test_compare_files', 'add_bag')
         subprocess.run(f'python {script_path} {bag_path}')
 
         # Tests the manifest compare report has the correct information.
-        report_path = os.path.join(os.getcwd(), 'test_bag_manifest_compare_files', 'bag_manifest_compare_files_report.csv')
+        report_path = os.path.join(os.getcwd(), 'test_compare_files', 'compare_files_report.csv')
         result = csv_to_list(report_path)
         expected = [['Path', 'Source'],
                     ['data/0.txt', 'Data Folder'],
@@ -36,12 +36,12 @@ class MyTestCase(unittest.TestCase):
         """Test for when files were added and other files deleted since the bag was made"""
 
         # Makes variables needed and runs the script.
-        script_path = os.path.join('..', 'bag_manifest_compare_files.py')
-        bag_path = os.path.join(os.getcwd(), 'test_bag_manifest_compare_files', 'both_bag')
+        script_path = os.path.join('..', 'compare_files.py')
+        bag_path = os.path.join(os.getcwd(), 'test_compare_files', 'both_bag')
         subprocess.run(f'python {script_path} {bag_path}')
 
         # Tests the manifest compare report has the correct information.
-        report_path = os.path.join(os.getcwd(), 'test_bag_manifest_compare_files', 'bag_manifest_compare_files_report.csv')
+        report_path = os.path.join(os.getcwd(), 'test_compare_files', 'compare_files_report.csv')
         result = csv_to_list(report_path)
         expected = [['Path', 'Source'],
                     ['data/0.txt', 'Data Folder'],
@@ -55,12 +55,12 @@ class MyTestCase(unittest.TestCase):
         """Test for when files were deleted since the bag was made"""
 
         # Makes variables needed and runs the script.
-        script_path = os.path.join('..', 'bag_manifest_compare_files.py')
-        bag_path = os.path.join(os.getcwd(), 'test_bag_manifest_compare_files', 'delete_bag')
+        script_path = os.path.join('..', 'compare_files.py')
+        bag_path = os.path.join(os.getcwd(), 'test_compare_files', 'delete_bag')
         subprocess.run(f'python {script_path} {bag_path}')
 
         # Tests the manifest compare report has the correct information.
-        report_path = os.path.join(os.getcwd(), 'test_bag_manifest_compare_files', 'bag_manifest_compare_files_report.csv')
+        report_path = os.path.join(os.getcwd(), 'test_compare_files', 'compare_files_report.csv')
         result = csv_to_list(report_path)
         expected = [['Path', 'Source'],
                     ['data/1.txt', 'Manifest'],
@@ -73,12 +73,12 @@ class MyTestCase(unittest.TestCase):
         """Test for when the files in the bag manifest and data folder match"""
 
         # Makes variables needed and runs the script.
-        script_path = os.path.join('..', 'bag_manifest_compare_files.py')
-        bag_path = os.path.join(os.getcwd(), 'test_bag_manifest_compare_files', 'match_bag')
+        script_path = os.path.join('..', 'compare_files.py')
+        bag_path = os.path.join(os.getcwd(), 'test_compare_files', 'match_bag')
         subprocess.run(f'python {script_path} {bag_path}')
 
         # Tests the manifest compare report has the correct information.
-        report_path = os.path.join(os.getcwd(), 'test_bag_manifest_compare_files', 'bag_manifest_compare_files_report.csv')
+        report_path = os.path.join(os.getcwd(), 'test_compare_files', 'compare_files_report.csv')
         result = csv_to_list(report_path)
         expected = [['No differences between the files in the manifest and the data folder. '
                      'Check fixity to see if the bag is valid.']]
