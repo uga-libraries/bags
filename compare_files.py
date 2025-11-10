@@ -1,13 +1,13 @@
 """Compares the files in a bag manifest to the files in the data folder and creates a report of files in only one spot.
 
 Use this script after a bag validation error that indicates a different number of expected files.
-Use bag_manifest_compare_fixity.py instead when the validation error is the same number of files but a different size.
+Use compare_fixity.py instead when the validation error is the same number of files but a different size.
 
 Parameters:
     bag_path (required): path to the bag folder
 
 Returns:
-    bag_manifest_compare_files_report.csv (saved to the parent folder of the bag_path)
+    compare_files_report.csv (saved to the parent folder of the bag_path)
 """
 import os
 import pandas as pd
@@ -72,7 +72,7 @@ def save_report(df_diff, bag):
     Returns: None
     """
     bag_dir = pathlib.Path(bag)
-    report_path = os.path.join(bag_dir.parent, 'bag_manifest_compare_files_report.csv')
+    report_path = os.path.join(bag_dir.parent, 'compare_files_report.csv')
 
     # If the dataframe is empty, a general message is saved to the report instead.
     if len(df_diff.index) > 0:
