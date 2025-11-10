@@ -5,7 +5,7 @@ Because it can run for a long time to calculate the MD5 of larger accessions, th
 Run the script again with the same parameter, and it will continue creating data_md5.csv where it left off.
 
 Use this script after a bag validation error that indicates the size has changed.
-Use bag_manifest_compare_files.py instead when the error is a different number of files, which is faster.
+Use compare_files.py instead when the error is a different number of files, which is faster.
 
 This script is modeled after the function validate_bag_manifest() in validate_fixity.py in the hub-monitoring repo.
 

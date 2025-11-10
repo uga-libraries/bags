@@ -1,5 +1,5 @@
 """
-Tests for the script bag_manifest_compare_files.py, which makes a report of files only in the manifest or data folder.
+Tests for the script compare_files.py, which makes a report of files only in the manifest or data folder.
 """
 import os
 import subprocess
@@ -19,7 +19,7 @@ class MyTestCase(unittest.TestCase):
         """Test for when files were added since the bag was made"""
 
         # Makes variables needed and runs the script.
-        script_path = os.path.join('..', 'bag_manifest_compare_files.py')
+        script_path = os.path.join('..', 'compare_files.py')
         bag_path = os.path.join(os.getcwd(), 'test_bag_manifest_compare_files', 'add_bag')
         subprocess.run(f'python {script_path} {bag_path}')
 
@@ -36,7 +36,7 @@ class MyTestCase(unittest.TestCase):
         """Test for when files were added and other files deleted since the bag was made"""
 
         # Makes variables needed and runs the script.
-        script_path = os.path.join('..', 'bag_manifest_compare_files.py')
+        script_path = os.path.join('..', 'compare_files.py')
         bag_path = os.path.join(os.getcwd(), 'test_bag_manifest_compare_files', 'both_bag')
         subprocess.run(f'python {script_path} {bag_path}')
 
@@ -55,7 +55,7 @@ class MyTestCase(unittest.TestCase):
         """Test for when files were deleted since the bag was made"""
 
         # Makes variables needed and runs the script.
-        script_path = os.path.join('..', 'bag_manifest_compare_files.py')
+        script_path = os.path.join('..', 'compare_files.py')
         bag_path = os.path.join(os.getcwd(), 'test_bag_manifest_compare_files', 'delete_bag')
         subprocess.run(f'python {script_path} {bag_path}')
 
@@ -73,7 +73,7 @@ class MyTestCase(unittest.TestCase):
         """Test for when the files in the bag manifest and data folder match"""
 
         # Makes variables needed and runs the script.
-        script_path = os.path.join('..', 'bag_manifest_compare_files.py')
+        script_path = os.path.join('..', 'compare_files.py')
         bag_path = os.path.join(os.getcwd(), 'test_bag_manifest_compare_files', 'match_bag')
         subprocess.run(f'python {script_path} {bag_path}')
 
