@@ -113,18 +113,46 @@ class MyTestCase(unittest.TestCase):
         report_path = os.path.join(os.getcwd(), 'test_bag_manifest_compare_fixity', 'restart_dir',
                                    'bag_manifest_compare_fixity_report.csv')
         result = csv_to_list(report_path)
-        expected = [['MD5', 'Path', 'Source']]
+        expected = [['MD5', 'Path', 'Source'],
+                    ['0000x668xx2218xx2b23x576347x9386', 'data/Folder/File_2.txt', 'Data Folder'],
+                    ['1864a668ff2218ba2b23c576347b9386', 'data/Folder/File_2.txt', 'Manifest'],
+                    ['3d6407ca6b6c62b25f5e090918d8549e', 'data/Folder/File_2a.txt', 'Data Folder'],
+                    ['0x0407ca6b6c62b25f5e090918d8549e', 'data/Folder/File_2a.txt', 'Manifest']]
         self.assertEqual(expected, result, "Problem with test for restart, compare report")
 
         # Tests the data_md5.csv has the correction information.
         report_path = os.path.join(os.getcwd(), 'test_bag_manifest_compare_fixity', 'restart_dir', 'data_md5.csv')
         result = csv_to_list(report_path)
         expected = [['a31ad967b49226c29700a71e20e91ad6', 'data/File_1.txt'],
-                    ['1864a668ff2218ba2b23c576347b9386', 'data/Folder/File_2.txt'],
+                    ['0000x668xx2218xx2b23x576347x9386', 'data/Folder/File_2.txt'],
                     ['89c60670864545fbc6b508503ef67ccb', 'data/File_1a.txt'],
                     ['3d6407ca6b6c62b25f5e090918d8549e', 'data/Folder/File_2a.txt'],
                     ['bb93fde70b35637aa1489695d38917ae', 'data/Folder/File_2b.txt']]
         self.assertEqual(expected, result, "Problem with test for restart, data md5")
+
+    def test_valid(self):
+        """Test for a bag that is valid (no fixity differences)"""
+
+        # Makes variables needed and runs the script.
+        script_path = os.path.join('..', 'bag_manifest_compare_fixity.py')
+        bag_path = os.path.join(os.getcwd(), 'test_bag_manifest_compare_fixity', 'valid_bag')
+        subprocess.run(f'python {script_path} {bag_path}')
+
+        # Tests the manifest compare report has the correct information.
+        report_path = os.path.join(os.getcwd(), 'test_bag_manifest_compare_fixity', 'bag_manifest_compare_fixity_report.csv')
+        result = csv_to_list(report_path)
+        expected = [['The bag is valid. No differences between the manifest and the data folder contents.']]
+        self.assertEqual(expected, result, "Problem with test for valid, compare report")
+
+        # Tests the data_md5.csv has the correction information.
+        report_path = os.path.join(os.getcwd(), 'test_bag_manifest_compare_fixity', 'data_md5.csv')
+        result = csv_to_list(report_path)
+        expected = [['a31ad967b49226c29700a71e20e91ad6', 'data/File_1.txt'],
+                    ['89c60670864545fbc6b508503ef67ccb', 'data/File_1a.txt'],
+                    ['1864a668ff2218ba2b23c576347b9386', 'data/Folder/File_2.txt'],
+                    ['3d6407ca6b6c62b25f5e090918d8549e', 'data/Folder/File_2a.txt'],
+                    ['bb93fde70b35637aa1489695d38917ae', 'data/Folder/File_2b.txt']]
+        self.assertEqual(expected, result, "Problem with test for valid, data md5")
 
 
 if __name__ == '__main__':
