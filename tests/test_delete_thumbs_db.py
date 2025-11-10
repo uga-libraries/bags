@@ -22,7 +22,7 @@ class MyTestCase(unittest.TestCase):
         bag_path = os.path.join(os.getcwd(), 'test_delete_thumbs_db', 'manifest_bag')
         new_bag_path = os.path.join(os.getcwd(), 'test_delete_thumbs_db', 'test_manifest_bag')
         shutil.copytree(bag_path, new_bag_path)
-        printed = subprocess.run(f'python {script_path} {new_bag_path}', capture_output=True, text=True, shell=True)
+        printed = subprocess.run(f'python {script_path} {new_bag_path}', shell=True, capture_output=True, text=True)
 
         # Test for the directory contents.
         result = make_directory_list(new_bag_path)
@@ -35,8 +35,9 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual(expected, result, "Problem with test for manifest, directory")
 
         # Test for the printed information.
+        result = printed.stdout
         expected = '\nBag is valid\n'
-        self.assertEqual(expected, printed.stdout, "Problem with test for manifest, printed text")
+        self.assertEqual(expected, result, "Problem with test for manifest, printed text")
 
     def test_not_manifest(self):
         """Test for when 2 Thumbs.db files are in the bag but not the manifest"""
@@ -45,7 +46,7 @@ class MyTestCase(unittest.TestCase):
         bag_path = os.path.join(os.getcwd(), 'test_delete_thumbs_db', 'not_manifest_bag')
         new_bag_path = os.path.join(os.getcwd(), 'test_delete_thumbs_db', 'test_not_manifest_bag')
         shutil.copytree(bag_path, new_bag_path)
-        printed = subprocess.run(f'python {script_path} {new_bag_path}', capture_output=True, text=True, shell=True)
+        printed = subprocess.run(f'python {script_path} {new_bag_path}', shell=True, capture_output=True, text=True)
 
         # Test for the directory contents.
         result = make_directory_list(new_bag_path)
@@ -60,8 +61,9 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual(expected, result, "Problem with test for not_manifest, directory")
 
         # Test for the printed information.
+        result = printed.stdout
         expected = '\nBag is valid\n'
-        self.assertEqual(expected, printed.stdout, "Problem with test for not_manifest, printed text")
+        self.assertEqual(expected, result, "Problem with test for not_manifest, printed text")
 
 
 if __name__ == '__main__':

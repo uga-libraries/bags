@@ -21,11 +21,11 @@ class MyTestCase(unittest.TestCase):
 
         # Runs the script.
         script_path = os.path.join('..', 'update_bag.py')
-        output = subprocess.run(f"python {script_path} {os.path.join('test_update_bag', 'aip_bag')}",
-                                shell=True, capture_output=True, text=True)
+        printed = subprocess.run(f"python {script_path} {os.path.join('test_update_bag', 'aip_bag')}",
+                                 shell=True, capture_output=True, text=True)
 
         # Tests the bag was valid.
-        result = output.stdout
+        result = printed.stdout
         expected = 'Bag is valid\n'
         self.assertEqual(result, expected, "Problem with test for addition")
 
@@ -37,11 +37,11 @@ class MyTestCase(unittest.TestCase):
 
         # Runs the script.
         script_path = os.path.join('..', 'update_bag.py')
-        output = subprocess.run(f"python {script_path} {os.path.join('test_update_bag', 'aip_bag')}",
-                                shell=True, capture_output=True, text=True)
+        printed = subprocess.run(f"python {script_path} {os.path.join('test_update_bag', 'aip_bag')}",
+                                 shell=True, capture_output=True, text=True)
 
         # Tests the bag was valid.
-        result = output.stdout
+        result = printed.stdout
         expected = 'Bag is valid\n'
         self.assertEqual(result, expected, "Problem with test for deletion")
 
@@ -53,11 +53,11 @@ class MyTestCase(unittest.TestCase):
 
         # Runs the script.
         script_path = os.path.join('..', 'update_bag.py')
-        output = subprocess.run(f"python {script_path} {os.path.join('test_update_bag', 'aip_bag')}",
-                                shell=True, capture_output=True, text=True)
+        printed = subprocess.run(f"python {script_path} {os.path.join('test_update_bag', 'aip_bag')}",
+                                 shell=True, capture_output=True, text=True)
 
         # Tests the bag was valid.
-        result = output.stdout
+        result = printed.stdout
         expected = 'Bag is valid\n'
         self.assertEqual(result, expected, "Problem with test for edit")
 
