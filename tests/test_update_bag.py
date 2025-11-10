@@ -27,7 +27,7 @@ class MyTestCase(unittest.TestCase):
         # Tests the bag was valid.
         result = printed.stdout
         expected = 'Bag is valid\n'
-        self.assertEqual(result, expected, "Problem with test for addition")
+        self.assertEqual(expected, result, "Problem with test for addition")
 
     def test_deletion(self):
         """Test for when a file has been deleted since a bag was made"""
@@ -43,7 +43,7 @@ class MyTestCase(unittest.TestCase):
         # Tests the bag was valid.
         result = printed.stdout
         expected = 'Bag is valid\n'
-        self.assertEqual(result, expected, "Problem with test for deletion")
+        self.assertEqual(expected, result, "Problem with test for deletion")
 
     def test_edit(self):
         """Test for when a file has been edited since a bag was made"""
@@ -59,7 +59,7 @@ class MyTestCase(unittest.TestCase):
         # Tests the bag was valid.
         result = printed.stdout
         expected = 'Bag is valid\n'
-        self.assertEqual(result, expected, "Problem with test for edit")
+        self.assertEqual(expected, result, "Problem with test for edit")
 
 
 if __name__ == '__main__':
