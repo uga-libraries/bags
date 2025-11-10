@@ -7,6 +7,7 @@ import os
 import shutil
 import subprocess
 import unittest
+from test_functions import make_directory_list
 
 
 class MyTestCase(unittest.TestCase):
@@ -27,13 +28,10 @@ class MyTestCase(unittest.TestCase):
         subprocess.run(f'python {script_path} {bag_path}', shell=True)
 
         # Tests that the contents of the folder are correct.
-        folder_contents = []
-        for root, dirs, files in os.walk('test_copy'):
-            for file in files:
-                folder_contents.append(os.path.join(root, file))
-        folder_contents_expected = [os.path.join('test_copy', 'File_One.txt'),
-                                    os.path.join('test_copy', 'File_Two.txt')]
-        self.assertEqual(folder_contents, folder_contents_expected, "Problem with test for no rename")
+        result = make_directory_list(bag_path)
+        expected = [os.path.join(bag_path, 'File_One.txt'),
+                    os.path.join(bag_path, 'File_Two.txt')]
+        self.assertEqual(expected, result, "Problem with test for no rename")
 
 
 if __name__ == '__main__':

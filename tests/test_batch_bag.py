@@ -2,16 +2,7 @@ import os
 import shutil
 import subprocess
 import unittest
-from test_functions import csv_to_list
-
-
-def make_folder_list(path):
-    """Makes a list of all the folders in the bag_dir"""
-    dir_list = []
-    for root, dirs, files in os.walk(path):
-        for dir_name in dirs:
-            dir_list.append(dir_name)
-    return dir_list
+from test_functions import csv_to_list, make_directory_list
 
 
 class MyTestCase(unittest.TestCase):
@@ -34,8 +25,24 @@ class MyTestCase(unittest.TestCase):
         subprocess.run(f'python {script_path} {bag_dir}', shell=True)
 
         # Test for the directory contents.
-        result = make_folder_list(bag_dir)
-        expected = ['aip1_bag', 'aip2_bag', 'data', 'data', 'aip2_subfolder']
+        result = make_directory_list(bag_dir)
+        expected = [os.path.join(bag_dir, 'aip1_bag'),
+                    os.path.join(bag_dir, 'aip1_bag', 'bag-info.txt'),
+                    os.path.join(bag_dir, 'aip1_bag', 'bagit.txt'),
+                    os.path.join(bag_dir, 'aip1_bag', 'data'),
+                    os.path.join(bag_dir, 'aip1_bag', 'data', 'Test_File.txt'),
+                    os.path.join(bag_dir, 'aip1_bag', 'manifest-md5.txt'),
+                    os.path.join(bag_dir, 'aip1_bag', 'tagmanifest-md5.txt'),
+                    os.path.join(bag_dir, 'aip2_bag'),
+                    os.path.join(bag_dir, 'aip2_bag', 'bag-info.txt'),
+                    os.path.join(bag_dir, 'aip2_bag', 'bagit.txt'),
+                    os.path.join(bag_dir, 'aip2_bag', 'data'),
+                    os.path.join(bag_dir, 'aip2_bag', 'data', 'Test_File.txt'),
+                    os.path.join(bag_dir, 'aip2_bag', 'data', 'aip2_subfolder'),
+                    os.path.join(bag_dir, 'aip2_bag', 'data', 'aip2_subfolder', 'Test_File.txt'),
+                    os.path.join(bag_dir, 'aip2_bag', 'manifest-md5.txt'),
+                    os.path.join(bag_dir, 'aip2_bag', 'tagmanifest-md5.txt'),
+                    os.path.join(bag_dir, 'bag_validation_log.csv')]
         self.assertEqual(expected, result, "Problem with test for bag_all, directory")
 
         # Test for the log contents.
@@ -58,8 +65,27 @@ class MyTestCase(unittest.TestCase):
         subprocess.run(f'python {script_path} {bag_dir}', shell=True)
 
         # Test for the directory contents.
-        result = make_folder_list(bag_dir)
-        expected = ['folder1_bag', 'folder2_bags', 'folder3_bag', 'data', 'folder2a', 'folder2b', 'data']
+        result = make_directory_list(bag_dir)
+        expected = [os.path.join(bag_dir, 'bag_validation_log.csv'),
+                    os.path.join(bag_dir, 'folder1_bag'),
+                    os.path.join(bag_dir, 'folder1_bag', 'bag-info.txt'),
+                    os.path.join(bag_dir, 'folder1_bag', 'bagit.txt'),
+                    os.path.join(bag_dir, 'folder1_bag', 'data'),
+                    os.path.join(bag_dir, 'folder1_bag', 'data', 'Test_File.txt'),
+                    os.path.join(bag_dir, 'folder1_bag', 'manifest-md5.txt'),
+                    os.path.join(bag_dir, 'folder1_bag', 'tagmanifest-md5.txt'),
+                    os.path.join(bag_dir, 'folder2_bags'),
+                    os.path.join(bag_dir, 'folder2_bags', 'folder2a'),
+                    os.path.join(bag_dir, 'folder2_bags', 'folder2a', 'Test_File.txt'),
+                    os.path.join(bag_dir, 'folder2_bags', 'folder2b'),
+                    os.path.join(bag_dir, 'folder2_bags', 'folder2b', 'Test_File.txt'),
+                    os.path.join(bag_dir, 'folder3_bag'),
+                    os.path.join(bag_dir, 'folder3_bag', 'bag-info.txt'),
+                    os.path.join(bag_dir, 'folder3_bag', 'bagit.txt'),
+                    os.path.join(bag_dir, 'folder3_bag', 'data'),
+                    os.path.join(bag_dir, 'folder3_bag', 'data', 'Test_File.txt'),
+                    os.path.join(bag_dir, 'folder3_bag', 'manifest-md5.txt'),
+                    os.path.join(bag_dir, 'folder3_bag', 'tagmanifest-md5.txt')]
         self.assertEqual(expected, result, "Problem with test for skip_bags, directory")
 
         # Test for the log contents.
@@ -84,8 +110,17 @@ class MyTestCase(unittest.TestCase):
 
         # Test for the directory contents.
         # This is just testing for folders, so it won't list the loose files.
-        result = make_folder_list(bag_dir)
-        expected = ['aip1_bag', 'data']
+        result = make_directory_list(bag_dir)
+        expected = [os.path.join(bag_dir, 'Test_File.txt'),
+                    os.path.join(bag_dir, 'a test file.txt'),
+                    os.path.join(bag_dir, 'aip1_bag'),
+                    os.path.join(bag_dir, 'aip1_bag', 'bag-info.txt'),
+                    os.path.join(bag_dir, 'aip1_bag', 'bagit.txt'),
+                    os.path.join(bag_dir, 'aip1_bag', 'data'),
+                    os.path.join(bag_dir, 'aip1_bag', 'data', 'Test_File.txt'),
+                    os.path.join(bag_dir, 'aip1_bag', 'manifest-md5.txt'),
+                    os.path.join(bag_dir, 'aip1_bag', 'tagmanifest-md5.txt'),
+                    os.path.join(bag_dir, 'bag_validation_log.csv')]
         self.assertEqual(expected, result, "Problem with test for skip_files, directory")
 
         # Test for the log contents.

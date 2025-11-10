@@ -1,18 +1,8 @@
 import os
-import re
 import shutil
 import subprocess
 import unittest
-
-
-def make_directory_list(path):
-    """Makes a list of the full paths of all files remaining in the bag data folder after deletion"""
-    dir_list = []
-    for root, dirs, files in os.walk(os.path.join(path, 'data')):
-        for file in files:
-            root_from_data = re.search(rf"{'data'}.*", root).group()
-            dir_list.append(os.path.join(root_from_data, file))
-    return dir_list
+from test_functions import make_directory_list
 
 
 class MyTestCase(unittest.TestCase):
@@ -37,7 +27,16 @@ class MyTestCase(unittest.TestCase):
 
         # Test for the directory contents.
         result = make_directory_list(new_bag_path)
-        expected = ['data\\Document.txt', 'data\\Extra.txt', 'data\\Folder\\Document.txt', 'data\\Folder\\Extra2.txt']
+        expected = [os.path.join(new_bag_path, 'bag-info.txt'),
+                    os.path.join(new_bag_path, 'bagit.txt'),
+                    os.path.join(new_bag_path, 'data'),
+                    os.path.join(new_bag_path, 'data', 'Document.txt'),
+                    os.path.join(new_bag_path, 'data', 'Extra.txt'),
+                    os.path.join(new_bag_path, 'data', 'Folder'),
+                    os.path.join(new_bag_path, 'data', 'Folder', 'Document.txt'),
+                    os.path.join(new_bag_path, 'data', 'Folder', 'Extra2.txt'),
+                    os.path.join(new_bag_path, 'manifest-md5.txt'),
+                    os.path.join(new_bag_path, 'tagmanifest-md5.txt')]
         self.assertEqual(expected, result, "Problem with test for extra_not_temp, directory")
 
         # Test for the printed information.
@@ -58,7 +57,16 @@ class MyTestCase(unittest.TestCase):
 
         # Test for the directory contents.
         result = make_directory_list(new_bag_path)
-        expected = ['data\\Document.txt', 'data\\Extra.txt', 'data\\Folder\\Document.txt', 'data\\Folder\\Extra2.txt']
+        expected = [os.path.join(new_bag_path, 'bag-info.txt'),
+                    os.path.join(new_bag_path, 'bagit.txt'),
+                    os.path.join(new_bag_path, 'data'),
+                    os.path.join(new_bag_path, 'data', 'Document.txt'),
+                    os.path.join(new_bag_path, 'data', 'Extra.txt'),
+                    os.path.join(new_bag_path, 'data', 'Folder'),
+                    os.path.join(new_bag_path, 'data', 'Folder', 'Document.txt'),
+                    os.path.join(new_bag_path, 'data', 'Folder', 'Extra2.txt'),
+                    os.path.join(new_bag_path, 'manifest-md5.txt'),
+                    os.path.join(new_bag_path, 'tagmanifest-md5.txt')]
         self.assertEqual(expected, result, "Problem with test for extra_not_temp_preview, directory")
 
         # Test for the printed information.
@@ -82,7 +90,14 @@ class MyTestCase(unittest.TestCase):
 
         # Test for the directory contents.
         result = make_directory_list(new_bag_path)
-        expected = ['data\\Document.txt', 'data\\Folder\\Document.txt']
+        expected = [os.path.join(new_bag_path, 'bag-info.txt'),
+                    os.path.join(new_bag_path, 'bagit.txt'),
+                    os.path.join(new_bag_path, 'data'),
+                    os.path.join(new_bag_path, 'data', 'Document.txt'),
+                    os.path.join(new_bag_path, 'data', 'Folder'),
+                    os.path.join(new_bag_path, 'data', 'Folder', 'Document.txt'),
+                    os.path.join(new_bag_path, 'manifest-md5.txt'),
+                    os.path.join(new_bag_path, 'tagmanifest-md5.txt')]
         self.assertEqual(expected, result, "Problem with test for extra_temp, directory")
 
         # Test for the printed information.
@@ -105,8 +120,17 @@ class MyTestCase(unittest.TestCase):
 
         # Test for the directory contents.
         result = make_directory_list(new_bag_path)
-        expected = ['data\\.Document.txt', 'data\\Document.tmp', 'data\\Document.txt',
-                    'data\\Folder\\Document.txt', 'data\\Folder\\Thumbs.db']
+        expected = [os.path.join(new_bag_path, 'bag-info.txt'),
+                    os.path.join(new_bag_path, 'bagit.txt'),
+                    os.path.join(new_bag_path, 'data'),
+                    os.path.join(new_bag_path, 'data', '.Document.txt'),
+                    os.path.join(new_bag_path, 'data', 'Document.tmp'),
+                    os.path.join(new_bag_path, 'data', 'Document.txt'),
+                    os.path.join(new_bag_path, 'data', 'Folder'),
+                    os.path.join(new_bag_path, 'data', 'Folder', 'Document.txt'),
+                    os.path.join(new_bag_path, 'data', 'Folder', 'Thumbs.db'),
+                    os.path.join(new_bag_path, 'manifest-md5.txt'),
+                    os.path.join(new_bag_path, 'tagmanifest-md5.txt')]
         self.assertEqual(expected, result, "Problem with test for extra_temp_preview, directory")
 
         # Test for the printed information.
@@ -132,7 +156,14 @@ class MyTestCase(unittest.TestCase):
 
         # Test for the directory contents.
         result = make_directory_list(new_bag_path)
-        expected = ['data\\Document.txt', 'data\\Folder  Title\\New  Document.txt']
+        expected = [os.path.join(new_bag_path, 'bag-info.txt'),
+                    os.path.join(new_bag_path, 'bagit.txt'),
+                    os.path.join(new_bag_path, 'data'),
+                    os.path.join(new_bag_path, 'data', 'Document.txt'),
+                    os.path.join(new_bag_path, 'data', 'Folder  Title'),
+                    os.path.join(new_bag_path, 'data', 'Folder  Title', 'New  Document.txt'),
+                    os.path.join(new_bag_path, 'manifest-md5.txt'),
+                    os.path.join(new_bag_path, 'tagmanifest-md5.txt')]
         self.assertEqual(expected, result, "Problem with test for extra_temp_with_spaces, directory")
 
         # Test for the printed information.
@@ -153,7 +184,14 @@ class MyTestCase(unittest.TestCase):
 
         # Test for the directory contents.
         result = make_directory_list(new_bag_path)
-        expected = ['data\\Document.txt', 'data\\Folder\\Document.txt']
+        expected = [os.path.join(new_bag_path, 'bag-info.txt'),
+                    os.path.join(new_bag_path, 'bagit.txt'),
+                    os.path.join(new_bag_path, 'data'),
+                    os.path.join(new_bag_path, 'data', 'Document.txt'),
+                    os.path.join(new_bag_path, 'data', 'Folder'),
+                    os.path.join(new_bag_path, 'data', 'Folder', 'Document.txt'),
+                    os.path.join(new_bag_path, 'manifest-md5.txt'),
+                    os.path.join(new_bag_path, 'tagmanifest-md5.txt')]
         self.assertEqual(expected, result, "Problem with test for not_valid, directory")
 
         # Test for the printed information.
@@ -176,8 +214,17 @@ class MyTestCase(unittest.TestCase):
 
         # Test for the directory contents.
         result = make_directory_list(new_bag_path)
-        expected = ['data\\.Document.txt', 'data\\Document.tmp', 'data\\Document.txt',
-                    'data\\Folder\\Document.txt', 'data\\Folder\Thumbs.db']
+        expected = [os.path.join(new_bag_path, 'bag-info.txt'),
+                    os.path.join(new_bag_path, 'bagit.txt'),
+                    os.path.join(new_bag_path, 'data'),
+                    os.path.join(new_bag_path, 'data', '.Document.txt'),
+                    os.path.join(new_bag_path, 'data', 'Document.tmp'),
+                    os.path.join(new_bag_path, 'data', 'Document.txt'),
+                    os.path.join(new_bag_path, 'data', 'Folder'),
+                    os.path.join(new_bag_path, 'data', 'Folder', 'Document.txt'),
+                    os.path.join(new_bag_path, 'data', 'Folder', 'Thumbs.db'),
+                    os.path.join(new_bag_path, 'manifest-md5.txt'),
+                    os.path.join(new_bag_path, 'tagmanifest-md5.txt')]
         self.assertEqual(expected, result, "Problem with test for temp_not_all_extra, directory")
 
         # Test for the printed information.

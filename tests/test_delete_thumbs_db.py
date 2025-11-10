@@ -2,7 +2,7 @@ import os
 import shutil
 import subprocess
 import unittest
-from test_delete_new_temp import make_directory_list
+from test_functions import make_directory_list
 
 
 class MyTestCase(unittest.TestCase):
@@ -26,7 +26,12 @@ class MyTestCase(unittest.TestCase):
 
         # Test for the directory contents.
         result = make_directory_list(new_bag_path)
-        expected = ['data\\Document.txt']
+        expected = [os.path.join(new_bag_path, 'bag-info.txt'),
+                    os.path.join(new_bag_path, 'bagit.txt'),
+                    os.path.join(new_bag_path, 'data'),
+                    os.path.join(new_bag_path, 'data', 'Document.txt'),
+                    os.path.join(new_bag_path, 'manifest-md5.txt'),
+                    os.path.join(new_bag_path, 'tagmanifest-md5.txt')]
         self.assertEqual(expected, result, "Problem with test for manifest, directory")
 
         # Test for the printed information.
@@ -44,7 +49,14 @@ class MyTestCase(unittest.TestCase):
 
         # Test for the directory contents.
         result = make_directory_list(new_bag_path)
-        expected = ['data\\Document.txt', 'data\\Folder\\Document.txt']
+        expected = [os.path.join(new_bag_path, 'bag-info.txt'),
+                    os.path.join(new_bag_path, 'bagit.txt'),
+                    os.path.join(new_bag_path, 'data'),
+                    os.path.join(new_bag_path, 'data', 'Document.txt'),
+                    os.path.join(new_bag_path, 'data', 'Folder'),
+                    os.path.join(new_bag_path, 'data', 'Folder', 'Document.txt'),
+                    os.path.join(new_bag_path, 'manifest-md5.txt'),
+                    os.path.join(new_bag_path, 'tagmanifest-md5.txt')]
         self.assertEqual(expected, result, "Problem with test for not_manifest, directory")
 
         # Test for the printed information.
