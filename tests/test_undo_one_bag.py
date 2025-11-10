@@ -14,17 +14,18 @@ class MyTestCase(unittest.TestCase):
 
     def tearDown(self):
         """Delete test files."""
-        shutil.rmtree('test_copy')
+        shutil.rmtree(os.path.join(os.getcwd(), 'test_undo_bags'))
 
     def test_no_rename(self):
         """Test for correct operation of the undo_one_bag.py script if no renaming is needed."""
 
         # Makes a copy of the test files in the repo, since the test alters the files.
-        shutil.copytree(os.path.join('test_undo_bags', 'aip_2_bag'), 'test_copy')
+        shutil.copytree(os.path.join(os.getcwd(), 'test_undo_bags_copy'),
+                        os.path.join(os.getcwd(), 'test_undo_bags'))
 
         # Runs the script.
         script_path = os.path.join('..', 'undo_one_bag.py')
-        bag_path = os.path.join(os.getcwd(), 'test_copy')
+        bag_path = os.path.join(os.getcwd(), 'test_undo_bags', 'aip_2_bag')
         subprocess.run(f'python {script_path} {bag_path}', shell=True)
 
         # Tests that the contents of the folder are correct.

@@ -10,17 +10,18 @@ class MyTestCase(unittest.TestCase):
 
     def tearDown(self):
         """Delete test files."""
-        shutil.rmtree('test_undo_copy')
+        shutil.rmtree(os.path.join(os.getcwd(), 'test_undo_bags'))
 
     def test_script(self):
         """Test for correct operation of the undo_all_bags.py script."""
 
         # Makes a copy of the test files in the repo, since the test alters the files.
-        shutil.copytree('test_undo_bags', 'test_undo_copy')
+        shutil.copytree(os.path.join(os.getcwd(), 'test_undo_bags_copy'),
+                        os.path.join(os.getcwd(), 'test_undo_bags'))
 
         # Runs the script.
         script_path = os.path.join('..', 'undo_all_bags.py')
-        bag_dir = os.path.join(os.getcwd(), 'test_undo_copy')
+        bag_dir = os.path.join(os.getcwd(), 'test_undo_bags')
         subprocess.run(f'python {script_path} {bag_dir}', shell=True)
 
         # Tests that the contents of the folders are correct.
