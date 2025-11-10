@@ -108,11 +108,10 @@ The validation result is printed to the terminal.
 
 ### validate_bags.py
 
-Purpose: validate every bag in bag_directory.
+Purpose: validate every bag in bag_directory and log the result.
 
 Argument bag_directory (required): path to the directory that contains the bag. Bag folder names should end with "_bag". 
 
-The results are printed to the terminal.
 Use this script instead of bagit.py because bagit.py prints a lot of extra text during validation.
 
 ## Author

@@ -2,66 +2,75 @@
 import os
 import subprocess
 import unittest
+from test_bag_manifest_compare_files import csv_to_list
 
 
 class MyTestCase(unittest.TestCase):
+
+    def tearDown(self):
+        """Delete the bag validation report, if made"""
+        tests = ['all_invalid', 'all_valid', 'mix', 'one']
+        for test in tests:
+            report_path = os.path.join(os.getcwd(), 'test_validate_bags', test, 'bag_validation_log.csv')
+            if os.path.exists(report_path):
+                os.remove(report_path)
 
     def test_all_invalid(self):
         """Test for when there are multiple bags in the directory, all invalid."""
         # Runs the script.
         script_path = os.path.join('..', 'validate_bags.py')
-        bag_directory = os.path.join('test_validate_bags', 'all_invalid')
-        script_output = subprocess.run(f'python {script_path} {bag_directory}', stdout=subprocess.PIPE, shell=True)
+        bag_dir = os.path.join('test_validate_bags', 'all_invalid')
+        subprocess.run(f'python {script_path} {bag_dir}', shell=True)
 
-        # Tests that the script output is correct.
-        # Tests if key information is in the string rather than the entire string
-        # because bagit.py output includes the exact time of the error, so it is different every time the test is run.
-        result = script_output.stdout.decode('utf-8')
-        expected = (f'\r\nBag invalid: {os.path.join(bag_directory, "aip_1_bag")} '
-                    f'Payload-Oxum validation failed. Expected 1 files and 19 bytes but found 1 files and 42 bytes\r\n'
-                    f'\r\nBag invalid: {os.path.join(bag_directory, "aip_2_bag")} '
-                    f'Payload-Oxum validation failed. Expected 2 files and 51 bytes but found 1 files and 26 bytes\r\n')
+        # Tests the log contents.
+        result = csv_to_list(os.path.join(bag_dir, 'bag_validation_log.csv'))
+        expected = [['Bag_Path', 'Valid?', 'Notes'],
+                    [os.path.join(bag_dir, 'aip_1_bag'), 'False',
+                     'Payload-Oxum validation failed. Expected 1 files and 19 bytes but found 1 files and 42 bytes'],
+                    [os.path.join(bag_dir, 'aip_2_bag'), 'False',
+                     'Payload-Oxum validation failed. Expected 2 files and 51 bytes but found 1 files and 26 bytes']]
         self.assertEqual(expected, result, "Problem with test for all invalid")
 
     def test_all_valid(self):
         """Test for when there are multiple bags in the directory, all valid."""
         # Runs the script.
         script_path = os.path.join('..', 'validate_bags.py')
-        bag_directory = os.path.join('test_validate_bags', 'all_valid')
-        script_output = subprocess.run(f'python {script_path} {bag_directory}', stdout=subprocess.PIPE, shell=True)
+        bag_dir = os.path.join('test_validate_bags', 'all_valid')
+        subprocess.run(f'python {script_path} {bag_dir}', shell=True)
 
-        # Tests that the script output is correct.
-        result = script_output.stdout.decode('utf-8')
-        expected = f'\r\nBag valid: {os.path.join(bag_directory, "aip_1_bag")}\r\n\r\n' \
-                   f'Bag valid: {bag_directory}\\aip_2_bag\r\n'
+        # Tests the log contents.
+        result = csv_to_list(os.path.join(bag_dir, 'bag_validation_log.csv'))
+        expected = [['Bag_Path', 'Valid?', 'Notes'],
+                    [os.path.join(bag_dir, 'aip_1_bag'), 'True', 'BLANK'],
+                    [os.path.join(bag_dir, 'aip_2_bag'), 'True', 'BLANK']]
         self.assertEqual(expected, result, "Problem with test for all valid")
 
     def test_mix(self):
         """Test for when there are multiple things in the directory: valid bag, invalid bag, and not a bag."""
         # Runs the script.
         script_path = os.path.join('..', 'validate_bags.py')
-        bag_directory = os.path.join('test_validate_bags', 'mix')
-        script_output = subprocess.run(f'python {script_path} {bag_directory}', stdout=subprocess.PIPE, shell=True)
+        bag_dir = os.path.join('test_validate_bags', 'mix')
+        subprocess.run(f'python {script_path} {bag_dir}', shell=True)
 
-        # Tests that the script output is correct.
-        # Tests if key information is in the string rather than the entire string
-        # because bagit.py output includes the exact time of the error, so it is different every time the test is run.
-        result = script_output.stdout.decode('utf-8')
-        expected = (f'\r\nBag valid: {os.path.join(bag_directory, "aip_1_bag")}\r\n'
-                    f'\r\nBag invalid: {os.path.join(bag_directory, "aip_2_bag")} '
-                    'Payload-Oxum validation failed. Expected 2 files and 51 bytes but found 1 files and 25 bytes\r\n')
+        # Tests the log contents.
+        result = csv_to_list(os.path.join(bag_dir, 'bag_validation_log.csv'))
+        expected = [['Bag_Path', 'Valid?', 'Notes'],
+                    [os.path.join(bag_dir, 'aip_1_bag'), 'True', 'BLANK'],
+                    [os.path.join(bag_dir, 'aip_2_bag'), 'False',
+                     'Payload-Oxum validation failed. Expected 2 files and 51 bytes but found 1 files and 25 bytes']]
         self.assertEqual(expected, result, "Problem with test for mix")
 
     def test_one(self):
         """Test for when there is only one bag in the directory, which is valid."""
         # Runs the script.
         script_path = os.path.join('..', 'validate_bags.py')
-        bag_directory = os.path.join('test_validate_bags', 'one')
-        script_output = subprocess.run(f'python {script_path} {bag_directory}', stdout=subprocess.PIPE, shell=True)
+        bag_dir = os.path.join('test_validate_bags', 'one')
+        subprocess.run(f'python {script_path} {bag_dir}', shell=True)
 
-        # Tests that the script output is correct.
-        result = script_output.stdout.decode('utf-8')
-        expected = f'\r\nBag valid: {os.path.join(bag_directory, "aip_1_bag")}\r\n'
+        # Tests the log contents.
+        result = csv_to_list(os.path.join(bag_dir, 'bag_validation_log.csv'))
+        expected = [['Bag_Path', 'Valid?', 'Notes'],
+                    [os.path.join(bag_dir, 'aip_1_bag'), 'True', 'BLANK']]
         self.assertEqual(expected, result, "Problem with test for one valid")
 
 

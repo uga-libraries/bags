@@ -10,6 +10,7 @@ import unittest
 def csv_to_list(csv_path):
     """Convert the contents of a CSV to a list which contains one line per row for easier comparison"""
     df = pd.read_csv(csv_path, dtype=str)
+    df = df.fillna('BLANK')
     csv_list = [df.columns.tolist()] + df.values.tolist()
     return csv_list
 
