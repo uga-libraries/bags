@@ -13,7 +13,7 @@ Parameters:
     bag_path (required): path to the bag folder
 
 Returns:
-    bag_manifest_compare_fixity_report.csv (saved to the parent folder of the bag_path)
+    compare_fixity_report.csv (saved to the parent folder of the bag_path)
     data_md5.csv (saved to the parent folder of the bag_path)
 """
 import csv
@@ -130,7 +130,7 @@ def save_report(df_diff, output):
         output (string) - path for where to save the report (the parent folder of the bag)
     Returns: None
     """
-    report_path = os.path.join(output, 'bag_manifest_compare_fixity_report.csv')
+    report_path = os.path.join(output, 'compare_fixity_report.csv')
 
     # Dataframe is sorted by path to group files with changed fixity.
     # If the dataframe is empty, a general message is saved to the report instead.
