@@ -133,8 +133,13 @@ def save_report(df_diff, output):
     report_path = os.path.join(output, 'bag_manifest_compare_fixity_report.csv')
 
     # Dataframe is sorted by path to group files with changed fixity.
-    df_diff.sort_values(by='Path', inplace=True)
-    df_diff.to_csv(report_path, index=False)
+    # If the dataframe is empty, a general message is saved to the report instead.
+    if len(df_diff.index) > 0:
+        df_diff.sort_values(by='Path', inplace=True)
+        df_diff.to_csv(report_path, index=False)
+    else:
+        with open(report_path, 'w') as report:
+            report.write('The bag is valid. No differences between the manifest and the data folder contents.')
 
 
 if __name__ == '__main__':
