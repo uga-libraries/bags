@@ -22,7 +22,17 @@ The tests for undo_one_bag.py are incomplete: see [Issue 1](https://github.com/u
 
 ## Scripts
 
-### bag_manifest_compare_files.py
+### batch_bag.py
+
+Purpose: make a bag with MD5 fixity from each folder in the bag_directory, validate it, and log the results.
+
+Argument: bag_directory (required): path to the directory that contains the folders to bag.
+
+This script is primarily used in the accessioning workflow when an accession is too big for a single bag.
+Loose files should be put into folders prior to running the script.
+The script will skip any files and any folder that ends with _bags, which indicates the subfolders will be bagged.
+
+### compare_files.py
 
 Purpose: compare the file paths in the bag manifest to the files in the bag data folder and make a report of any path only in one location.
 
@@ -31,7 +41,7 @@ Argument: bag_path (required): path to the bag (folder that ends in "_bag")
 This script was developed for investigating a bag validation error from the number of files changing,
 since bagit does not indicate which files were added or deleted since the bag was made.
 
-### bag_manifest_compare_fixity.py
+### compare_fixity.py
 
 Purpose: compare the MD5s in the bag manifest to the MD5s of files in the bag data folder and make a report of the differences, 
 either because the fixity changed or the file is only in one location.
@@ -43,16 +53,6 @@ since bagit does not indicate which files changed in size since the bag was made
 
 Because this script can run for a long time to calculate the MD5 of larger accessions, the script can be restarted.
 Run the script again with the same parameter, and it will continue creating data_md5.csv where it left off.
-
-### batch_bag.py
-
-Purpose: make a bag with MD5 fixity from each folder in the bag_directory, validate it, and log the results.
-
-Argument: bag_directory (required): path to the directory that contains the folders to bag.
-
-This script is primarily used in the accessioning workflow when an accession is too big for a single bag.
-Loose files should be put into folders prior to running the script.
-The script will skip any files and any folder that ends with _bags, which indicates the subfolders will be bagged.
 
 ### delete_new_temp.py
 
