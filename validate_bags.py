@@ -10,9 +10,8 @@ Returns:
     If the bag is valid, it will print the bag name and that it is valid.
     If the bag is invalid, it will print the bag name, that it is invalid, and the error message
 """
-
+import bagit
 import os
-import subprocess
 import sys
 
 # Indicate the directory that contains bags.
@@ -23,14 +22,9 @@ for root, directory, folder in os.walk(bags):
     # A directory is a bag if the name ends with _bag
     # Use root variable to have the full filepath.
     if root.endswith('_bag'):
-
-        # Save the validation results to a variable.
-        # Print a summary of the results to the terminal.
-        validation = subprocess.run(f'python -m bagit --validate "{root}"', stderr=subprocess.PIPE, shell=True)
-
-        if 'is invalid' in str(validation.stderr):
-            print("\nBag invalid: ", root)
-            print(validation.stderr.decode('utf-8'))
-
-        else:
-            print("\nBag valid: ", root)
+        bag = bagit.Bag(root)
+        try:
+            bag.validate()
+            print(f"\nBag valid: {root}")
+        except bagit.BagValidationError as errors:
+            print(f"\nBag invalid: {root} {errors}")
