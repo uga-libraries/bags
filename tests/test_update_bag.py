@@ -11,18 +11,19 @@ class MyTestCase(unittest.TestCase):
 
     def tearDown(self):
         """Deletes the copies made for testing"""
-        shutil.rmtree(os.path.join('test_update_bag', 'aip_bag'))
+        shutil.rmtree(os.path.join(os.getcwd(), 'test_update_bag', 'test_bag'))
 
     def test_addition(self):
         """Test for when a file has been added since a bag was made"""
 
         # Makes a copy of the test files in the repo, since the test alters the files.
-        shutil.copytree(os.path.join('test_update_bag', 'aip_addition_bag'), os.path.join('test_update_bag', 'aip_bag'))
+        shutil.copytree(os.path.join(os.getcwd(), 'test_update_bag', 'aip_addition_bag'),
+                        os.path.join(os.getcwd(), 'test_update_bag', 'test_bag'))
 
         # Runs the script.
         script_path = os.path.join('..', 'update_bag.py')
-        printed = subprocess.run(f"python {script_path} {os.path.join('test_update_bag', 'aip_bag')}",
-                                 shell=True, capture_output=True, text=True)
+        bag_path = os.path.join('test_update_bag', 'test_bag')
+        printed = subprocess.run(f"python {script_path} {bag_path}", shell=True, capture_output=True, text=True)
 
         # Tests the bag was valid.
         result = printed.stdout
@@ -33,12 +34,13 @@ class MyTestCase(unittest.TestCase):
         """Test for when a file has been deleted since a bag was made"""
 
         # Makes a copy of the test files in the repo, since the test alters the files.
-        shutil.copytree(os.path.join('test_update_bag', 'aip_deletion_bag'), os.path.join('test_update_bag', 'aip_bag'))
+        shutil.copytree(os.path.join(os.getcwd(), 'test_update_bag', 'aip_deletion_bag'),
+                        os.path.join(os.getcwd(), 'test_update_bag', 'test_bag'))
 
         # Runs the script.
         script_path = os.path.join('..', 'update_bag.py')
-        printed = subprocess.run(f"python {script_path} {os.path.join('test_update_bag', 'aip_bag')}",
-                                 shell=True, capture_output=True, text=True)
+        bag_path = os.path.join('test_update_bag', 'test_bag')
+        printed = subprocess.run(f"python {script_path} {bag_path}", shell=True, capture_output=True, text=True)
 
         # Tests the bag was valid.
         result = printed.stdout
@@ -49,12 +51,13 @@ class MyTestCase(unittest.TestCase):
         """Test for when a file has been edited since a bag was made"""
 
         # Makes a copy of the test files in the repo, since the test alters the files.
-        shutil.copytree(os.path.join('test_update_bag', 'aip_edit_bag'), os.path.join('test_update_bag', 'aip_bag'))
+        shutil.copytree(os.path.join(os.getcwd(), 'test_update_bag', 'aip_edit_bag'),
+                        os.path.join(os.getcwd(), 'test_update_bag', 'test_bag'))
 
         # Runs the script.
         script_path = os.path.join('..', 'update_bag.py')
-        printed = subprocess.run(f"python {script_path} {os.path.join('test_update_bag', 'aip_bag')}",
-                                 shell=True, capture_output=True, text=True)
+        bag_path = os.path.join('test_update_bag', 'test_bag')
+        printed = subprocess.run(f"python {script_path} {bag_path}", shell=True, capture_output=True, text=True)
 
         # Tests the bag was valid.
         result = printed.stdout
