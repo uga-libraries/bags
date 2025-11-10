@@ -69,11 +69,18 @@ def save_report(df_diff, bag):
     Parameters:
         df_diff (DataFrame) - Columns Path, Source
         bag (string) - path to bag, to get location for saving the report
-    Returns: None (saves a CSV in the parent folder of the bag)
+    Returns: None
     """
     bag_dir = pathlib.Path(bag)
     report_path = os.path.join(bag_dir.parent, 'bag_manifest_compare_files_report.csv')
-    df_diff.to_csv(report_path, index=False)
+
+    # If the dataframe is empty, a general message is saved to the report instead.
+    if len(df_diff.index) > 0:
+        df_diff.to_csv(report_path, index=False)
+    else:
+        with open(report_path, 'w') as report:
+            report.write('No differences between the files in the manifest and the data folder. '
+                         'Check fixity to see if the bag is valid.')
 
 
 if __name__ == '__main__':
