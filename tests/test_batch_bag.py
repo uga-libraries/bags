@@ -2,7 +2,7 @@ import os
 import shutil
 import subprocess
 import unittest
-from test_bag_manifest_compare_files import csv_to_list
+from test_functions import csv_to_list
 
 
 def make_folder_list(path):
