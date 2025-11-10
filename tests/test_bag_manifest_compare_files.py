@@ -2,17 +2,9 @@
 Tests for the script bag_manifest_compare_files.py, which makes a report of files only in the manifest or data folder.
 """
 import os
-import pandas as pd
 import subprocess
 import unittest
-
-
-def csv_to_list(csv_path):
-    """Convert the contents of a CSV to a list which contains one line per row for easier comparison"""
-    df = pd.read_csv(csv_path, dtype=str)
-    df = df.fillna('BLANK')
-    csv_list = [df.columns.tolist()] + df.values.tolist()
-    return csv_list
+from test_functions import csv_to_list
 
 
 class MyTestCase(unittest.TestCase):
