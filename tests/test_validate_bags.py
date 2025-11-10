@@ -17,9 +17,9 @@ class MyTestCase(unittest.TestCase):
         # Tests if key information is in the string rather than the entire string
         # because bagit.py output includes the exact time of the error, so it is different every time the test is run.
         output = script_output.stdout.decode('utf-8')
-        result = [f'Bag invalid:  {os.path.join(bag_directory, "aip_1_bag")}' in output,
-                  'Payload-Oxum validation failed. Expected 1 files and 19 bytes but found 1 files and 28 bytes' in output,
-                  f'Bag invalid:  {os.path.join(bag_directory, "aip_2_bag")}' in output,
+        result = [f'Bag invalid: {os.path.join(bag_directory, "aip_1_bag")}' in output,
+                  'Payload-Oxum validation failed. Expected 1 files and 19 bytes but found 1 files and 42 bytes' in output,
+                  f'Bag invalid: {os.path.join(bag_directory, "aip_2_bag")}' in output,
                   'Payload-Oxum validation failed. Expected 2 files and 51 bytes but found 1 files and 26 bytes' in output]
         expected = [True, True, True, True]
         self.assertEqual(result, expected, "Problem with test for all invalid")
@@ -32,8 +32,8 @@ class MyTestCase(unittest.TestCase):
         script_output = subprocess.run(f'python {script_path} {bag_directory}', stdout=subprocess.PIPE, shell=True)
 
         # Tests that the script output is correct.
-        expected_output = f'\r\nBag valid:  {os.path.join(bag_directory, "aip_1_bag")}\r\n\r\n' \
-                          f'Bag valid:  {bag_directory}\\aip_2_bag\r\n'
+        expected_output = f'\r\nBag valid: {os.path.join(bag_directory, "aip_1_bag")}\r\n\r\n' \
+                          f'Bag valid: {bag_directory}\\aip_2_bag\r\n'
         self.assertEqual(script_output.stdout.decode('utf-8'), expected_output, "Problem with test for all valid")
 
     def test_mix(self):
@@ -47,8 +47,8 @@ class MyTestCase(unittest.TestCase):
         # Tests if key information is in the string rather than the entire string
         # because bagit.py output includes the exact time of the error, so it is different every time the test is run.
         output = script_output.stdout.decode('utf-8')
-        result = [f'Bag valid:  {os.path.join(bag_directory, "aip_1_bag")}' in output,
-                  f'Bag invalid:  {os.path.join(bag_directory, "aip_2_bag")}' in output,
+        result = [f'Bag valid: {os.path.join(bag_directory, "aip_1_bag")}' in output,
+                  f'Bag invalid: {os.path.join(bag_directory, "aip_2_bag")}' in output,
                   'Payload-Oxum validation failed. Expected 2 files and 51 bytes but found 1 files and 25 bytes' in output]
         expected = [True, True, True]
         self.assertEqual(result, expected, "Problem with test for mix")
@@ -61,7 +61,7 @@ class MyTestCase(unittest.TestCase):
         script_output = subprocess.run(f'python {script_path} {bag_directory}', stdout=subprocess.PIPE, shell=True)
 
         # Tests that the script output is correct.
-        expected_output = f'\r\nBag valid:  {os.path.join(bag_directory, "aip_1_bag")}\r\n'
+        expected_output = f'\r\nBag valid: {os.path.join(bag_directory, "aip_1_bag")}\r\n'
         self.assertEqual(script_output.stdout.decode('utf-8'), expected_output, "Problem with test for all valid")
 
 
