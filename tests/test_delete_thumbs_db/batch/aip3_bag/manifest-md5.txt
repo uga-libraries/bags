@@ -1,0 +1,1 @@
+d98653c4abcca7e5156e92db5e5bde51  data/Document.txt
