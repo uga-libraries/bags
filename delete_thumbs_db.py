@@ -13,7 +13,6 @@ Returns:
 import bagit
 import os
 import sys
-from delete_new_temp import validate_bag
 
 
 def make_bag_list(path):
@@ -42,14 +41,25 @@ def update_bag(bag):
     bag_inst.save(manifests=True)
 
 
+def validate_bag(bag):
+    """Validate the bag and return the result for the log
+    Parameter: bag (string) - path to bag
+    Returns: is_valid (Boolean) and  error_msg (String or None)"""
+    bagit_bag = bagit.Bag(bag)
+    try:
+        bagit_bag.validate()
+        return True, None
+    except bagit.BagValidationError as error_msg:
+        return False, error_msg
+
+
 if __name__ == '__main__':
 
     # Get a list of bags to update from a text file (path is the script argument).
     bag_list = make_bag_list(sys.argv[1])
-    print("Bag List", bag_list)
 
-    # For each bag, delete all Thumbs.db from the bag's data folder, update the bag, and validate the bag.
+    # For each bag, delete all Thumbs.db from the bag's data folder, update and validate the bag, and log the result.
     for bag_path in bag_list:
         delete_thumbs(bag_path)
         update_bag(bag_path)
-        validate_bag(bag_path)
+        is_valid, errors = validate_bag(bag_path)
