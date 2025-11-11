@@ -2,16 +2,63 @@ import os
 import shutil
 import subprocess
 import unittest
-from test_functions import make_directory_list
+from test_functions import csv_to_list, make_directory_list
 
 
 class MyTestCase(unittest.TestCase):
 
     def tearDown(self):
-        """Delete copy of test data, if made"""
-        bag_path = os.path.join(os.getcwd(), 'test_delete_thumbs_db', 'test_bag')
-        if os.path.exists(bag_path):
-            shutil.rmtree(bag_path)
+        """Delete copy of test data and log, if made"""
+        test_dir = os.path.join(os.getcwd(), 'test_delete_thumbs_db', 'test_dir')
+        if os.path.exists(test_dir):
+            shutil.rmtree(test_dir)
+
+        log_path = os.path.join(os.getcwd(), 'test_delete_thumbs_db', 'bag_validation_log.csv')
+        if os.path.exists(log_path):
+            os.remove(log_path)
+
+    def test_batch(self):
+        """Test for removing Thumbs.db from multiple bags at the same time"""
+        # Make a copy of the test data (script edits files).
+        shutil.copytree(os.path.join(os.getcwd(), 'test_delete_thumbs_db', 'batch'),
+                        os.path.join(os.getcwd(), 'test_delete_thumbs_db', 'test_dir'))
+
+        # Make variables and run the script.
+        script_path = os.path.join('..', 'delete_thumbs_db.py')
+        bag_list = os.path.join(os.getcwd(), 'test_delete_thumbs_db', 'batch_list.txt')
+        subprocess.run(f'python {script_path} {bag_list}', shell=True)
+
+        # Test for the directory contents.
+        test_dir = os.path.join(os.getcwd(), 'test_delete_thumbs_db', 'test_dir')
+        result = make_directory_list(test_dir)
+        expected = [os.path.join(test_dir, 'aip1_bag'),
+                    os.path.join(test_dir, 'aip1_bag', 'bag-info.txt'),
+                    os.path.join(test_dir, 'aip1_bag', 'bagit.txt'),
+                    os.path.join(test_dir, 'aip1_bag', 'data'),
+                    os.path.join(test_dir, 'aip1_bag', 'data', 'Document.txt'),
+                    os.path.join(test_dir, 'aip1_bag', 'manifest-md5.txt'),
+                    os.path.join(test_dir, 'aip1_bag', 'tagmanifest-md5.txt'),
+                    os.path.join(test_dir, 'aip2_bag'),
+                    os.path.join(test_dir, 'aip2_bag', 'bag-info.txt'),
+                    os.path.join(test_dir, 'aip2_bag', 'bagit.txt'),
+                    os.path.join(test_dir, 'aip2_bag', 'data'),
+                    os.path.join(test_dir, 'aip2_bag', 'data', 'Document.txt'),
+                    os.path.join(test_dir, 'aip2_bag', 'data', 'Folder'),
+                    os.path.join(test_dir, 'aip2_bag', 'data', 'Folder', 'Document.txt'),
+                    os.path.join(test_dir, 'aip2_bag', 'manifest-md5.txt'),
+                    os.path.join(test_dir, 'aip2_bag', 'tagmanifest-md5.txt'),
+                    os.path.join(test_dir, 'aip3_bag'),
+                    os.path.join(test_dir, 'aip3_bag', 'bag-info.txt'),
+                    os.path.join(test_dir, 'aip3_bag', 'bagit.txt'),
+                    os.path.join(test_dir, 'aip3_bag', 'data'),
+                    os.path.join(test_dir, 'aip3_bag', 'data', 'Document.txt'),
+                    os.path.join(test_dir, 'aip3_bag', 'manifest-md5.txt'),
+                    os.path.join(test_dir, 'aip3_bag', 'tagmanifest-md5.txt')]
+        self.assertEqual(expected, result, "Problem with test for batch, directory")
+
+        # Test for the log contents.
+        result = csv_to_list(os.path.join(os.getcwd(), 'test_delete_thumbs.db', 'batch_validation_log.csv'))
+        expected = []
 
     def test_manifest(self):
         """Test for when 1 Thumbs.db file is in the bag manifest"""
