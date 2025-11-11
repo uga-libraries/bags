@@ -11,8 +11,21 @@ Returns:
     Prints the validation result
 """
 import bagit
+import csv
 import os
 import sys
+
+
+def log(log_path, row):
+    """Make or add to a log with validation results for each bag, saved to the same folder as the bag list
+    Parameters:
+        log_path (string) - path to the log file
+        row (list) - data to save as a single row in the log
+    Returns: None
+    """
+    with open(log_path, 'a', newline='') as log_file:
+        log_writer = csv.writer(log_file)
+        log_writer.writerow(row)
 
 
 def make_bag_list(path):
@@ -58,8 +71,13 @@ if __name__ == '__main__':
     # Get a list of bags to update from a text file (path is the script argument).
     bag_list = make_bag_list(sys.argv[1])
 
+    # Start bag validation log in the same folder as the bag list file.
+    log_file_path = os.path.join(os.path.dirname(sys.argv[1]), 'bag_validation_log.csv')
+    log(log_file_path, ['Bag_Path', 'Valid?', 'Notes'])
+
     # For each bag, delete all Thumbs.db from the bag's data folder, update and validate the bag, and log the result.
     for bag_path in bag_list:
         delete_thumbs(bag_path)
         update_bag(bag_path)
         is_valid, errors = validate_bag(bag_path)
+        log(log_file_path, [bag_path, is_valid, errors])
