@@ -16,6 +16,14 @@ import sys
 from delete_new_temp import validate_bag
 
 
+def make_bag_list(path):
+    """Get a list of bag paths from a text file"""
+    with open(path) as doc:
+        bag_path_list = doc.readlines()
+    bag_path_list = [item.rstrip('\n') for item in bag_path_list]
+    return bag_path_list
+
+
 def delete_thumbs(bag):
     """Delete any Thumbs.db files in the bag
     Parameter: bag (string) - path to bag
@@ -36,14 +44,12 @@ def update_bag(bag):
 
 if __name__ == '__main__':
 
-    # Get bag_path from script argument.
-    bag_path = sys.argv[1]
+    # Get a list of bags to update from a text file (path is the script argument).
+    bag_list = make_bag_list(sys.argv[1])
+    print("Bag List", bag_list)
 
-    # Delete any Thumbs.db in the bag's data folder.
-    delete_thumbs(bag_path)
-
-    # Update the bag.
-    update_bag(bag_path)
-
-    # Validate the bag and print the result.
-    validate_bag(bag_path)
+    # For each bag, delete all Thumbs.db from the bag's data folder, update the bag, and validate the bag.
+    for bag_path in bag_list:
+        delete_thumbs(bag_path)
+        update_bag(bag_path)
+        validate_bag(bag_path)
