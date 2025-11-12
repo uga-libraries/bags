@@ -1,0 +1,3 @@
+INSERT-PATH-TO-BAGS-REPO\tests\test_delete_thumbs_db\test_dir\aip1_bag
+INSERT-PATH-TO-BAGS-REPO\tests\test_delete_thumbs_db\test_dir\aip2_bag
+INSERT-PATH-TO-BAGS-REPO\tests\test_delete_thumbs_db\test_dir\aip3_bag

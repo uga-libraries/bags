@@ -1,0 +1,1 @@
+INSERT-PATH-TO-BAGS-REPO\tests\test_delete_thumbs_db\test_dir\ER001_bag
