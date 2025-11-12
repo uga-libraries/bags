@@ -81,7 +81,7 @@ if __name__ == '__main__':
     # For each bag, delete all Thumbs.db from the bag's data folder, update and validate the bag, and log the result.
     for bag_path in bag_list:
         if not os.path.exists(bag_path):
-            log(log_file_path, [bag_path, 'TBD', 'TBD', 'Bag path not valid'])
+            log(log_file_path, [bag_path, 'TBD', 'TBD', 'Bag path error'])
             continue
         thumb_count = delete_thumbs(bag_path)
         update_bag(bag_path)
