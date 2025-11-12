@@ -73,9 +73,9 @@ The script does not delete temporary files that are in the manifest or non-tempo
 
 ### delete_thumbs_db.py
 
-Purpose: delete Thumbs.db anywhere in the bag, update the bag, and validate the bag.
+Purpose: delete Thumbs.db anywhere in a group of bags, update the bags, and validate the bags.
 
-Argument: bag_path (required): path to the bag (folder that ends in "_bag")
+Argument: bag_list (required): path to a text file with the full path to all bags to be updated, one row per path
 
 This script should only be used after delete_new_temp.py or one of the bag manifest compare scripts shows that
 Thumbs.db are the only reason the bag is not validating, because it updates the bag.
