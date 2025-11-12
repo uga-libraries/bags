@@ -2,7 +2,11 @@
 
 This script is primarily used in the accessioning workflow when an accession is too big for a single bag.
 It will skip any folder that ends with "_bags", which is used if a folder needs to be further split into bags,
-and any files that are not  in folders, which should be foldered by the archivist prior to running the script.
+and any files that are not in folders, which should be foldered by the archivist prior to running the script.
+
+If the script breaks or needs to be interrupted, run it again with the same parameter to restart,
+after resetting the folder the script ends on if it was partially bagged.
+It will skip any folders already made into a bag and add to the existing log.
 
 Parameter:
     bag_directory (required): path to the directory that contains the folders to be bagged
@@ -52,14 +56,24 @@ def validate_bag(bag_path):
 if __name__ == '__main__':
 
     bag_dir = sys.argv[1]
-    make_log(bag_dir, None, new_log=True)
+
+    # A log will already exist, and will be added to, if the script is being restarted.
+    if not os.path.exists(os.path.join(bag_dir, 'bag_validation_log.csv')):
+        make_log(bag_dir, None, new_log=True)
+
     for folder in os.listdir(bag_dir):
         folder_path = os.path.join(bag_dir, folder)
 
         # Skip all files and any folders that are big enough that the subfolders will be bags instead.
         # They are still added to the log for checking that they should be been skipped.
+        # They will be added again if the script is restarted.
         if os.path.isfile(folder_path) or folder_path.endswith('_bags'):
             make_log(folder_path, 'Skipped')
+            continue
+
+        # Skip any folders already in a bag, for if the script is being restarted.
+        # Does not add them to the log as skipped, since they should already be in the log from when they were bagged.
+        if folder_path.endswith('_bag'):
             continue
 
         # Make bag and rename it to add "_bag" according to standard naming conventions.

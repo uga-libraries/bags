@@ -53,6 +53,65 @@ class MyTestCase(unittest.TestCase):
                     ['bag_validation_log.csv', 'False', 'Skipped']]
         self.assertEqual(expected, result, "Problem with test for bag_all, log")
 
+    def test_restart(self):
+        """Test for when the script is restarted and skips any already bagged"""
+        # Make a copy of the test data (script edits files).
+        shutil.copytree(os.path.join(os.getcwd(), 'test_batch_bag', 'restart'),
+                        os.path.join(os.getcwd(), 'test_batch_bag', 'bag_dir'))
+
+        # Make variables and run the script.
+        script_path = os.path.join('..', 'batch_bag.py')
+        bag_dir = os.path.join(os.getcwd(), 'test_batch_bag', 'bag_dir')
+        subprocess.run(f'python {script_path} {bag_dir}', shell=True)
+
+        # Test for the directory contents.
+        result = make_directory_list(bag_dir)
+        expected = [os.path.join(bag_dir, 'A Text Document.txt'),
+                    os.path.join(bag_dir, 'aip1_bag'),
+                    os.path.join(bag_dir, 'aip1_bag', 'bag-info.txt'),
+                    os.path.join(bag_dir, 'aip1_bag', 'bagit.txt'),
+                    os.path.join(bag_dir, 'aip1_bag', 'data'),
+                    os.path.join(bag_dir, 'aip1_bag', 'data', 'Test_File.txt'),
+                    os.path.join(bag_dir, 'aip1_bag', 'manifest-md5.txt'),
+                    os.path.join(bag_dir, 'aip1_bag', 'tagmanifest-md5.txt'),
+                    os.path.join(bag_dir, 'aip2_bag'),
+                    os.path.join(bag_dir, 'aip2_bag', 'bag-info.txt'),
+                    os.path.join(bag_dir, 'aip2_bag', 'bagit.txt'),
+                    os.path.join(bag_dir, 'aip2_bag', 'data'),
+                    os.path.join(bag_dir, 'aip2_bag', 'data', 'Test_File.txt'),
+                    os.path.join(bag_dir, 'aip2_bag', 'data', 'aip2_subfolder'),
+                    os.path.join(bag_dir, 'aip2_bag', 'data', 'aip2_subfolder', 'Test_File.txt'),
+                    os.path.join(bag_dir, 'aip2_bag', 'manifest-md5.txt'),
+                    os.path.join(bag_dir, 'aip2_bag', 'tagmanifest-md5.txt'),
+                    os.path.join(bag_dir, 'aip3_bag'),
+                    os.path.join(bag_dir, 'aip3_bag', 'bag-info.txt'),
+                    os.path.join(bag_dir, 'aip3_bag', 'bagit.txt'),
+                    os.path.join(bag_dir, 'aip3_bag', 'data'),
+                    os.path.join(bag_dir, 'aip3_bag', 'data', 'Test_File.txt'),
+                    os.path.join(bag_dir, 'aip3_bag', 'manifest-md5.txt'),
+                    os.path.join(bag_dir, 'aip3_bag', 'tagmanifest-md5.txt'),
+                    os.path.join(bag_dir, 'aip4_bag'),
+                    os.path.join(bag_dir, 'aip4_bag', 'bag-info.txt'),
+                    os.path.join(bag_dir, 'aip4_bag', 'bagit.txt'),
+                    os.path.join(bag_dir, 'aip4_bag', 'data'),
+                    os.path.join(bag_dir, 'aip4_bag', 'data', 'Test_File.txt'),
+                    os.path.join(bag_dir, 'aip4_bag', 'manifest-md5.txt'),
+                    os.path.join(bag_dir, 'aip4_bag', 'tagmanifest-md5.txt'),
+                    os.path.join(bag_dir, 'bag_validation_log.csv')]
+        self.assertEqual(expected, result, "Problem with test for restart, directory")
+
+        # Test for the log contents.
+        result = csv_to_list(os.path.join(bag_dir, 'bag_validation_log.csv'))
+        expected = [['Bag', 'Valid?', 'Notes'],
+                    ['A Text Document.txt', 'False', 'Skipped'],
+                    ['aip1_bag', 'True', 'Valid'],
+                    ['aip2_bag', 'False', 'bagit error'],
+                    ['A Text Document.txt', 'False', 'Skipped'],
+                    ['aip3_bag', 'True', 'Valid'],
+                    ['aip4_bag', 'True', 'Valid'],
+                    ['bag_validation_log.csv', 'False', 'Skipped']]
+        self.assertEqual(expected, result, "Problem with test for restart, log")
+
     def test_skip_bags(self):
         """Test for when not all folders should be bagged"""
         # Make a copy of the test data (script edits files).

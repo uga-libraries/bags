@@ -32,6 +32,10 @@ This script is primarily used in the accessioning workflow when an accession is 
 Loose files should be put into folders prior to running the script.
 The script will skip any files and any folder that ends with _bags, which indicates the subfolders will be bagged.
 
+If the script breaks or needs to be interrupted, run it again with the same parameter to restart,
+after resetting the folder the script ends on if it was partially bagged.
+It will skip any folders already made into a bag and add to the existing log.
+
 ### compare_files.py
 
 Purpose: compare the file paths in the bag manifest to the files in the bag data folder and make a report of any path only in one location.
