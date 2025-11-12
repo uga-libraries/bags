@@ -77,6 +77,9 @@ Purpose: delete Thumbs.db anywhere in a group of bags, update the bags, and vali
 
 Argument: bag_list (required): path to a text file with the full path to all bags to be updated, one row per path
 
+To make the bag_list, make a plain text file with the full path to every bag to be updated, one line per path.
+The file can be named anything. The script log will be saved in the same folder as this file.
+
 This script should only be used after delete_new_temp.py or one of the bag manifest compare scripts shows that
 Thumbs.db are the only reason the bag is not validating, because it updates the bag.
 
