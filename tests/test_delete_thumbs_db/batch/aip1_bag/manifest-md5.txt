@@ -1,1 +1,2 @@
 d98653c4abcca7e5156e92db5e5bde51  data/Document.txt
+63f03de44e9e384a9913bafb6d2e0faf  data/Thumbs.db
