@@ -58,10 +58,10 @@ class MyTestCase(unittest.TestCase):
 
         # Test for the log contents.
         result = csv_to_list(os.path.join(os.getcwd(), 'test_delete_thumbs_db', 'bag_validation_log.csv'))
-        expected = [['Bag_Path', 'Valid?', 'Notes'],
-                    [os.path.join(test_dir, 'aip1_bag'), 'True', 'BLANK'],
-                    [os.path.join(test_dir, 'aip2_bag'), 'True', 'BLANK'],
-                    [os.path.join(test_dir, 'aip3_bag'), 'True', 'BLANK']]
+        expected = [['Bag_Path', 'Thumbs_Deleted', 'Valid?', 'Notes'],
+                    [os.path.join(test_dir, 'aip1_bag'), '1', 'True', 'BLANK'],
+                    [os.path.join(test_dir, 'aip2_bag'), '2', 'True', 'BLANK'],
+                    [os.path.join(test_dir, 'aip3_bag'), '1', 'True', 'BLANK']]
         self.assertEqual(expected, result, "Problem with test for batch, log")
 
     def test_one(self):
@@ -92,8 +92,8 @@ class MyTestCase(unittest.TestCase):
 
         # Test for the log contents.
         result = csv_to_list(os.path.join(os.getcwd(), 'test_delete_thumbs_db', 'bag_validation_log.csv'))
-        expected = [['Bag_Path', 'Valid?', 'Notes'],
-                    [os.path.join(test_dir, 'ER001_bag'), 'True', 'BLANK']]
+        expected = [['Bag_Path', 'Thumbs_Deleted', 'Valid?', 'Notes'],
+                    [os.path.join(test_dir, 'ER001_bag'), '3', 'True', 'BLANK']]
         self.assertEqual(expected, result, "Problem with test for one, log")
 
 
