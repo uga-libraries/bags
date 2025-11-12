@@ -78,8 +78,12 @@ if __name__ == '__main__':
 
         # Make bag and rename it to add "_bag" according to standard naming conventions.
         # Since these are for the backlog and not for preservation, we only use the MD5 checksum.
-        bagit.make_bag(folder_path, checksums=['md5'])
-        os.replace(folder_path, f'{folder_path}_bag')
+        # PermissionError causes are unclear. It can happen due to path length or spaces at the end of folders or files.
+        try:
+            bagit.make_bag(folder_path, checksums=['md5'])
+            os.replace(folder_path, f'{folder_path}_bag')
+        except PermissionError as error:
+            make_log(f'{folder_path}_bag', error)
 
         # Validate the bag and log the result.
         bagit_output = validate_bag(f'{folder_path}_bag')
