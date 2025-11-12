@@ -76,11 +76,11 @@ if __name__ == '__main__':
 
     # Start bag validation log in the same folder as the bag list file.
     log_file_path = os.path.join(os.path.dirname(sys.argv[1]), 'bag_validation_log.csv')
-    log(log_file_path, ['Bag_Path', 'Valid?', 'Notes'])
+    log(log_file_path, ['Bag_Path', 'Thumbs_Deleted', 'Valid?', 'Notes'])
 
     # For each bag, delete all Thumbs.db from the bag's data folder, update and validate the bag, and log the result.
     for bag_path in bag_list:
         thumb_count = delete_thumbs(bag_path)
         update_bag(bag_path)
         is_valid, errors = validate_bag(bag_path)
-        log(log_file_path, [bag_path, is_valid, errors])
+        log(log_file_path, [bag_path, thumb_count, is_valid, errors])
