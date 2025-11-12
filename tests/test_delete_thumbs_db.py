@@ -57,8 +57,12 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual(expected, result, "Problem with test for batch, directory")
 
         # Test for the log contents.
-        result = csv_to_list(os.path.join(os.getcwd(), 'test_delete_thumbs.db', 'batch_validation_log.csv'))
-        expected = []
+        result = csv_to_list(os.path.join(os.getcwd(), 'test_delete_thumbs_db', 'bag_validation_log.csv'))
+        expected = [['Bag_Path', 'Valid?', 'Notes'],
+                    [os.path.join(test_dir, 'aip1_bag'), 'True', 'BLANK'],
+                    [os.path.join(test_dir, 'aip2_bag'), 'True', 'BLANK'],
+                    [os.path.join(test_dir, 'aip3_bag'), 'True', 'BLANK']]
+        self.assertEqual(expected, result, "Problem with test for batch, log")
 
     def test_manifest(self):
         """Test for when 1 Thumbs.db file is in the bag manifest"""
