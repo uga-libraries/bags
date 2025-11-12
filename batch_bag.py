@@ -52,7 +52,11 @@ def validate_bag(bag_path):
 if __name__ == '__main__':
 
     bag_dir = sys.argv[1]
-    make_log(bag_dir, None, new_log=True)
+
+    # A log will already exist, and will be added to, if the script is being restarted.
+    if not os.path.exists(os.path.join(bag_dir, 'bag_validation_log.csv')):
+        make_log(bag_dir, None, new_log=True)
+
     for folder in os.listdir(bag_dir):
         folder_path = os.path.join(bag_dir, folder)
 
