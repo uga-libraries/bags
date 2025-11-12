@@ -20,6 +20,10 @@ There are unit tests for each script in the "tests" folder.
 The scripts do not have functions, or just simple functions, so the only tests are for each entire script.
 The tests for undo_one_bag.py are incomplete: see [Issue 1](https://github.com/uga-libraries/bags/issues/1)
 
+For testing delete_thumbs_db, make a copy of the list templates in the folder test_delete_thumbs_db and
+replace INSERT-PATH-TO-BAGS-REPO with the correct path (something like C:\Users\username\Documents\GitHub\bags).
+This version of the lists will not be synced to GitHub, as they are in .gitignore
+
 ## Scripts
 
 ### batch_bag.py
