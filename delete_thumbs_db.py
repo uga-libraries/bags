@@ -39,11 +39,14 @@ def make_bag_list(path):
 def delete_thumbs(bag):
     """Delete any Thumbs.db files in the bag
     Parameter: bag (string) - path to bag
-    Returns: None"""
+    Returns: count (integer) - number of Thumbs.db that were deleted for log"""
+    count = 0
     for root, dirs, files in os.walk(bag):
         for file in files:
             if file == 'Thumbs.db':
                 os.remove(os.path.join(root, file))
+                count += 1
+    return count
 
 
 def update_bag(bag):
@@ -77,7 +80,7 @@ if __name__ == '__main__':
 
     # For each bag, delete all Thumbs.db from the bag's data folder, update and validate the bag, and log the result.
     for bag_path in bag_list:
-        delete_thumbs(bag_path)
+        thumb_count = delete_thumbs(bag_path)
         update_bag(bag_path)
         is_valid, errors = validate_bag(bag_path)
         log(log_file_path, [bag_path, is_valid, errors])
