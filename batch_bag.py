@@ -85,6 +85,7 @@ if __name__ == '__main__':
             os.replace(folder_path, f'{folder_path}_bag')
         except PermissionError as error:
             make_log(f'{folder_path}_bag', error)
+            continue
 
         # Validate the bag and log the result.
         bagit_output = validate_bag(f'{folder_path}_bag')
