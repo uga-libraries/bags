@@ -62,8 +62,14 @@ if __name__ == '__main__':
 
         # Skip all files and any folders that are big enough that the subfolders will be bags instead.
         # They are still added to the log for checking that they should be been skipped.
+        # They will be added again if the script is restarted.
         if os.path.isfile(folder_path) or folder_path.endswith('_bags'):
             make_log(folder_path, 'Skipped')
+            continue
+
+        # Skip any folders already in a bag, for if the script is being restarted.
+        # Does not add them to the log as skipped, since they should already be in the log from when they were bagged.
+        if folder_path.endswith('_bag'):
             continue
 
         # Make bag and rename it to add "_bag" according to standard naming conventions.
