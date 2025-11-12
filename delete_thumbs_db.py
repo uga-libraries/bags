@@ -1,14 +1,15 @@
-"""Remove any Thumbs.db in the bag, update the bag, and validate the bag
+"""Remove any Thumbs.db in all bags in a list, update the bag, and validate the bag
 
 Thumbs.db can auto-generate after the bag is made or change after the bag is made,
 causing bag validation errors in bags that are part of the backlog for a while.
-This script corrects it so the bag can be validated and any non-Thumbs.db errors identified.
+This script should only be run once it is established that Thumbs.db are the only reason the bag isn't valid,
+since it updates the bag and therefore makes the current state the valid one.
 
 Parameter:
-    bag_path (required): path to the bag (folder that ends in "_bag")
+    bag_list (required): path to a text file with the full path to all bags to be updated, one row per path
 
 Returns:
-    Prints the validation result
+    bag_validation_log.csv in the same directory as bag_list
 """
 import bagit
 import csv
@@ -28,9 +29,11 @@ def log(log_path, row):
         log_writer.writerow(row)
 
 
-def make_bag_list(path):
-    """Get a list of bag paths from a text file"""
-    with open(path) as doc:
+def make_bag_list(bag_list_path):
+    """Get a list of bag paths from a text file
+    Parameter: path (string) - path to the text file with the bag paths
+    Returns: bag_path_list (list) - list of paths from the text file"""
+    with open(bag_list_path) as doc:
         bag_path_list = doc.readlines()
     bag_path_list = [item.rstrip('\n') for item in bag_path_list]
     return bag_path_list
@@ -39,7 +42,7 @@ def make_bag_list(path):
 def delete_thumbs(bag):
     """Delete any Thumbs.db files in the bag
     Parameter: bag (string) - path to bag
-    Returns: count (integer) - number of Thumbs.db that were deleted for log"""
+    Returns: count (integer) - number of Thumbs.db that were deleted for the log"""
     count = 0
     for root, dirs, files in os.walk(bag):
         for file in files:
@@ -74,7 +77,7 @@ if __name__ == '__main__':
     # Get a list of bags to update from a text file (path is the script argument).
     bag_list = make_bag_list(sys.argv[1])
 
-    # Start bag validation log in the same folder as the bag list file.
+    # Start the bag validation log in the same folder as the bag list file.
     log_file_path = os.path.join(os.path.dirname(sys.argv[1]), 'bag_validation_log.csv')
     log(log_file_path, ['Bag_Path', 'Thumbs_Deleted', 'Valid?', 'Notes'])
 
