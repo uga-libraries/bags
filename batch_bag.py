@@ -63,6 +63,7 @@ if __name__ == '__main__':
 
     for folder in os.listdir(bag_dir):
         folder_path = os.path.join(bag_dir, folder)
+        print("Starting on", folder_path)
 
         # Skip all files and any folders that are big enough that the subfolders will be bags instead.
         # They are still added to the log for checking that they should be been skipped.
