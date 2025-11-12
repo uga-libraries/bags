@@ -2,7 +2,11 @@
 
 This script is primarily used in the accessioning workflow when an accession is too big for a single bag.
 It will skip any folder that ends with "_bags", which is used if a folder needs to be further split into bags,
-and any files that are not  in folders, which should be foldered by the archivist prior to running the script.
+and any files that are not in folders, which should be foldered by the archivist prior to running the script.
+
+If the script breaks or needs to be interrupted, run it again with the same parameter to restart,
+after resetting the folder the script ends on if it was partially bagged.
+It will skip any folders already made into a bag and add to the existing log.
 
 Parameter:
     bag_directory (required): path to the directory that contains the folders to be bagged
