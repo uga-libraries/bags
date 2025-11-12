@@ -4,3 +4,6 @@ tests/__pycache__/test_update_bag.cpython-311.pyc
 tests/__pycache__/test_bag_manifest_compare.cpython-311.pyc
 __pycache__/delete_new_temp.cpython-311.pyc
 *.pyc
+tests/test_delete_thumbs_db/batch_list.txt
+tests/test_delete_thumbs_db/one_list.txt
+tests/test_delete_thumbs_db/unusual_list.txt

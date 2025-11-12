@@ -20,6 +20,10 @@ There are unit tests for each script in the "tests" folder.
 The scripts do not have functions, or just simple functions, so the only tests are for each entire script.
 The tests for undo_one_bag.py are incomplete: see [Issue 1](https://github.com/uga-libraries/bags/issues/1)
 
+For testing delete_thumbs_db, make a copy of the list templates in the folder test_delete_thumbs_db and
+replace INSERT-PATH-TO-BAGS-REPO with the correct path (something like C:\Users\username\Documents\GitHub\bags).
+This version of the lists will not be synced to GitHub, as they are in .gitignore
+
 ## Scripts
 
 ### batch_bag.py
@@ -73,9 +77,12 @@ The script does not delete temporary files that are in the manifest or non-tempo
 
 ### delete_thumbs_db.py
 
-Purpose: delete Thumbs.db anywhere in the bag, update the bag, and validate the bag.
+Purpose: delete Thumbs.db anywhere in a group of bags, update the bags, and validate the bags.
 
-Argument: bag_path (required): path to the bag (folder that ends in "_bag")
+Argument: bag_list (required): path to a text file with the full path to all bags to be updated, one row per path
+
+To make the bag_list, make a plain text file with the full path to every bag to be updated, one line per path.
+The file can be named anything. The script log will be saved in the same folder as this file.
 
 This script should only be used after delete_new_temp.py or one of the bag manifest compare scripts shows that
 Thumbs.db are the only reason the bag is not validating, because it updates the bag.
