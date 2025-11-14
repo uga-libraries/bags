@@ -1,2 +1,0 @@
-Placeholder for a file added after bagging.
-It is a temp file based on starting with a dot and will be deleted.
