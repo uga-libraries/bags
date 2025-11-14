@@ -287,6 +287,25 @@ class MyTestCase(unittest.TestCase):
                      'data/.Document.txt, data/Document.tmp, data/Folder/Thumbs.db', 'BLANK', 'TBD', 'TBD']]
         self.assertEqual(expected, result, "Problem with test for extra_temp_preview, log")
 
+    def test_path_error(self):
+        """Test for when the path in the bag list is not correct"""
+        # Make variables and run the script.
+        # This uses the list for a different test.
+        # Since the test data isn't first copied to test_dir, the paths are all incorrect.
+        script_path = os.path.join('..', 'delete_new_temp.py')
+        bag_list = os.path.join(os.getcwd(), 'test_delete_new_temp', 'batch_list.txt')
+        subprocess.run(f'python {script_path} {bag_list} preview', shell=True)
+
+        # Test for the log contents.
+        test_dir = os.path.join(os.getcwd(), 'test_delete_new_temp', 'test_dir')
+        result = csv_to_list(os.path.join(os.getcwd(), 'test_delete_new_temp', 'preview_new_temp_log.csv'))
+        expected = [['Bag', 'Extra_Temp_Count', 'Extra_Temp', 'Extra_Not_Temp', 'Bag_Valid', 'Errors'],
+                    [os.path.join(test_dir, 'b01_bag'), 'TBD', 'TBD', 'TBD', 'TBD', 'Bag path error'],
+                    [os.path.join(test_dir, 'b02_bag'), 'TBD', 'TBD', 'TBD', 'TBD', 'Bag path error'],
+                    [os.path.join(test_dir, 'b03_bag'), 'TBD', 'TBD', 'TBD', 'TBD', 'Bag path error'],
+                    [os.path.join(test_dir, 'b04_bag'), 'TBD', 'TBD', 'TBD', 'TBD', 'Bag path error']]
+        self.assertEqual(expected, result, "Problem with test for path_error, log")
+
     def test_temp_not_extra_delete(self):
         """Test for delete mode with temp files added before bagging that should not be deleted"""
         # Make a copy of the test data (script edits files).
