@@ -98,7 +98,7 @@ if __name__ == '__main__':
     # Preview logs, delete will delete extra temp files, validate the bag, and log.
     for bag_path in bag_list:
         if not os.path.exists(bag_path):
-            log(log_file_path, [bag_path, 'TBD', 'TBD', 'TBD', 'Bag path error'])
+            log(log_file_path, [bag_path, 'TBD', 'TBD', 'TBD', 'TBD', 'Bag path error'])
             continue
         print("Starting on", bag_path)
         extra_temp, extra_not_temp = find_extra_files(bag_path)
