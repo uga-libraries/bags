@@ -91,7 +91,7 @@ if __name__ == '__main__':
     reminder(script_mode)
 
     # Start the log in the same folder as the bag list file.
-    log_file_path = os.path.join(os.path.dirname(sys.argv[1]), f'{script_mode}_temp_log.csv')
+    log_file_path = os.path.join(os.path.dirname(sys.argv[1]), f'{script_mode}_new_temp_log.csv')
     log(log_file_path, ['Bag', 'Extra_Temp_Count', 'Extra_Temp', 'Extra_Not_Temp', 'Bag_Valid', 'Errors'])
 
     # For each bag, find temp files not in the bag manifest and act on them in accordance with the script mode.
