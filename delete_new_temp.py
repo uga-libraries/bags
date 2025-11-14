@@ -11,7 +11,7 @@ import os
 import pandas as pd
 import re
 import sys
-from delete_thumbs_db import log, make_bag_list, validate_bag
+from shared_functions import log, make_bag_list, validate_bag
 
 
 def delete_temp(bag, temp):

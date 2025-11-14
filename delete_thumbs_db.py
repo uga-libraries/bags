@@ -15,28 +15,7 @@ import bagit
 import csv
 import os
 import sys
-
-
-def log(log_path, row):
-    """Make or add to a log with validation results for each bag, saved to the same folder as the bag list
-    Parameters:
-        log_path (string) - path to the log file
-        row (list) - data to save as a single row in the log
-    Returns: None
-    """
-    with open(log_path, 'a', newline='') as log_file:
-        log_writer = csv.writer(log_file)
-        log_writer.writerow(row)
-
-
-def make_bag_list(bag_list_path):
-    """Get a list of bag paths from a text file
-    Parameter: path (string) - path to the text file with the bag paths
-    Returns: bag_path_list (list) - list of paths from the text file"""
-    with open(bag_list_path) as doc:
-        bag_path_list = doc.readlines()
-    bag_path_list = [item.rstrip('\n') for item in bag_path_list]
-    return bag_path_list
+from shared_functions import log, make_bag_list, validate_bag
 
 
 def delete_thumbs(bag):
@@ -58,18 +37,6 @@ def update_bag(bag):
     Returns: None"""
     bag_inst = bagit.Bag(bag)
     bag_inst.save(manifests=True)
-
-
-def validate_bag(bag):
-    """Validate the bag and return the result for the log
-    Parameter: bag (string) - path to bag
-    Returns: is_valid (Boolean) and  error_msg (String or None)"""
-    bagit_bag = bagit.Bag(bag)
-    try:
-        bagit_bag.validate()
-        return True, None
-    except bagit.BagValidationError as error_msg:
-        return False, error_msg
 
 
 if __name__ == '__main__':
