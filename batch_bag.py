@@ -18,26 +18,7 @@ import bagit
 import csv
 import os
 import sys
-
-
-def make_log(bag_path, note, new_log=False):
-    """Make or add to a log with validation results for each bag, saved to the bag_directory
-    Parameters:
-        bag_path (string) - path to bag_dir (if header) or specific bag
-        note (string) - output of bagit or standard text for the Notes column
-        new_log (Boolean, optional) - True if a new log should be started with a header
-    Returns: None
-    """
-    if new_log:
-        log_path = os.path.join(bag_path, 'bag_validation_log.csv')
-        with open(log_path, 'w', newline='') as log:
-            log_writer = csv.writer(log)
-            log_writer.writerow(['Bag', 'Valid?', 'Notes'])
-    else:
-        log_path = os.path.join(os.path.dirname(bag_path), 'bag_validation_log.csv')
-        with open(log_path, 'a', newline='') as log:
-            log_writer = csv.writer(log)
-            log_writer.writerow([os.path.basename(bag_path), note == 'Valid', note])
+from shared_functions import log
 
 
 def validate_bag(bag_path):
@@ -57,11 +38,13 @@ def validate_bag(bag_path):
 
 if __name__ == '__main__':
 
+    # Parent folder of the folders to be bagged.
     bag_dir = sys.argv[1]
 
     # A log will already exist, and will be added to, if the script is being restarted.
-    if not os.path.exists(os.path.join(bag_dir, 'bag_validation_log.csv')):
-        make_log(bag_dir, None, new_log=True)
+    log_file_path = os.path.join(bag_dir, 'bag_validation_log.csv')
+    if not os.path.exists(log_file_path):
+        log(log_file_path, ['Bag', 'Valid?', 'Notes'])
 
     for folder in os.listdir(bag_dir):
         folder_path = os.path.join(bag_dir, folder)
@@ -71,7 +54,7 @@ if __name__ == '__main__':
         # They are still added to the log for checking that they should be been skipped.
         # They will be added again if the script is restarted.
         if os.path.isfile(folder_path) or folder_path.endswith('_bags'):
-            make_log(folder_path, 'Skipped')
+            log(log_file_path, [folder, 'TBD', 'Skipped'])
             continue
 
         # Skip any folders already in a bag, for if the script is being restarted.
@@ -87,9 +70,9 @@ if __name__ == '__main__':
             bagit.make_bag(folder_path, checksums=['md5'])
             os.replace(folder_path, f'{folder_path}_bag')
         except PermissionError as error:
-            make_log(f'{folder_path}_bag', error)
+            log(log_file_path, [f'{folder}_bag', 'TBD', error])
             continue
 
         # Validate the bag and log the result.
         bagit_output = validate_bag(f'{folder_path}_bag')
-        make_log(f'{folder_path}_bag', bagit_output)
+        log(log_file_path, [f'{folder}_bag', bagit_output == 'Valid', bagit_output])

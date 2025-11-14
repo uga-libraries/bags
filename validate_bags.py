@@ -13,6 +13,7 @@ import bagit
 import csv
 import os
 import sys
+from shared_functions import log
 
 
 def make_log(bag_path, is_valid=None, note=None, new_log=False):
@@ -38,9 +39,13 @@ def make_log(bag_path, is_valid=None, note=None, new_log=False):
 
 if __name__ == '__main__':
 
-    # Indicate the directory that contains bags.
+    # Parent folder of the bags to be validated.
     bag_dir = sys.argv[1]
-    make_log(bag_dir, new_log=True)
+
+    # Starts the bag validation log in the same folder as the bags.
+    log_file = log_path = os.path.join(bag_dir, 'bag_validation_log.csv')
+    log(log_file, ['Bag_Path', 'Valid?', 'Notes'])
+
     for root, directory, folder in os.walk(bag_dir):
 
         # A directory is a bag if the name ends with _bag
@@ -49,6 +54,6 @@ if __name__ == '__main__':
             bag = bagit.Bag(root)
             try:
                 bag.validate()
-                make_log(root, True)
+                log(log_file, [root, True, None])
             except bagit.BagValidationError as errors:
-                make_log(root, False, errors)
+                log(log_file, [root, False, errors])
