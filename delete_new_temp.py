@@ -1,12 +1,11 @@
-"""Remove any temporary files in the bag that are not in the bag manifest and validate the bag
+"""Identify or delete any temporary files that are not in the bag manifest in all bags in a list and validate the bags
 
 Parameter:
-    bag_path (required): path to the bag (folder that ends in "_bag")
-    script_mode (required): preview (print what will delete) or delete (actually delete)
+    bag_list (required): path to a text file with the full path to all bags to be updated, one row per path
+    script_mode (required): preview (log what would delete) or delete (actually delete)
 
 Returns:
-    Prints any files that are not in the manifest but did not quality as temporary files
-    Prints the validation result
+    preview_new_temp_log.py or delete_new_temp_log.py in the same directory as bag_list
 """
 import os
 import pandas as pd
