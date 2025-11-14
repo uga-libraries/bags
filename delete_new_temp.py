@@ -62,7 +62,7 @@ def find_extra_files(bag):
     for file_path in extras:
         file_name = file_path.split('/')[-1]
         if file_name in delete_list or file_name.endswith('.tmp') or file_name.startswith('.'):
-            temp.append(os.path.join(bag, file_path))
+            temp.append(file_path)
         else:
             not_temp.append(file_path)
     return temp, not_temp
@@ -105,8 +105,11 @@ if __name__ == '__main__':
             delete_temp(bag_path, extra_temp)
             if len(extra_not_temp) == 0:
                 is_valid, errors = validate_bag(bag_path)
-                log(log_file_path, [bag_path, len(extra_temp), extra_temp, extra_not_temp, is_valid, errors])
+                log(log_file_path, [bag_path, len(extra_temp), ', '.join(extra_temp), ', '.join(extra_not_temp),
+                                    is_valid, errors])
             else:
-                log(log_file_path, [bag_path, len(extra_temp), extra_temp, extra_not_temp, 'False', 'Non-temp files not in manifest'])
+                log(log_file_path, [bag_path, len(extra_temp), ', '.join(extra_temp), ', '.join(extra_not_temp),
+                                    'False', 'Non-temp files not in manifest'])
         elif script_mode == 'preview':
-            log(log_file_path, [bag_path, len(extra_temp), extra_temp, extra_not_temp, 'TBD', 'TBD'])
+            log(log_file_path, [bag_path, len(extra_temp), ', '.join(extra_temp), ', '.join(extra_not_temp),
+                                'TBD', 'TBD'])
