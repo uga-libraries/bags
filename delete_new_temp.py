@@ -103,25 +103,24 @@ if __name__ == '__main__':
     script_mode = sys.argv[2]
     reminder(script_mode)
 
-    # Find any files that are in the bag data folder but not in the manifest (extra files).
-    extra_files = find_extra_files(bag_path)
-
-    # Delete any extra files that are temp files and print the path for any other files.
-    not_deleted = delete_temp(bag_path, extra_files, script_mode)
-
-    # If the script is in delete mode and all extra files were deleted, validate the bag and print the results.
-    # Otherwise, print the files that were not deleted.
-    if script_mode == 'delete':
-        if len(not_deleted) == 0:
-            validate_bag(bag_path)
-        else:
-            print("\nAfter deleting temp files, there are still files in the data folder that are not in the manifest:")
+    # For each bag, find temp files not in the bag manifest and act on them in accordance with the script mode.
+    for bag_path in bag_list:
+        if not os.path.exists(bag_path):
+            continue
+        extra_files = find_extra_files(bag_path)
+        not_deleted = delete_temp(bag_path, extra_files, script_mode)
+        # If the script is in delete mode and all extra files were deleted, validate the bag and print the results.
+        # Otherwise, print the files that were not deleted.
+        if script_mode == 'delete':
+            if len(not_deleted) == 0:
+                validate_bag(bag_path)
+            else:
+                print("\nAfter deleting temp files, there are still files in the data folder that are not in the manifest:")
+                for path in not_deleted:
+                    print(f'\t* {path}')
+        elif script_mode == 'preview':
+            print("\nPreview of files to delete is complete.")
+            print("Files that would have been deleted are listed above.")
+            print(f"There are {len(not_deleted)} files that are not in the manifest and are not temp.")
             for path in not_deleted:
                 print(f'\t* {path}')
-    elif script_mode == 'preview':
-        print("\nPreview of files to delete is complete.")
-        print("Files that would have been deleted are listed above.")
-        print(f"There are {len(not_deleted)} files that are not in the manifest and are not temp.")
-        for path in not_deleted:
-            print(f'\t* {path}')
-
