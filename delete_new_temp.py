@@ -90,15 +90,15 @@ if __name__ == '__main__':
     reminder(script_mode)
 
     # Start the log in the same folder as the bag list file.
-    log_file_path = os.path.join(os.path.dirname(sys.argv[1]), f'{script_mode}_new_temp_log.csv')
-    log(log_file_path, ['Bag', 'Extra_Temp_Count', 'Extra_Temp', 'Extra_Not_Temp', 'Bag_Valid', 'Errors'])
+    log_file = os.path.join(os.path.dirname(sys.argv[1]), f'{script_mode}_new_temp_log.csv')
+    log(log_file, ['Bag', 'Extra_Temp_Count', 'Extra_Temp', 'Extra_Not_Temp', 'Bag_Valid', 'Errors'])
 
     # For each bag, find files in the data folder and not in the bag manifest
     # and act on them in accordance with the script mode.
     # Preview logs, delete will delete extra temp files, validate the bag, and log.
     for bag_path in bag_list:
         if not os.path.exists(bag_path):
-            log(log_file_path, [bag_path, 'TBD', 'TBD', 'TBD', 'TBD', 'Bag path error'])
+            log(log_file, [bag_path, 'TBD', 'TBD', 'TBD', 'TBD', 'Bag path error'])
             continue
         print("Starting on", bag_path)
         extra_temp, extra_not_temp = find_extra_files(bag_path)
@@ -108,11 +108,11 @@ if __name__ == '__main__':
             # which means the bag is still not valid.
             if len(extra_not_temp) == 0:
                 is_valid, errors = validate_bag(bag_path)
-                log(log_file_path, [bag_path, len(extra_temp), ', '.join(extra_temp), ', '.join(extra_not_temp),
-                                    is_valid, errors])
+                log(log_file, [bag_path, len(extra_temp), ', '.join(extra_temp), ', '.join(extra_not_temp),
+                               is_valid, errors])
             else:
-                log(log_file_path, [bag_path, len(extra_temp), ', '.join(extra_temp), ', '.join(extra_not_temp),
+                log(log_file, [bag_path, len(extra_temp), ', '.join(extra_temp), ', '.join(extra_not_temp),
                                     'False', 'Non-temp files not in manifest'])
         elif script_mode == 'preview':
-            log(log_file_path, [bag_path, len(extra_temp), ', '.join(extra_temp), ', '.join(extra_not_temp),
+            log(log_file, [bag_path, len(extra_temp), ', '.join(extra_temp), ', '.join(extra_not_temp),
                                 'TBD', 'TBD'])
