@@ -28,9 +28,9 @@ def validate_bag(bag):
     """Validate the bag and return the result for the log
     Parameter: bag (string) - path to bag
     Returns: is_valid (Boolean) and  error_msg (String or None)"""
-    bagit_bag = bagit.Bag(bag)
+    bag_instance = bagit.Bag(bag)
     try:
-        bagit_bag.validate()
+        bag_instance.validate()
         return True, None
     except (bagit.BagValidationError, bagit.BagError) as error_msg:
         return False, error_msg
