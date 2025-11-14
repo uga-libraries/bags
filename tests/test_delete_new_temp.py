@@ -19,6 +19,69 @@ class MyTestCase(unittest.TestCase):
             if os.path.exists(log_path):
                 os.remove(log_path)
 
+    def test_batch_delete(self):
+        """Test for delete mode with multiple bags"""
+        # Make a copy of the test data (script edits files).
+        shutil.copytree(os.path.join(os.getcwd(), 'test_delete_new_temp', 'batch'),
+                        os.path.join(os.getcwd(), 'test_delete_new_temp', 'test_dir'))
+
+        # Make variables and run the script.
+        script_path = os.path.join('..', 'delete_new_temp.py')
+        bag_list = os.path.join(os.getcwd(), 'test_delete_new_temp', 'batch_list.txt')
+        subprocess.run(f'python {script_path} {bag_list} delete', shell=True)
+
+        # Test for the directory contents.
+        test_dir = os.path.join(os.getcwd(), 'test_delete_new_temp', 'test_dir')
+        result = make_directory_list(test_dir)
+        expected = [os.path.join(test_dir, 'b01_bag'),
+                    os.path.join(test_dir, 'b01_bag', 'bag-info.txt'),
+                    os.path.join(test_dir, 'b01_bag', 'bagit.txt'),
+                    os.path.join(test_dir, 'b01_bag', 'data'),
+                    os.path.join(test_dir, 'b01_bag', 'data', 'Document.txt'),
+                    os.path.join(test_dir, 'b01_bag', 'manifest-md5.txt'),
+                    os.path.join(test_dir, 'b01_bag', 'tagmanifest-md5.txt'),
+                    os.path.join(test_dir, 'b02_bag'),
+                    os.path.join(test_dir, 'b02_bag', 'bag-info.txt'),
+                    os.path.join(test_dir, 'b02_bag', 'bagit.txt'),
+                    os.path.join(test_dir, 'b02_bag', 'data'),
+                    os.path.join(test_dir, 'b02_bag', 'data', 'Document.txt'),
+                    os.path.join(test_dir, 'b02_bag', 'data', 'Folder  Title'),
+                    os.path.join(test_dir, 'b02_bag', 'data', 'Folder  Title', 'New  Document.txt'),
+                    os.path.join(test_dir, 'b02_bag', 'manifest-md5.txt'),
+                    os.path.join(test_dir, 'b02_bag', 'tagmanifest-md5.txt'),
+                    os.path.join(test_dir, 'b03_bag'),
+                    os.path.join(test_dir, 'b03_bag', 'bag-info.txt'),
+                    os.path.join(test_dir, 'b03_bag', 'bagit.txt'),
+                    os.path.join(test_dir, 'b03_bag', 'data'),
+                    os.path.join(test_dir, 'b03_bag', 'data', 'Document.txt'),
+                    os.path.join(test_dir, 'b03_bag', 'data', 'New Doc.txt'),
+                    os.path.join(test_dir, 'b03_bag', 'data', 'New Doc2.txt'),
+                    os.path.join(test_dir, 'b03_bag', 'manifest-md5.txt'),
+                    os.path.join(test_dir, 'b03_bag', 'tagmanifest-md5.txt'),
+                    os.path.join(test_dir, 'b04_bag'),
+                    os.path.join(test_dir, 'b04_bag', 'bag-info.txt'),
+                    os.path.join(test_dir, 'b04_bag', 'bagit.txt'),
+                    os.path.join(test_dir, 'b04_bag', 'data'),
+                    os.path.join(test_dir, 'b04_bag', 'data', 'Document.tmp'),
+                    os.path.join(test_dir, 'b04_bag', 'data', 'Document.txt'),
+                    os.path.join(test_dir, 'b04_bag', 'manifest-md5.txt'),
+                    os.path.join(test_dir, 'b04_bag', 'tagmanifest-md5.txt')]
+        self.assertEqual(expected, result, "Problem with test for batch_delete, directory")
+
+        # Test for the log contents.
+        result = csv_to_list(os.path.join(os.getcwd(), 'test_delete_new_temp', 'delete_new_temp_log.csv'))
+        expected = [['Bag', 'Extra_Temp_Count', 'Extra_Temp', 'Extra_Not_Temp', 'Bag_Valid', 'Errors'],
+                    [os.path.join(test_dir, 'b01_bag'), '5',
+                     'data/.Document.txt, data/.DS_Store, data/._.DS_Store, data/Document.tmp, data/Thumbs.db',
+                     'BLANK', 'True', 'BLANK'],
+                    [os.path.join(test_dir, 'b02_bag'), '2', 'data/Document  Temp.tmp, data/Folder  Title/Document.tmp',
+                     'BLANK', 'True', 'BLANK'],
+                    [os.path.join(test_dir, 'b03_bag'), '0', 'BLANK', 'data/New Doc.txt, data/New Doc2.txt',
+                     'False', 'Non-temp files not in manifest'],
+                    [os.path.join(test_dir, 'b04_bag'), '1', 'data/Thumbs.db', 'BLANK', 'False',
+                     'Payload-Oxum validation failed. Expected 2 files and 138 bytes but found 2 files and 209 bytes']]
+        self.assertEqual(expected, result, "Problem with test for batch_delete, log")
+
     def test_extra_not_temp_delete(self):
         """Test for delete mode with non-temp files added after bagging that should not be deleted"""
         # Make a copy of the test data (script edits files).
