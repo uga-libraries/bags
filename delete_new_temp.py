@@ -105,11 +105,12 @@ if __name__ == '__main__':
 
     # Start the log in the same folder as the bag list file.
     log_file_path = os.path.join(os.path.dirname(sys.argv[1]), f'{script_mode}_temp_log.csv')
-    log(log_file_path, ['Bag', 'Temp_Count', 'Temp_Deleted', 'Files_Not_Deleted', 'Bag_Valid', 'Bag_Validation_Errors'])
+    log(log_file_path, ['Bag', 'Temp_Count', 'Temp_Deleted', 'Files_Not_Deleted', 'Bag_Valid', 'Errors'])
 
     # For each bag, find temp files not in the bag manifest and act on them in accordance with the script mode.
     for bag_path in bag_list:
         if not os.path.exists(bag_path):
+            log(log_file_path, [bag_path, 'TBD', 'TBD', 'TBD', 'Bag path error'])
             continue
         extra_files = find_extra_files(bag_path)
         not_deleted = delete_temp(bag_path, extra_files, script_mode)
