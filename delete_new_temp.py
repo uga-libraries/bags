@@ -13,6 +13,7 @@ import os
 import pandas as pd
 import re
 import sys
+from delete_thumbs_db import make_bag_list
 
 
 def delete_temp(bag, extra_list, mode):
@@ -94,11 +95,12 @@ def validate_bag(bag):
 
 
 if __name__ == '__main__':
-    # Get bag_path from script argument.
-    bag_path = sys.argv[1]
-    script_mode = sys.argv[2]
+
+    # Get a list of bags to update from a text file (path is the script argument).
+    bag_list = make_bag_list(sys.argv[1])
 
     # Print reminder of script mode functionality.
+    script_mode = sys.argv[2]
     reminder(script_mode)
 
     # Find any files that are in the bag data folder but not in the manifest (extra files).
