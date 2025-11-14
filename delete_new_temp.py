@@ -23,19 +23,23 @@ def delete_temp(bag, extra_list, mode):
         bag (string) - path to bag, needed to make full path for file
         extra_list (list) - list of paths for files that are not in the bag manifest
         mode (string) - preview or delete, determines if the files should just be printed or actually deleted
-    Returns: not_temp (list) - list of paths for files that were not temp and therefore not deleted
+    Returns:
+        temp_count (integer) - number of temp files that will be/were deleted for the log
+        not_temp (list) - list of paths for files that were not temp and therefore not deleted
     """
+    count = 0
     not_temp = []
     delete_list = [".DS_Store", "._.DS_Store", "Thumbs.db"]
     for file_path in extra_list:
         file_name = file_path.split('/')[-1]
         if file_name in delete_list or file_name.endswith('.tmp') or file_name.startswith('.'):
             print(f'Delete {bag}/{file_path}')
+            count += 1
             if mode == 'delete':
                 os.remove(f'{bag}/{file_path}')
         else:
             not_temp.append(file_path)
-    return not_temp
+    return count, not_temp
 
 
 def find_extra_files(bag):
@@ -113,7 +117,7 @@ if __name__ == '__main__':
             log(log_file_path, [bag_path, 'TBD', 'TBD', 'TBD', 'Bag path error'])
             continue
         extra_files = find_extra_files(bag_path)
-        not_deleted = delete_temp(bag_path, extra_files, script_mode)
+        delete_count, not_deleted = delete_temp(bag_path, extra_files, script_mode)
         # If the script is in delete mode and all extra files were deleted, validate the bag and print the results.
         # Otherwise, print the files that were not deleted.
         if script_mode == 'delete':
