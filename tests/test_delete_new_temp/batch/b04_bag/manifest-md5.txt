@@ -1,0 +1,2 @@
+9bbb645e9de06e395b58e38b228af276  data/Document.tmp
+4bb51d0461698119344eb0c54dbabb89  data/Document.txt

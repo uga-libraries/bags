@@ -1,0 +1,4 @@
+INSERT-PATH-TO-BAGS-REPO\tests\test_delete_new_temp\test_dir\b01_bag
+INSERT-PATH-TO-BAGS-REPO\tests\test_delete_new_temp\test_dir\b02_bag
+INSERT-PATH-TO-BAGS-REPO\tests\test_delete_new_temp\test_dir\b03_bag
+INSERT-PATH-TO-BAGS-REPO\tests\test_delete_new_temp\test_dir\b04_bag

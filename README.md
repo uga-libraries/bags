@@ -20,9 +20,10 @@ There are unit tests for each script in the "tests" folder.
 The scripts do not have functions, or just simple functions, so the only tests are for each entire script.
 The tests for undo_one_bag.py are incomplete: see [Issue 1](https://github.com/uga-libraries/bags/issues/1)
 
-For testing delete_thumbs_db, make a copy of the list templates in the folder test_delete_thumbs_db and
-replace INSERT-PATH-TO-BAGS-REPO with the correct path (something like C:\Users\username\Documents\GitHub\bags).
-This version of the lists will not be synced to GitHub, as they are in .gitignore
+For testing delete_new_temp.py and delete_thumbs_db.py, make a copy of the list templates in the script's test folder
+and replace INSERT-PATH-TO-BAGS-REPO with the correct path (something like C:\Users\username\Documents\GitHub\bags).
+This version of the lists will not be synced to GitHub, as they are in .gitignore,
+and will have to be remade every time the local copy of the repo is synced with GitHub.
 
 ## Scripts
 
@@ -64,16 +65,20 @@ Run the script again with the same parameter, and it will continue creating data
 
 ### delete_new_temp.py
 
-Purpose: find temporary files that are not in the manifest, delete them (if delete mode), and validate the bag.
+Purpose: find files that are not in the manifest, classify them as temporary or not,
+and in delete mode, delete the extra temporary files and validate the bag.
 
 Arguments:
-* bag_path (required): path to the bag (folder that ends in "_bag")
+* bag_list (required): path to a text file with the full path to all bags to be updated, one row per path
 * script_mode (required): preview (print what will delete) or delete (actually delete)
 
 This script was developed for fixing errors from checking fixity on bags that have been in storage for some time.
 Some temporary files, especially .DS_Store and Thumbs.db, are generated even if the folder hasn't been opened recently.
 
 The script does not delete temporary files that are in the manifest or non-temporary file that are not in the manifest.
+
+To make the bag_list, make a plain text file with the full path to every bag to be updated, one line per path.
+The file can be named anything. The script log will be saved in the same folder as this file.
 
 ### delete_thumbs_db.py
 

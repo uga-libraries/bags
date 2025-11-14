@@ -86,6 +86,7 @@ if __name__ == '__main__':
         if not os.path.exists(bag_path):
             log(log_file_path, [bag_path, 'TBD', 'TBD', 'Bag path error'])
             continue
+        print("Starting on", bag_path)
         thumb_count = delete_thumbs(bag_path)
         update_bag(bag_path)
         is_valid, errors = validate_bag(bag_path)
