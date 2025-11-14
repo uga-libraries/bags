@@ -1,4 +1,4 @@
 Bag,Bag_Valid,Errors
 A Text Document.txt,Skipped,
-aip1_bag,True,Valid
+aip1_bag,True,
 aip2_bag,False,bagit error

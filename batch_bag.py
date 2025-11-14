@@ -18,22 +18,7 @@ import bagit
 import csv
 import os
 import sys
-from shared_functions import log
-
-
-def validate_bag(bag_path):
-    """Validate a bag and return the result
-    Parameter: bag_path (string) - path to bag
-    Returns: "Valid" or bagit error output
-    """
-    bag_instance = bagit.Bag(bag_path)
-    try:
-        bag_instance.validate()
-        return "Valid"
-    except bagit.BagValidationError as errors:
-        return errors
-    except bagit.BagError as errors:
-        return errors
+from shared_functions import log, validate_bag
 
 
 if __name__ == '__main__':
@@ -74,5 +59,5 @@ if __name__ == '__main__':
             continue
 
         # Validate the bag and log the result.
-        bagit_output = validate_bag(f'{folder_path}_bag')
-        log(log_file, [f'{folder}_bag', bagit_output == 'Valid', bagit_output])
+        is_valid, errors = validate_bag(f'{folder_path}_bag')
+        log(log_file, [f'{folder}_bag', is_valid, errors])

@@ -11,6 +11,7 @@ Returns:
 """
 import bagit
 import sys
+from shared_functions import validate_bag
 
 
 if __name__ == '__main__':
@@ -20,8 +21,8 @@ if __name__ == '__main__':
     bag.save(manifests=True)
 
     # Validates the bag and print the errors, if any.
-    try:
-        bag.validate()
+    is_valid, errors = validate_bag(sys.argv[1])
+    if is_valid:
         print("Bag is valid")
-    except bagit.BagValidationError as errors:
+    else:
         print(errors)

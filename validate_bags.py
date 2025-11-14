@@ -13,7 +13,7 @@ import bagit
 import csv
 import os
 import sys
-from shared_functions import log
+from shared_functions import log, validate_bag
 
 
 if __name__ == '__main__':
@@ -25,14 +25,9 @@ if __name__ == '__main__':
     log_file = log_path = os.path.join(bag_dir, 'bag_validation_log.csv')
     log(log_file, ['Bag_Path', 'Bag_Valid', 'Errors'])
 
+    # Finds all bags at any level of the directory, based on the folder naming convention,
+    # validates and logs the result.
     for root, directory, folder in os.walk(bag_dir):
-
-        # A directory is a bag if the name ends with _bag
-        # Use root variable to have the full filepath.
         if root.endswith('_bag'):
-            bag = bagit.Bag(root)
-            try:
-                bag.validate()
-                log(log_file, [root, True, None])
-            except bagit.BagValidationError as errors:
-                log(log_file, [root, False, errors])
+            is_valid, errors = validate_bag(root)
+            log(log_file, [root, is_valid, errors])
