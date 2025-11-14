@@ -15,35 +15,23 @@ import sys
 from delete_thumbs_db import log, make_bag_list, validate_bag
 
 
-def delete_temp(bag, extra_list, mode):
-    """Delete any temp files from the bag and return a list of the ones that were not deleted,
-    using the same criteria as the general aip script
+def delete_temp(bag, temp):
+    """Delete any extra temp files from the bag
     Parameters:
         bag (string) - path to bag, needed to make full path for file
-        extra_list (list) - list of paths for files that are not in the bag manifest
-        mode (string) - preview or delete, determines if the files should just be printed or actually deleted
-    Returns:
-        temp (list) - List of paths for extra files that are temp and can be deleted
-        not_temp (list) - list of paths for extra files that were not temp and therefore not deleted
+        temp (list) - list of paths for temp files that are not in the bag manifest
+    Returns: None
     """
-    temp = []
-    not_temp = []
-    delete_list = [".DS_Store", "._.DS_Store", "Thumbs.db"]
-    for file_path in extra_list:
-        file_name = file_path.split('/')[-1]
-        if file_name in delete_list or file_name.endswith('.tmp') or file_name.startswith('.'):
-            temp.append(os.path.join(bag, file_path))
-            if mode == 'delete':
-                os.remove(os.path.join(bag, file_path))
-        else:
-            not_temp.append(file_path)
-    return temp, not_temp
+    for file_path in temp:
+        os.remove(os.path.join(bag, file_path))
 
 
 def find_extra_files(bag):
-    """Find files (based on full file path) that are in the bag data folder and not the manifest
+    """Find files that are in the bag data folder and not the manifest, split by if they are temp or not temp
     Parameter: bag (string) - path to bag
-    Returns: extras (list) - list of the paths for every file in data but not the manifest
+    Returns:
+        temp (list) - list of the paths for every temp file in data but not the manifest
+        not_temp(list)- list of the paths for every file in data but not the manifest that isn't a temp file
     """
     # List of file paths in the data folder, saved as a dataframe to compare to manifest.
     # To match the manifest, the path needs to start at data and use forward slashes.
@@ -62,11 +50,22 @@ def find_extra_files(bag):
                               names=['MD5', 'Manifest_Paths'])
     manifest_df['Manifest_Paths'] = 'data' + manifest_df['Manifest_Paths']
 
-    # Compare the data path list and the bag manifest, and return those only in the data path list.
+    # Compare the data path list and the bag manifest, and make a list of those only in the data path.
     compare_df = data_df.merge(manifest_df, left_on='Data_Paths', right_on='Manifest_Paths', how='left')
     data_only = compare_df[compare_df['Manifest_Paths'].isnull()]
     extras = data_only['Data_Paths'].tolist()
-    return extras
+
+    # Sort the extras by if they are temporary files or not and return those lists.
+    temp = []
+    not_temp = []
+    delete_list = [".DS_Store", "._.DS_Store", "Thumbs.db"]
+    for file_path in extras:
+        file_name = file_path.split('/')[-1]
+        if file_name in delete_list or file_name.endswith('.tmp') or file_name.startswith('.'):
+            temp.append(os.path.join(bag, file_path))
+        else:
+            not_temp.append(file_path)
+    return temp, not_temp
 
 
 def reminder(mode):
@@ -101,13 +100,13 @@ if __name__ == '__main__':
             log(log_file_path, [bag_path, 'TBD', 'TBD', 'TBD', 'Bag path error'])
             continue
         print("Starting on", bag_path)
-        extra_files = find_extra_files(bag_path)
-        deleted, not_deleted = delete_temp(bag_path, extra_files, script_mode)
+        extra_temp, extra_not_temp = find_extra_files(bag_path)
         if script_mode == 'delete':
-            if len(not_deleted) == 0:
+            delete_temp(bag_path, extra_temp)
+            if len(extra_not_temp) == 0:
                 is_valid, errors = validate_bag(bag_path)
-                log(log_file_path, [bag_path, len(deleted), deleted, not_deleted, is_valid, errors])
+                log(log_file_path, [bag_path, len(extra_temp), extra_temp, extra_not_temp, is_valid, errors])
             else:
-                log(log_file_path, [bag_path, len(deleted), deleted, not_deleted, 'False', 'Files not in manifest'])
+                log(log_file_path, [bag_path, len(extra_temp), extra_temp, extra_not_temp, 'False', 'Non-temp files not in manifest'])
         elif script_mode == 'preview':
-            log(log_file_path, [bag_path, len(deleted), deleted, not_deleted, 'TBD', 'TBD'])
+            log(log_file_path, [bag_path, len(extra_temp), extra_temp, extra_not_temp, 'TBD', 'TBD'])
