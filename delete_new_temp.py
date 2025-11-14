@@ -103,18 +103,11 @@ if __name__ == '__main__':
             continue
         extra_files = find_extra_files(bag_path)
         delete_count, not_deleted = delete_temp(bag_path, extra_files, script_mode)
-        # If the script is in delete mode and all extra files were deleted, validate the bag and print the results.
-        # Otherwise, print the files that were not deleted.
         if script_mode == 'delete':
             if len(not_deleted) == 0:
                 is_valid, errors = validate_bag(bag_path)
+                log(log_file_path, [bag_path, delete_count, 'TBD', not_deleted, is_valid, errors])
             else:
-                print("\nAfter deleting temp files, there are still files in the data folder that are not in the manifest:")
-                for path in not_deleted:
-                    print(f'\t* {path}')
+                log(log_file_path, [bag_path, delete_count, 'TBD', not_deleted, 'False', 'Files not in manifest'])
         elif script_mode == 'preview':
-            print("\nPreview of files to delete is complete.")
-            print("Files that would have been deleted are listed above.")
-            print(f"There are {len(not_deleted)} files that are not in the manifest and are not temp.")
-            for path in not_deleted:
-                print(f'\t* {path}')
+            log(log_file_path, [bag_path, delete_count, 'TBD', not_deleted, 'TBD', 'TBD'])
