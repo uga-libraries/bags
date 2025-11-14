@@ -75,7 +75,7 @@ def reminder(mode):
     if mode == 'delete':
         print('\nRunning in script_mode "delete", which will delete extra temp files and validate the bag.')
     elif mode == 'preview':
-        print('\nRunning in script_mode "preview", which will print files that would be deleted but changes nothing.')
+        print('\nRunning in script_mode "preview", which will identify files that would be deleted but changes nothing.')
     else:
         print(f'\nscript_mode {mode} is not "delete" or "preview".')
         sys.exit()
