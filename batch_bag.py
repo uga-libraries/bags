@@ -51,6 +51,8 @@ def validate_bag(bag_path):
         return "Valid"
     except bagit.BagValidationError as errors:
         return errors
+    except bagit.BagError as errors:
+        return errors
 
 
 if __name__ == '__main__':
@@ -63,6 +65,7 @@ if __name__ == '__main__':
 
     for folder in os.listdir(bag_dir):
         folder_path = os.path.join(bag_dir, folder)
+        print("\nStarting on", folder_path)
 
         # Skip all files and any folders that are big enough that the subfolders will be bags instead.
         # They are still added to the log for checking that they should be been skipped.
@@ -78,8 +81,14 @@ if __name__ == '__main__':
 
         # Make bag and rename it to add "_bag" according to standard naming conventions.
         # Since these are for the backlog and not for preservation, we only use the MD5 checksum.
-        bagit.make_bag(folder_path, checksums=['md5'])
-        os.replace(folder_path, f'{folder_path}_bag')
+        # PermissionError can happen due to path length or spaces at the end of folders or files,
+        # but can also happen with no clear cause.
+        try:
+            bagit.make_bag(folder_path, checksums=['md5'])
+            os.replace(folder_path, f'{folder_path}_bag')
+        except PermissionError as error:
+            make_log(f'{folder_path}_bag', error)
+            continue
 
         # Validate the bag and log the result.
         bagit_output = validate_bag(f'{folder_path}_bag')
