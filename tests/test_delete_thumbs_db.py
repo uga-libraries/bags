@@ -31,7 +31,7 @@ class MyTestCase(unittest.TestCase):
         # Test for the log contents.
         test_dir = os.path.join(os.getcwd(), 'test_delete_thumbs_db', 'test_dir')
         result = csv_to_list(os.path.join(os.getcwd(), 'test_delete_thumbs_db', 'bag_validation_log.csv'))
-        expected = [['Bag_Path', 'Thumbs_Deleted', 'Valid?', 'Notes'],
+        expected = [['Bag_Path', 'Thumbs_Count', 'Bag_Valid', 'Errors'],
                     [os.path.join(test_dir, 'aip1_bag'), '1', 'True', 'BLANK'],
                     [os.path.join(test_dir, 'aip2_bag'), '2', 'True', 'BLANK'],
                     [os.path.join(test_dir, 'aip3_bag'), '1', 'True', 'BLANK']]
@@ -78,7 +78,7 @@ class MyTestCase(unittest.TestCase):
         # Test for the log contents.
         test_dir = os.path.join(os.getcwd(), 'test_delete_thumbs_db', 'test_dir')
         result = csv_to_list(os.path.join(os.getcwd(), 'test_delete_thumbs_db', 'bag_validation_log.csv'))
-        expected = [['Bag_Path', 'Thumbs_Deleted', 'Valid?', 'Notes'],
+        expected = [['Bag_Path', 'Thumbs_Count', 'Bag_Valid', 'Errors'],
                     [os.path.join(test_dir, 'ER001_bag'), '3', 'True', 'BLANK']]
         self.assertEqual(expected, result, "Problem with test for one, log")
 
@@ -110,7 +110,7 @@ class MyTestCase(unittest.TestCase):
         # Test for the log contents.
         test_dir = os.path.join(os.getcwd(), 'test_delete_thumbs_db', 'test_dir')
         result = csv_to_list(os.path.join(os.getcwd(), 'test_delete_thumbs_db', 'bag_validation_log.csv'))
-        expected = [['Bag_Path', 'Thumbs_Deleted', 'Valid?', 'Notes'],
+        expected = [['Bag_Path', 'Thumbs_Count', 'Bag_Valid', 'Errors'],
                     [os.path.join(test_dir, 'a0_bag'), 'TBD', 'TBD', 'Bag path error'],
                     [os.path.join(test_dir, 'a1_bag'), '0', 'True', 'BLANK'],
                     ['BLANK', 'TBD', 'TBD', 'Bag path error']]

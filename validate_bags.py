@@ -44,7 +44,7 @@ if __name__ == '__main__':
 
     # Starts the bag validation log in the same folder as the bags.
     log_file = log_path = os.path.join(bag_dir, 'bag_validation_log.csv')
-    log(log_file, ['Bag_Path', 'Valid?', 'Notes'])
+    log(log_file, ['Bag_Path', 'Bag_Valid', 'Errors'])
 
     for root, directory, folder in os.walk(bag_dir):
 

@@ -47,10 +47,10 @@ class MyTestCase(unittest.TestCase):
 
         # Test for the log contents.
         result = csv_to_list(os.path.join(bag_dir, 'bag_validation_log.csv'))
-        expected = [['Bag', 'Valid?', 'Notes'],
+        expected = [['Bag', 'Bag_Valid', 'Errors'],
                     ['aip1_bag', 'True', 'Valid'],
                     ['aip2_bag', 'True', 'Valid'],
-                    ['bag_validation_log.csv', 'TBD', 'Skipped']]
+                    ['bag_validation_log.csv', 'Skipped', 'BLANK']]
         self.assertEqual(expected, result, "Problem with test for bag_all, log")
 
     def test_restart(self):
@@ -102,14 +102,14 @@ class MyTestCase(unittest.TestCase):
 
         # Test for the log contents.
         result = csv_to_list(os.path.join(bag_dir, 'bag_validation_log.csv'))
-        expected = [['Bag', 'Valid?', 'Notes'],
-                    ['A Text Document.txt', 'TBD', 'Skipped'],
+        expected = [['Bag', 'Bag_Valid', 'Errors'],
+                    ['A Text Document.txt', 'Skipped', 'BLANK'],
                     ['aip1_bag', 'True', 'Valid'],
                     ['aip2_bag', 'False', 'bagit error'],
-                    ['A Text Document.txt', 'TBD', 'Skipped'],
+                    ['A Text Document.txt', 'Skipped', 'BLANK'],
                     ['aip3_bag', 'True', 'Valid'],
                     ['aip4_bag', 'True', 'Valid'],
-                    ['bag_validation_log.csv', 'TBD', 'Skipped']]
+                    ['bag_validation_log.csv', 'Skipped', 'BLANK']]
         self.assertEqual(expected, result, "Problem with test for restart, log")
 
     def test_skip_bags(self):
@@ -149,10 +149,10 @@ class MyTestCase(unittest.TestCase):
 
         # Test for the log contents.
         result = csv_to_list(os.path.join(bag_dir, 'bag_validation_log.csv'))
-        expected = [['Bag', 'Valid?', 'Notes'],
-                    ['bag_validation_log.csv', 'TBD', 'Skipped'],
+        expected = [['Bag', 'Bag_Valid', 'Errors'],
+                    ['bag_validation_log.csv', 'Skipped', 'BLANK'],
                     ['folder1_bag', 'True', 'Valid'],
-                    ['folder2_bags', 'TBD', 'Skipped'],
+                    ['folder2_bags', 'Skipped', 'BLANK'],
                     ['folder3_bag', 'True', 'Valid']]
         self.assertEqual(expected, result, "Problem with test for skip_bags, log")
 
@@ -184,11 +184,11 @@ class MyTestCase(unittest.TestCase):
 
         # Test for the log contents.
         result = csv_to_list(os.path.join(bag_dir, 'bag_validation_log.csv'))
-        expected = [['Bag', 'Valid?', 'Notes'],
-                    ['a test file.txt', 'TBD', 'Skipped'],
+        expected = [['Bag', 'Bag_Valid', 'Errors'],
+                    ['a test file.txt', 'Skipped', 'BLANK'],
                     ['aip1_bag', 'True', 'Valid'],
-                    ['bag_validation_log.csv', 'TBD', 'Skipped'],
-                    ['Test_File.txt', 'TBD', 'Skipped']]
+                    ['bag_validation_log.csv', 'Skipped', 'BLANK'],
+                    ['Test_File.txt', 'Skipped', 'BLANK']]
         self.assertEqual(expected, result, "Problem with test for skip_files, log")
 
 
