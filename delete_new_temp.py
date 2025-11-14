@@ -8,12 +8,11 @@ Returns:
     Prints any files that are not in the manifest but did not quality as temporary files
     Prints the validation result
 """
-import bagit
 import os
 import pandas as pd
 import re
 import sys
-from delete_thumbs_db import log, make_bag_list
+from delete_thumbs_db import log, make_bag_list, validate_bag
 
 
 def delete_temp(bag, extra_list, mode):
@@ -84,20 +83,6 @@ def reminder(mode):
         sys.exit()
 
 
-def validate_bag(bag):
-    """Validates a bag that had all extra files deleted and prints the result
-    Parameter: bag (string) - path to bag
-    Returns: None
-    """
-    bag_instance = bagit.Bag(bag)
-    try:
-        bag_instance.validate()
-        print("\nBag is valid")
-    except bagit.BagValidationError as errors:
-        print("\nBag is not valid")
-        print(errors)
-
-
 if __name__ == '__main__':
 
     # Get a list of bags to update from a text file (path is a script argument).
@@ -122,7 +107,7 @@ if __name__ == '__main__':
         # Otherwise, print the files that were not deleted.
         if script_mode == 'delete':
             if len(not_deleted) == 0:
-                validate_bag(bag_path)
+                is_valid, errors = validate_bag(bag_path)
             else:
                 print("\nAfter deleting temp files, there are still files in the data folder that are not in the manifest:")
                 for path in not_deleted:
