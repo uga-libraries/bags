@@ -1,0 +1,1 @@
+INSERT-PATH-TO-BAGS-REPO\tests\test_delete_new_temp\test_dir\coll-1-3_bag
