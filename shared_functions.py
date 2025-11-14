@@ -32,5 +32,5 @@ def validate_bag(bag):
     try:
         bagit_bag.validate()
         return True, None
-    except bagit.BagValidationError as error_msg:
+    except (bagit.BagValidationError, bagit.BagError) as error_msg:
         return False, error_msg
