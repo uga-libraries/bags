@@ -100,6 +100,7 @@ if __name__ == '__main__':
         if not os.path.exists(bag_path):
             log(log_file_path, [bag_path, 'TBD', 'TBD', 'TBD', 'Bag path error'])
             continue
+        print("Starting on", bag_path)
         extra_files = find_extra_files(bag_path)
         deleted, not_deleted = delete_temp(bag_path, extra_files, script_mode)
         if script_mode == 'delete':
