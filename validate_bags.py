@@ -16,27 +16,6 @@ import sys
 from shared_functions import log
 
 
-def make_log(bag_path, is_valid=None, note=None, new_log=False):
-    """Make or add to a log with validation results for each bag, saved to the bag_directory
-    Parameters:
-        bag_path (string) - path to bag_dir (if header) or specific bag
-        is_valid (Boolean, optional) - if the bag is valid
-        note (string, optional) - error output of bagit
-        new_log (Boolean, optional) - True if a new log should be started with a header
-    Returns: None
-    """
-    if new_log:
-        log_path = os.path.join(bag_path, 'bag_validation_log.csv')
-        with open(log_path, 'w', newline='') as log:
-            log_writer = csv.writer(log)
-            log_writer.writerow(['Bag_Path', 'Valid?', 'Notes'])
-    else:
-        log_path = os.path.join(os.path.dirname(bag_path), 'bag_validation_log.csv')
-        with open(log_path, 'a', newline='') as log:
-            log_writer = csv.writer(log)
-            log_writer.writerow([bag_path, is_valid, note])
-
-
 if __name__ == '__main__':
 
     # Parent folder of the bags to be validated.
