@@ -13,7 +13,7 @@ import os
 import pandas as pd
 import re
 import sys
-from delete_thumbs_db import make_bag_list
+from delete_thumbs_db import log, make_bag_list
 
 
 def delete_temp(bag, extra_list, mode):
@@ -96,12 +96,16 @@ def validate_bag(bag):
 
 if __name__ == '__main__':
 
-    # Get a list of bags to update from a text file (path is the script argument).
+    # Get a list of bags to update from a text file (path is a script argument).
     bag_list = make_bag_list(sys.argv[1])
 
     # Print reminder of script mode functionality.
     script_mode = sys.argv[2]
     reminder(script_mode)
+
+    # Start the log in the same folder as the bag list file.
+    log_file_path = os.path.join(os.path.dirname(sys.argv[1]), f'{script_mode}_temp_log.csv')
+    log(log_file_path, ['Bag', 'Temp_Count', 'Temp_Deleted', 'Files_Not_Deleted', 'Bag_Valid', 'Bag_Validation_Errors'])
 
     # For each bag, find temp files not in the bag manifest and act on them in accordance with the script mode.
     for bag_path in bag_list:
