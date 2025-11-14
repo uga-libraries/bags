@@ -23,22 +23,21 @@ def delete_temp(bag, extra_list, mode):
         extra_list (list) - list of paths for files that are not in the bag manifest
         mode (string) - preview or delete, determines if the files should just be printed or actually deleted
     Returns:
-        temp_count (integer) - number of temp files that will be/were deleted for the log
-        not_temp (list) - list of paths for files that were not temp and therefore not deleted
+        temp (list) - List of paths for extra files that are temp and can be deleted
+        not_temp (list) - list of paths for extra files that were not temp and therefore not deleted
     """
-    count = 0
+    temp = []
     not_temp = []
     delete_list = [".DS_Store", "._.DS_Store", "Thumbs.db"]
     for file_path in extra_list:
         file_name = file_path.split('/')[-1]
         if file_name in delete_list or file_name.endswith('.tmp') or file_name.startswith('.'):
-            print(f'Delete {bag}/{file_path}')
-            count += 1
+            temp.append(os.path.join(bag, file_path))
             if mode == 'delete':
-                os.remove(f'{bag}/{file_path}')
+                os.remove(os.path.join(bag, file_path))
         else:
             not_temp.append(file_path)
-    return count, not_temp
+    return temp, not_temp
 
 
 def find_extra_files(bag):
@@ -102,12 +101,12 @@ if __name__ == '__main__':
             log(log_file_path, [bag_path, 'TBD', 'TBD', 'TBD', 'Bag path error'])
             continue
         extra_files = find_extra_files(bag_path)
-        delete_count, not_deleted = delete_temp(bag_path, extra_files, script_mode)
+        deleted, not_deleted = delete_temp(bag_path, extra_files, script_mode)
         if script_mode == 'delete':
             if len(not_deleted) == 0:
                 is_valid, errors = validate_bag(bag_path)
-                log(log_file_path, [bag_path, delete_count, 'TBD', not_deleted, is_valid, errors])
+                log(log_file_path, [bag_path, len(deleted), deleted, not_deleted, is_valid, errors])
             else:
-                log(log_file_path, [bag_path, delete_count, 'TBD', not_deleted, 'False', 'Files not in manifest'])
+                log(log_file_path, [bag_path, len(deleted), deleted, not_deleted, 'False', 'Files not in manifest'])
         elif script_mode == 'preview':
-            log(log_file_path, [bag_path, delete_count, 'TBD', not_deleted, 'TBD', 'TBD'])
+            log(log_file_path, [bag_path, len(deleted), deleted, not_deleted, 'TBD', 'TBD'])
