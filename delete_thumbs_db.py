@@ -15,7 +15,7 @@ import bagit
 import csv
 import os
 import sys
-from shared_functions import log, make_bag_list, validate_bag
+from shared_functions import log, make_bag_list, update_bag, validate_bag
 
 
 def delete_thumbs(bag):
@@ -29,14 +29,6 @@ def delete_thumbs(bag):
                 os.remove(os.path.join(root, file))
                 count += 1
     return count
-
-
-def update_bag(bag):
-    """Update the bag so any Thumbs.db that were part of the manifest are removed
-    Parameter: bag (string) - path to bag
-    Returns: None"""
-    bag_inst = bagit.Bag(bag)
-    bag_inst.save(manifests=True)
 
 
 if __name__ == '__main__':

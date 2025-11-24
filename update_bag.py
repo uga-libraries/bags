@@ -11,17 +11,17 @@ Returns:
 """
 import bagit
 import sys
-from shared_functions import validate_bag
+from shared_functions import update_bag, validate_bag
 
 
 if __name__ == '__main__':
 
     # Updates the bag.
-    bag = bagit.Bag(sys.argv[1])
-    bag.save(manifests=True)
+    bag_path = sys.argv[1]
+    update_bag(bag_path)
 
     # Validates the bag and print the errors, if any.
-    is_valid, errors = validate_bag(sys.argv[1])
+    is_valid, errors = validate_bag(bag_path)
     if is_valid:
         print("Bag is valid")
     else:

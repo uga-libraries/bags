@@ -24,6 +24,14 @@ def make_bag_list(bag_list_path):
     return bag_path_list
 
 
+def update_bag(bag):
+    """Update the bag so the manifest matches the current state of the data folder (e.g., after deletion)
+    Parameter: bag (string) - path to bag
+    Returns: None"""
+    bag_inst = bagit.Bag(bag)
+    bag_inst.save(manifests=True)
+
+
 def validate_bag(bag):
     """Validate the bag and return the result for the log
     Parameter: bag (string) - path to bag
