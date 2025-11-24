@@ -13,28 +13,64 @@ Returns:
 import os
 import sys
 
-# Indicate the directory that contains the bag or bags.
-bag_dir = sys.argv[1]
-os.chdir(bag_dir)
 
-for root, directory, folder in os.walk('.'):
+def delete_metadata(bag):
+    """Delete all metadata files from the bag
+    Parameter: bag (string) - path to bag
+    Returns: None
+    """
+    # Matches the bag metadata file names as much as possible to avoid accidentally any other files.
+    # There should only be bag metadata files in this location, but sometimes other things are saved here in error.
+    for doc in os.listdir(bag):
+        doc_path = os.path.join(bag, doc)
+        # These bag metadata files always have the same name.
+        if doc == 'bag-info.txt' or doc == 'bagit.txt':
+            os.remove(doc_path)
+        # The manifest metadata files include the fixity type in the name.
+        elif doc.startswith('manifest-') and doc.endswith('.txt'):
+            os.remove(doc_path)
+        elif doc.startswith('tagmanifest-') and doc.endswith('.txt'):
+            os.remove(doc_path)
 
-    # A directory is a bag if the name ends with _bag
-    # Use root variable to have the full filepath.
-    if root.endswith('_bag'):
 
-        # Delete the bag metadata files.
-        for doc in os.listdir(root):
-            if doc.endswith('.txt'):
-                os.remove(f'{root}/{doc}')
+def reorganize(bag):
+    """Move all files from the data folder of the bag
+    Parameter: bag (string) - path to bag
+    Returns: correct_reorg (Boolean) - True if no error, False if data didn't empty
+    """
+    # Moves the contents of the data folder into the parent directory.
+    data_path = os.path.join(bag, 'data')
+    for item in os.listdir(data_path):
+        os.replace(os.path.join(data_path, item), os.path.join(bag, item))
 
-        # Move the contents from the data folder into the parent directory.
-        for item in os.listdir(f'{root}/data'):
-            os.replace(f'{root}/data/{item}', f'{root}/{item}')
+    # Deletes the now-empty data folder, or returns an error if it wasn't empty.
+    if not os.listdir(data_path):
+        os.rmdir(data_path)
+        return True
+    else:
+        return False
 
-        # Delete the now-empty data folder.
-        os.rmdir(f'{root}/data')
 
-        # Delete '_bag' from the end of the directory name.
-        newname = root.replace('_bag', '')
-        os.replace(root, newname)
+def rename(bag):
+    """Delete '_bag' from the end of the directory name
+    Parameter: bag (string) - path to bag
+    Returns: None
+    """
+    # Use the position rather than replacing "_bag" in case the string is in other parts of the folder path,
+    # where it needs to rename. This happens in the unit test and could happen with the backlog
+    # for accessions split in multiple bags.
+    new_name = bag[:-4]
+    os.replace(bag, new_name)
+
+
+if __name__ == '__main__':
+    bag_dir = sys.argv[1]
+    for root, directory, folder in os.walk(bag_dir):
+        if root.endswith('_bag'):
+            print("Starting on", root)
+            delete_metadata(root)
+            correct_reorg = reorganize(root)
+            if correct_reorg:
+                rename(root)
+            else:
+                print("Error: data folder not empty after reorganize")
