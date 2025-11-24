@@ -12,6 +12,7 @@ Returns:
 """
 import os
 import sys
+from shared_functions import validate_bag
 
 
 def delete_metadata(bag):
@@ -68,9 +69,13 @@ if __name__ == '__main__':
     for root, directory, folder in os.walk(bag_dir):
         if root.endswith('_bag'):
             print("Starting on", root)
-            delete_metadata(root)
-            correct_reorg = reorganize(root)
-            if correct_reorg:
-                rename(root)
+            is_valid, errors = validate_bag(root)
+            if is_valid:
+                delete_metadata(root)
+                correct_reorg = reorganize(root)
+                if correct_reorg:
+                    rename(root)
+                else:
+                    print("Error: data folder not empty after reorganize")
             else:
-                print("Error: data folder not empty after reorganize")
+                print("Bag is not valid. Review before undoing.")
