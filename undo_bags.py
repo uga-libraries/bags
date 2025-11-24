@@ -1,6 +1,8 @@
-"""Remove content from one or more bags at any level in a directory structure
+"""Remove content from one or more bags at any level in a directory structure, if the bag is valid
 
 Bags should follow the naming convention of ending with "_bag".
+If a bag is not valid, it will print the error and not do the rest of the script,
+so the error can be investigated before the bag metadata needed for this review is deleted.
 
 Parameter:
     bag_directory (required): path to the directory with the bag or bags
@@ -12,6 +14,7 @@ Returns:
 """
 import os
 import sys
+from shared_functions import validate_bag
 
 
 def delete_metadata(bag):
@@ -68,9 +71,13 @@ if __name__ == '__main__':
     for root, directory, folder in os.walk(bag_dir):
         if root.endswith('_bag'):
             print("Starting on", root)
-            delete_metadata(root)
-            correct_reorg = reorganize(root)
-            if correct_reorg:
-                rename(root)
+            is_valid, errors = validate_bag(root)
+            if is_valid:
+                delete_metadata(root)
+                correct_reorg = reorganize(root)
+                if correct_reorg:
+                    rename(root)
+                else:
+                    print("Error: data folder not empty after reorganize")
             else:
-                print("Error: data folder not empty after reorganize")
+                print("Bag is not valid. Review before undoing.")
