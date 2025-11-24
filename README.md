@@ -92,25 +92,16 @@ The file can be named anything. The script log will be saved in the same folder 
 This script should only be used after delete_new_temp.py or one of the bag manifest compare scripts shows that
 Thumbs.db are the only reason the bag is not validating, because it updates the bag.
 
-### undo_all_bags.py
+### undo_bags.py
 
-Purpose: remove files from each bag in bag_directory.
+Purpose: remove files from each bag in bag_directory. It does work if there is a single bag.
 
-Argument: bag_directory (required): path to directory that contains the bags. Bag folder names should end with "_bag".
+Argument: bag_directory (required): path to directory that contains the bag or bags. 
+Bag folder names should end with "_bag".
 
 This script is most commonly used when files are bagged for storage and later need to be worked on.
-Bag metadata files are deleted, content is moved out of the data folder, and the folder is renamed to remove "_bag'.
+Bag metadata files are deleted, content is moved out of the data folder, and the folder is renamed to remove "_bag".
 Validate the bags prior to running this script.
-
-### undo_one_bag.py
-
-Purpose: remove files from the bag.
-
-Argument: bag (required): path to the bag (folder that ends in "_bag")
-
-This script is most commonly used when files are bagged for storage and later need to be worked on.
-Bag metadata files are deleted, content is moved out of the data folder, and the folder is renamed to remove "_bag'.
-Validate the bag prior to running this script.
 
 ### update_bag.py
 
