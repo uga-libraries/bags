@@ -32,7 +32,6 @@ if __name__ == '__main__':
 
     for folder in os.listdir(bag_dir):
         folder_path = os.path.join(bag_dir, folder)
-        print("\nStarting on", folder_path)
 
         # Skip all files and any folders that are big enough that the subfolders will be bags instead.
         # They are still added to the log for checking that they should be been skipped.
@@ -45,6 +44,8 @@ if __name__ == '__main__':
         # Does not add them to the log as skipped, since they should already be in the log from when they were bagged.
         if folder_path.endswith('_bag'):
             continue
+
+        print("Starting on", folder_path)
 
         # Make bag and rename it to add "_bag" according to standard naming conventions.
         # Since these are for the backlog and not for preservation, we only use the MD5 checksum.
