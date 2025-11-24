@@ -118,7 +118,7 @@ def save_md5(csv_path, row):
         row (list) - MD5 and path for a single file
     Returns: None
     """
-    with open(csv_path, 'a', newline='') as file:
+    with open(csv_path, 'a', newline='', encoding='utf-8') as file:
         writer = csv.writer(file)
         writer.writerow(row)
 
