@@ -67,6 +67,7 @@ if __name__ == '__main__':
     bag_dir = sys.argv[1]
     for root, directory, folder in os.walk(bag_dir):
         if root.endswith('_bag'):
+            print("Starting on", root)
             delete_metadata(root)
             correct_reorg = reorganize(root)
             if correct_reorg:
