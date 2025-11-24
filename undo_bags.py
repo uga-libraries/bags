@@ -56,14 +56,16 @@ def rename(bag):
     Parameter: bag (string) - path to bag
     Returns: None
     """
-    new_name = bag.replace('_bag', '')
+    # Use the position rather than replacing "_bag" in case the string is in other parts of the folder path,
+    # where it needs to rename. This happens in the unit test and could happen with the backlog
+    # for accessions split in multiple bags.
+    new_name = bag[:-4]
     os.replace(bag, new_name)
 
 
 if __name__ == '__main__':
     bag_dir = sys.argv[1]
-    os.chdir(bag_dir)
-    for root, directory, folder in os.walk('.'):
+    for root, directory, folder in os.walk(bag_dir):
         if root.endswith('_bag'):
             delete_metadata(root)
             correct_reorg = reorganize(root)
