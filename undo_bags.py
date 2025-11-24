@@ -1,6 +1,8 @@
-"""Remove content from one or more bags at any level in a directory structure
+"""Remove content from one or more bags at any level in a directory structure, if the bag is valid
 
 Bags should follow the naming convention of ending with "_bag".
+If a bag is not valid, it will print the error and not do the rest of the script,
+so the error can be investigated before the bag metadata needed for this review is deleted.
 
 Parameter:
     bag_directory (required): path to the directory with the bag or bags
