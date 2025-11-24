@@ -24,7 +24,7 @@ class MyTestCase(unittest.TestCase):
 
         # Tests the log contents.
         result = csv_to_list(os.path.join(bag_dir, 'bag_validation_log.csv'))
-        expected = [['Bag_Path', 'Valid?', 'Notes'],
+        expected = [['Bag_Path', 'Bag_Valid', 'Errors'],
                     [os.path.join(bag_dir, 'aip_1_bag'), 'False',
                      'Payload-Oxum validation failed. Expected 1 files and 19 bytes but found 1 files and 42 bytes'],
                     [os.path.join(bag_dir, 'aip_2_bag'), 'False',
@@ -40,7 +40,7 @@ class MyTestCase(unittest.TestCase):
 
         # Tests the log contents.
         result = csv_to_list(os.path.join(bag_dir, 'bag_validation_log.csv'))
-        expected = [['Bag_Path', 'Valid?', 'Notes'],
+        expected = [['Bag_Path', 'Bag_Valid', 'Errors'],
                     [os.path.join(bag_dir, 'aip_1_bag'), 'True', 'BLANK'],
                     [os.path.join(bag_dir, 'aip_2_bag'), 'True', 'BLANK']]
         self.assertEqual(expected, result, "Problem with test for all valid")
@@ -54,7 +54,7 @@ class MyTestCase(unittest.TestCase):
 
         # Tests the log contents.
         result = csv_to_list(os.path.join(bag_dir, 'bag_validation_log.csv'))
-        expected = [['Bag_Path', 'Valid?', 'Notes'],
+        expected = [['Bag_Path', 'Bag_Valid', 'Errors'],
                     [os.path.join(bag_dir, 'aip_1_bag'), 'True', 'BLANK'],
                     [os.path.join(bag_dir, 'aip_2_bag'), 'False',
                      'Payload-Oxum validation failed. Expected 2 files and 51 bytes but found 1 files and 25 bytes']]
@@ -69,7 +69,7 @@ class MyTestCase(unittest.TestCase):
 
         # Tests the log contents.
         result = csv_to_list(os.path.join(bag_dir, 'bag_validation_log.csv'))
-        expected = [['Bag_Path', 'Valid?', 'Notes'],
+        expected = [['Bag_Path', 'Bag_Valid', 'Errors'],
                     [os.path.join(bag_dir, 'aip_1_bag'), 'True', 'BLANK']]
         self.assertEqual(expected, result, "Problem with test for one valid")
 

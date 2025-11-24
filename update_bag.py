@@ -9,19 +9,19 @@ Returns:
     If the bag is valid, it will print the bag name and that it is valid.
     If the bag is invalid, it will print the bag name, that it is invalid, and the error message
 """
-import bagit
 import sys
+from shared_functions import update_bag, validate_bag
 
 
 if __name__ == '__main__':
 
     # Updates the bag.
-    bag = bagit.Bag(sys.argv[1])
-    bag.save(manifests=True)
+    bag_path = sys.argv[1]
+    update_bag(bag_path)
 
     # Validates the bag and print the errors, if any.
-    try:
-        bag.validate()
+    is_valid, errors = validate_bag(bag_path)
+    if is_valid:
         print("Bag is valid")
-    except bagit.BagValidationError as errors:
+    else:
         print(errors)

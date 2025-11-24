@@ -9,46 +9,23 @@ Parameters:
 Returns:
     Makes bag_validation_log.csv in bag_directory
 """
-import bagit
-import csv
 import os
 import sys
-
-
-def make_log(bag_path, is_valid=None, note=None, new_log=False):
-    """Make or add to a log with validation results for each bag, saved to the bag_directory
-    Parameters:
-        bag_path (string) - path to bag_dir (if header) or specific bag
-        is_valid (Boolean, optional) - if the bag is valid
-        note (string, optional) - error output of bagit
-        new_log (Boolean, optional) - True if a new log should be started with a header
-    Returns: None
-    """
-    if new_log:
-        log_path = os.path.join(bag_path, 'bag_validation_log.csv')
-        with open(log_path, 'w', newline='') as log:
-            log_writer = csv.writer(log)
-            log_writer.writerow(['Bag_Path', 'Valid?', 'Notes'])
-    else:
-        log_path = os.path.join(os.path.dirname(bag_path), 'bag_validation_log.csv')
-        with open(log_path, 'a', newline='') as log:
-            log_writer = csv.writer(log)
-            log_writer.writerow([bag_path, is_valid, note])
+from shared_functions import log, validate_bag
 
 
 if __name__ == '__main__':
 
-    # Indicate the directory that contains bags.
+    # Parent folder of the bags to be validated.
     bag_dir = sys.argv[1]
-    make_log(bag_dir, new_log=True)
-    for root, directory, folder in os.walk(bag_dir):
 
-        # A directory is a bag if the name ends with _bag
-        # Use root variable to have the full filepath.
+    # Starts the bag validation log in the same folder as the bags.
+    log_file = log_path = os.path.join(bag_dir, 'bag_validation_log.csv')
+    log(log_file, ['Bag_Path', 'Bag_Valid', 'Errors'])
+
+    # Finds all bags at any level of the directory, based on the folder naming convention,
+    # validates and logs the result.
+    for root, directory, folder in os.walk(bag_dir):
         if root.endswith('_bag'):
-            bag = bagit.Bag(root)
-            try:
-                bag.validate()
-                make_log(root, True)
-            except bagit.BagValidationError as errors:
-                make_log(root, False, errors)
+            is_valid, errors = validate_bag(root)
+            log(log_file, [root, is_valid, errors])

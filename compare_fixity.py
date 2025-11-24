@@ -20,7 +20,6 @@ import csv
 import hashlib
 import os
 import pandas as pd
-import pathlib
 import re
 import sys
 

@@ -10,14 +10,13 @@ Returns:
     All content originally in the bag will be in the folder, without the bag manifests or directory structure.
     If the bag was originally named ending in "_bag", that ending will be removed.
 """
-
 import os
 import sys
 
 
 # Indicate the directory to be unbagged.
-bag = sys.argv[1]
-os.chdir(bag)
+bag_path = sys.argv[1]
+os.chdir(bag_path)
 
 # Delete the bag metadata files, which are all text files.
 for doc in os.listdir('.'):
@@ -32,6 +31,6 @@ for item in os.listdir('data'):
 os.rmdir('data')
 
 # Delete '_bag' from the end of the directory name if the standard bag naming convention was used.
-if bag.endswith('_bag'):
-    newname = bag.replace('_bag', '')
-    os.replace(bag, newname)
+if bag_path.endswith('_bag'):
+    newname = bag_path.replace('_bag', '')
+    os.replace(bag_path, newname)

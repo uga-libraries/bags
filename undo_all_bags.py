@@ -10,13 +10,12 @@ Returns:
     All content originally in bags will be in folders without the "_bag" ending
     and without the bag manifests or directory structure.
 """
-
 import os
 import sys
 
 # Indicate the directory that contains bags.
-bags = sys.argv[1]
-os.chdir(bags)
+bag_dir = sys.argv[1]
+os.chdir(bag_dir)
 
 for root, directory, folder in os.walk('.'):
 
