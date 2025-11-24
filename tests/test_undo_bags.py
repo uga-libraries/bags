@@ -1,4 +1,3 @@
-"""Test for the script undo_bags.py"""
 import os
 import shutil
 import subprocess
