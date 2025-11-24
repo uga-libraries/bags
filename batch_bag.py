@@ -33,7 +33,10 @@ def make_bag(bag):
         os.replace(bag, f'{bag}_bag')
         return True
     except PermissionError as error:
-        log(log_file, [f'{folder}_bag', 'TBD', error])
+        log(log_file, [f'{folder}', 'TBD', error])
+        return False
+    except bagit.BagError as error:
+        log(log_file, [f'{folder}', 'TBD', error])
         return False
 
 
