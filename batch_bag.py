@@ -15,7 +15,6 @@ Returns:
     bag_validation_log.csv in the bag_directory
 """
 import bagit
-import csv
 import os
 import sys
 from shared_functions import log, validate_bag

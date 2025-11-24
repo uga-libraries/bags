@@ -9,8 +9,6 @@ Parameters:
 Returns:
     Makes bag_validation_log.csv in bag_directory
 """
-import bagit
-import csv
 import os
 import sys
 from shared_functions import log, validate_bag

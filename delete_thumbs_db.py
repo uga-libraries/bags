@@ -11,8 +11,6 @@ Parameter:
 Returns:
     bag_validation_log.csv in the same directory as bag_list
 """
-import bagit
-import csv
 import os
 import sys
 from shared_functions import log, make_bag_list, update_bag, validate_bag

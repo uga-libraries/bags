@@ -10,7 +10,6 @@ Returns:
     All content originally in bags will be in folders without the "_bag" ending
     and without the bag manifests or directory structure.
 """
-
 import os
 import sys
 

@@ -9,7 +9,6 @@ Returns:
     If the bag is valid, it will print the bag name and that it is valid.
     If the bag is invalid, it will print the bag name, that it is invalid, and the error message
 """
-import bagit
 import sys
 from shared_functions import update_bag, validate_bag
 
