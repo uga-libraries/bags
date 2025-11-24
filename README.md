@@ -102,16 +102,6 @@ This script is most commonly used when files are bagged for storage and later ne
 Bag metadata files are deleted, content is moved out of the data folder, and the folder is renamed to remove "_bag'.
 Validate the bags prior to running this script.
 
-### undo_one_bag.py
-
-Purpose: remove files from the bag.
-
-Argument: bag (required): path to the bag (folder that ends in "_bag")
-
-This script is most commonly used when files are bagged for storage and later need to be worked on.
-Bag metadata files are deleted, content is moved out of the data folder, and the folder is renamed to remove "_bag'.
-Validate the bag prior to running this script.
-
 ### update_bag.py
 
 Purpose: Update the manifest in a bag to match what is currently in the data folder and validates the bag.
