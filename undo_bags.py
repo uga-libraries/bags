@@ -1,9 +1,9 @@
-"""Remove content from all bags at any level in a directory structure
+"""Remove content from one or more bags at any level in a directory structure
 
 Bags should follow the naming convention of ending with "_bag".
 
 Parameter:
-    bag_directory (required): path to the directory with the bags
+    bag_directory (required): path to the directory with the bag or bags
 
 Returns:
     Nothing.
@@ -13,7 +13,7 @@ Returns:
 import os
 import sys
 
-# Indicate the directory that contains bags.
+# Indicate the directory that contains the bag or bags.
 bag_dir = sys.argv[1]
 os.chdir(bag_dir)
 
