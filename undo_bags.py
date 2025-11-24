@@ -61,14 +61,9 @@ def rename(bag):
 
 
 if __name__ == '__main__':
-    # Indicate the directory that contains the bag or bags.
     bag_dir = sys.argv[1]
     os.chdir(bag_dir)
-
     for root, directory, folder in os.walk('.'):
-
-        # A directory is a bag if the name ends with _bag
-        # Use root variable to have the full filepath.
         if root.endswith('_bag'):
             delete_metadata(root)
             correct_reorg = reorganize(root)
