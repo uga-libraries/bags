@@ -112,7 +112,7 @@ if __name__ == '__main__':
                                is_valid, errors])
             else:
                 log(log_file, [bag_path, len(extra_temp), ', '.join(extra_temp), ', '.join(extra_not_temp),
-                                    'False', 'Non-temp files not in manifest'])
+                               'False', 'Non-temp files not in manifest'])
         elif script_mode == 'preview':
             log(log_file, [bag_path, len(extra_temp), ', '.join(extra_temp), ', '.join(extra_not_temp),
-                                'TBD', 'TBD'])
+                           'TBD', 'TBD'])
