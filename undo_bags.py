@@ -51,6 +51,15 @@ def reorganize(bag):
         return False
 
 
+def rename(bag):
+    """Delete '_bag' from the end of the directory name
+    Parameter: bag (string) - path to bag
+    Returns: None
+    """
+    new_name = bag.replace('_bag', '')
+    os.replace(bag, new_name)
+
+
 if __name__ == '__main__':
     # Indicate the directory that contains the bag or bags.
     bag_dir = sys.argv[1]
@@ -64,8 +73,6 @@ if __name__ == '__main__':
             delete_metadata(root)
             correct_reorg = reorganize(root)
             if correct_reorg:
-                # Delete '_bag' from the end of the directory name.
-                newname = root.replace('_bag', '')
-                os.replace(root, newname)
+                rename(root)
             else:
                 print("Error: data folder not empty after reorganize")
