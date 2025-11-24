@@ -52,6 +52,32 @@ class MyTestCase(unittest.TestCase):
                     os.path.join(bag_dir, 'aip_2', 'File_Two.txt')]
         self.assertEqual(expected, result, "Problem with test for two")
 
+    def test_validation_error(self):
+        """Test for when there are two bags in bag_dir and one is not valid (is not undone)"""
+
+        # Makes a copy of the test files in the repo, since the test alters the files.
+        shutil.copytree(os.path.join(os.getcwd(), 'test_undo_bags', 'validation_error_copy'),
+                        os.path.join(os.getcwd(), 'test_undo_bags', 'bag_dir'))
+
+        # Runs the script.
+        script_path = os.path.join('..', 'undo_bags.py')
+        bag_dir = os.path.join(os.getcwd(), 'test_undo_bags', 'bag_dir')
+        subprocess.run(f'python {script_path} {bag_dir}', shell=True)
+
+        # Tests that the contents of the folders are correct.
+        result = make_directory_list(bag_dir)
+        expected = [os.path.join(bag_dir, 'not_valid_bag'),
+                    os.path.join(bag_dir, 'not_valid_bag', 'bag-info.txt'),
+                    os.path.join(bag_dir, 'not_valid_bag', 'bagit.txt'),
+                    os.path.join(bag_dir, 'not_valid_bag', 'data'),
+                    os.path.join(bag_dir, 'not_valid_bag', 'data', 'Test File.txt'),
+                    os.path.join(bag_dir, 'not_valid_bag', 'manifest-md5.txt'),
+                    os.path.join(bag_dir, 'not_valid_bag', 'tagmanifest-md5.txt'),
+                    os.path.join(bag_dir, 'valid'),
+                    os.path.join(bag_dir, 'valid', 'File_One.txt'),
+                    os.path.join(bag_dir, 'valid', 'File_Two.txt')]
+        self.assertEqual(expected, result, "Problem with test for validation_error")
+
 
 if __name__ == '__main__':
     unittest.main()
