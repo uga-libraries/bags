@@ -9,19 +9,21 @@ from test_functions import make_directory_list
 class MyTestCase(unittest.TestCase):
 
     def tearDown(self):
-        """Delete test files."""
-        shutil.rmtree(os.path.join(os.getcwd(), 'test_undo_bags'))
+        """Delete test files, if present"""
+        test_dir = os.path.join(os.getcwd(), 'test_undo_bags', 'bag_dir')
+        if os.path.exists(test_dir):
+            shutil.rmtree(test_dir)
 
-    def test_script(self):
-        """Test for correct operation of the undo_bags.py script."""
+    def test_two(self):
+        """Test for when there are two bags in bag_dir"""
 
         # Makes a copy of the test files in the repo, since the test alters the files.
-        shutil.copytree(os.path.join(os.getcwd(), 'test_undo_bags_copy'),
-                        os.path.join(os.getcwd(), 'test_undo_bags'))
+        shutil.copytree(os.path.join(os.getcwd(), 'test_undo_bags', 'two_copy'),
+                        os.path.join(os.getcwd(), 'test_undo_bags', 'bag_dir'))
 
         # Runs the script.
         script_path = os.path.join('..', 'undo_bags.py')
-        bag_dir = os.path.join(os.getcwd(), 'test_undo_bags')
+        bag_dir = os.path.join(os.getcwd(), 'test_undo_bags', 'bag_dir')
         subprocess.run(f'python {script_path} {bag_dir}', shell=True)
 
         # Tests that the contents of the folders are correct.
@@ -31,7 +33,7 @@ class MyTestCase(unittest.TestCase):
                     os.path.join(bag_dir, 'aip_2'),
                     os.path.join(bag_dir, 'aip_2', 'File_One.txt'),
                     os.path.join(bag_dir, 'aip_2', 'File_Two.txt')]
-        self.assertEqual(expected, result, "Problem with test for undo_all_bags script")
+        self.assertEqual(expected, result, "Problem with test for two")
 
 
 if __name__ == '__main__':
