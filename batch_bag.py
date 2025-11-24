@@ -20,6 +20,23 @@ import sys
 from shared_functions import log, validate_bag
 
 
+def make_bag(bag):
+    """Make bag and rename it to add "_bag" according to standard naming conventions
+    Since these are for the backlog and not for preservation, we only use the MD5 checksum.
+    PermissionError can happen due to path length or spaces at the end of folders or files,
+    but can also happen with no clear cause.
+    Parameter: bag (string) - path to bag, needed to make full path for file
+    Returns: is_bagged (Boolean) - if there was an error, so the validation step can be skipped if needed
+    """
+    try:
+        bagit.make_bag(bag, checksums=['md5'])
+        os.replace(bag, f'{bag}_bag')
+        return True
+    except PermissionError as error:
+        log(log_file, [f'{folder}_bag', 'TBD', error])
+        return False
+
+
 if __name__ == '__main__':
 
     # Parent folder of the folders to be bagged.
@@ -31,33 +48,27 @@ if __name__ == '__main__':
         log(log_file, ['Bag', 'Bag_Valid', 'Errors'])
 
     for folder in os.listdir(bag_dir):
-        folder_path = os.path.join(bag_dir, folder)
+        bag_path = os.path.join(bag_dir, folder)
 
         # Skip all files and any folders that are big enough that the subfolders will be bags instead.
         # They are still added to the log for checking that they should be been skipped.
         # They will be added again if the script is restarted.
-        if os.path.isfile(folder_path) or folder_path.endswith('_bags'):
+        if os.path.isfile(bag_path) or bag_path.endswith('_bags'):
             log(log_file, [folder, 'Skipped', None])
             continue
 
         # Skip any folders already in a bag, for if the script is being restarted.
         # Does not add them to the log as skipped, since they should already be in the log from when they were bagged.
-        if folder_path.endswith('_bag'):
+        if bag_path.endswith('_bag'):
             continue
 
-        print("Starting on", folder_path)
+        print("Starting on", bag_path)
 
-        # Make bag and rename it to add "_bag" according to standard naming conventions.
-        # Since these are for the backlog and not for preservation, we only use the MD5 checksum.
-        # PermissionError can happen due to path length or spaces at the end of folders or files,
-        # but can also happen with no clear cause.
-        try:
-            bagit.make_bag(folder_path, checksums=['md5'])
-            os.replace(folder_path, f'{folder_path}_bag')
-        except PermissionError as error:
-            log(log_file, [f'{folder}_bag', 'TBD', error])
+        # Make into bag. It will not try the last step of validating if there is an error.
+        bagged = make_bag(bag_path)
+        if not bagged:
             continue
 
         # Validate the bag and log the result.
-        is_valid, errors = validate_bag(f'{folder_path}_bag')
+        is_valid, errors = validate_bag(f'{bag_path}_bag')
         log(log_file, [f'{folder}_bag', is_valid, errors])
