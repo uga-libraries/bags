@@ -33,6 +33,24 @@ def delete_metadata(bag):
             os.remove(doc_path)
 
 
+def reorganize(bag):
+    """Move all files from the data folder of the bag
+    Parameter: bag (string) - path to bag
+    Returns: correct_reorg (Boolean) - True if no error, False if data didn't empty
+    """
+    # Moves the contents of the data folder into the parent directory.
+    data_path = os.path.join(bag, 'data')
+    for item in os.listdir(data_path):
+        os.replace(os.path.join(data_path, item), os.path.join(bag, item))
+
+    # Deletes the now-empty data folder, or returns an error if it wasn't empty.
+    if not os.listdir(data_path):
+        os.rmdir(data_path)
+        return True
+    else:
+        return False
+
+
 if __name__ == '__main__':
     # Indicate the directory that contains the bag or bags.
     bag_dir = sys.argv[1]
@@ -44,14 +62,10 @@ if __name__ == '__main__':
         # Use root variable to have the full filepath.
         if root.endswith('_bag'):
             delete_metadata(root)
-
-            # Move the contents from the data folder into the parent directory.
-            for item in os.listdir(f'{root}/data'):
-                os.replace(f'{root}/data/{item}', f'{root}/{item}')
-
-            # Delete the now-empty data folder.
-            os.rmdir(f'{root}/data')
-
-            # Delete '_bag' from the end of the directory name.
-            newname = root.replace('_bag', '')
-            os.replace(root, newname)
+            correct_reorg = reorganize(root)
+            if correct_reorg:
+                # Delete '_bag' from the end of the directory name.
+                newname = root.replace('_bag', '')
+                os.replace(root, newname)
+            else:
+                print("Error: data folder not empty after reorganize")
