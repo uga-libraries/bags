@@ -68,15 +68,16 @@ def rename(bag):
 
 if __name__ == '__main__':
     bag_dir = sys.argv[1]
-    for root, directory, folder in os.walk(bag_dir):
-        if root.endswith('_bag'):
-            print("Starting on", root)
-            is_valid, errors = validate_bag(root)
+    for folder in os.listdir(bag_dir):
+        if folder.endswith('_bag'):
+            bag_path = os.path.join(bag_dir, folder)
+            print("Starting on", bag_path)
+            is_valid, errors = validate_bag(bag_path)
             if is_valid:
-                delete_metadata(root)
-                correct_reorg = reorganize(root)
+                delete_metadata(bag_path)
+                correct_reorg = reorganize(bag_path)
                 if correct_reorg:
-                    rename(root)
+                    rename(bag_path)
                 else:
                     print("Error: data folder not empty after reorganize")
             else:
