@@ -32,6 +32,7 @@ class MyTestCase(unittest.TestCase):
                     os.path.join(bag_dir, 'aip_2'),
                     os.path.join(bag_dir, 'aip_2', 'File_One.txt'),
                     os.path.join(bag_dir, 'aip_2', 'File_Two.txt'),
+                    os.path.join(bag_dir, 'bag_undo_log.csv'),
                     os.path.join(bag_dir, 'folder'),
                     os.path.join(bag_dir, 'folder', 'keep_bag'),
                     os.path.join(bag_dir, 'folder', 'keep_bag', 'bag-info.txt'),
@@ -57,7 +58,8 @@ class MyTestCase(unittest.TestCase):
         # Tests that the contents of the folders are correct.
         result = make_directory_list(bag_dir)
         expected = [os.path.join(bag_dir, 'aip_1'),
-                    os.path.join(bag_dir, 'aip_1', 'Test File.txt')]
+                    os.path.join(bag_dir, 'aip_1', 'Test File.txt'),
+                    os.path.join(bag_dir, 'bag_undo_log.csv')]
         self.assertEqual(expected, result, "Problem with test for one")
 
     def test_two(self):
@@ -78,7 +80,8 @@ class MyTestCase(unittest.TestCase):
                     os.path.join(bag_dir, 'aip_1', 'Test File.txt'),
                     os.path.join(bag_dir, 'aip_2'),
                     os.path.join(bag_dir, 'aip_2', 'File_One.txt'),
-                    os.path.join(bag_dir, 'aip_2', 'File_Two.txt')]
+                    os.path.join(bag_dir, 'aip_2', 'File_Two.txt'),
+                    os.path.join(bag_dir, 'bag_undo_log.csv')]
         self.assertEqual(expected, result, "Problem with test for two")
 
     def test_unexpected_error(self):
@@ -101,7 +104,8 @@ class MyTestCase(unittest.TestCase):
                     os.path.join(bag_dir, 'aip_1_bag', 'aip_1_FITS', 'FITS Placeholder.txt'),
                     os.path.join(bag_dir, 'aip_1_bag', 'data'),
                     os.path.join(bag_dir, 'aip_1_bag', 'data', 'Test File.txt'),
-                    os.path.join(bag_dir, 'aip_1_bag', 'extra_file2.txt'), ]
+                    os.path.join(bag_dir, 'aip_1_bag', 'extra_file2.txt'),
+                    os.path.join(bag_dir, 'bag_undo_log.csv')]
         self.assertEqual(expected, result, "Problem with test for unexpected_error")
 
     def test_validation_error(self):
@@ -118,7 +122,8 @@ class MyTestCase(unittest.TestCase):
 
         # Tests that the contents of the folders are correct.
         result = make_directory_list(bag_dir)
-        expected = [os.path.join(bag_dir, 'not_valid_bag'),
+        expected = [os.path.join(bag_dir, 'bag_undo_log.csv'),
+                    os.path.join(bag_dir, 'not_valid_bag'),
                     os.path.join(bag_dir, 'not_valid_bag', 'bag-info.txt'),
                     os.path.join(bag_dir, 'not_valid_bag', 'bagit.txt'),
                     os.path.join(bag_dir, 'not_valid_bag', 'data'),

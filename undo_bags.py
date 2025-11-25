@@ -88,7 +88,7 @@ if __name__ == '__main__':
     bag_dir = sys.argv[1]
 
     # Starts the bag validation log in the same folder as the bags.
-    log_file = log_path = os.path.join(bag_dir, 'bag_validation_log.csv')
+    log_file = log_path = os.path.join(bag_dir, 'bag_undo_log.csv')
     log(log_file, ['Bag_Path', 'Bag_Valid', 'Errors'])
 
     # Finds all bags directly within the bag directory, based on the folder naming convention,
