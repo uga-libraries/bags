@@ -144,7 +144,7 @@ def save_report(df_diff, output):
 if __name__ == '__main__':
 
     bag_path = sys.argv[1]
-    output_path = os.path.dirname(bag_path)
+    output_path = sys.argv[2]
 
     make_data_md5_csv(bag_path, output_path)
     manifest_df = make_manifest_df(bag_path)
