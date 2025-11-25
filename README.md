@@ -55,7 +55,9 @@ since bagit does not indicate which files were added or deleted since the bag wa
 Purpose: compare the MD5s in the bag manifest to the MD5s of files in the bag data folder and make a report of the differences, 
 either because the fixity changed or the file is only in one location.
 
-Argument: bag_path (required): path to the bag (folder that ends in "_bag")
+Arguments: 
+* bag_path (required): path to the bag (folder that ends in "_bag")
+* output_path (required): path to folder for output, use local machine if saving to Hub gives PermissionError
 
 This script was developed for investigating a bag validation error from the size changing,
 since bagit does not indicate which files changed in size since the bag was made.

@@ -11,6 +11,7 @@ This script is modeled after the function validate_bag_manifest() in validate_fi
 
 Parameters:
     bag_path (required): path to the bag folder
+    output_path (required): path to folder for output, use local machine if saving to Hub gives PermissionError
 
 Returns:
     compare_fixity_report.csv (saved to the parent folder of the bag_path)
@@ -144,7 +145,7 @@ def save_report(df_diff, output):
 if __name__ == '__main__':
 
     bag_path = sys.argv[1]
-    output_path = os.path.dirname(bag_path)
+    output_path = sys.argv[2]
 
     make_data_md5_csv(bag_path, output_path)
     manifest_df = make_manifest_df(bag_path)
