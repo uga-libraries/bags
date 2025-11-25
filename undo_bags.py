@@ -92,10 +92,13 @@ if __name__ == '__main__':
             # Only continue with undoing the bag if the bag is valid.
             if is_valid:
                 unexpected = delete_metadata(bag_path)
-                correct_reorg = reorganize(bag_path)
-                if correct_reorg:
-                    rename(bag_path)
+                if unexpected:
+                    print(unexpected)
                 else:
-                    print("Error: data folder not empty after reorganize")
+                    correct_reorg = reorganize(bag_path)
+                    if correct_reorg:
+                        rename(bag_path)
+                    else:
+                        print("Error: data folder not empty after reorganize")
             else:
                 print("Bag is not valid. Review before undoing.")
