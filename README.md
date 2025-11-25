@@ -94,7 +94,8 @@ Thumbs.db are the only reason the bag is not validating, because it updates the 
 
 ### undo_bags.py
 
-Purpose: remove files from each bag in bag_directory if it is valid. It does work if there is a single bag.
+Purpose: remove files from each bag in bag_directory if it is valid and log the results. 
+It does work if there is a single bag.
 
 Argument: bag_directory (required): path to directory that contains the bag or bags. 
 Bag folder names should end with "_bag".

@@ -12,6 +12,7 @@ Parameter:
     bag_directory (required): path to the directory with the bag or bags
 
 Returns:
+    bag_undo_log.csv (in bag_directory)
     All folders originally within bags directly within the bag_directory will no longer be in bags:
     no bag manifests, no data folder, and "_bag" ending removed from the folder.
 """
