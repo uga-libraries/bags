@@ -109,6 +109,7 @@ if __name__ == '__main__':
                     correct_reorg = reorganize(bag_path)
                     if correct_reorg:
                         rename(bag_path)
+                        log(log_path, [bag_path, True, None])
                     else:
                         log(log_path, [bag_path, True, 'data folder not empty after reorganize'])
             else:
