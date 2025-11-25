@@ -2,7 +2,7 @@ import os
 import shutil
 import subprocess
 import unittest
-from test_functions import make_directory_list
+from test_functions import csv_to_list, make_directory_list
 
 
 class MyTestCase(unittest.TestCase):
@@ -25,7 +25,7 @@ class MyTestCase(unittest.TestCase):
         bag_dir = os.path.join(os.getcwd(), 'test_undo_bags', 'bag_dir')
         subprocess.run(f'python {script_path} {bag_dir}', shell=True)
 
-        # Tests that the contents of the folders are correct.
+        # Tests that the contents of the directory are correct.
         result = make_directory_list(bag_dir)
         expected = [os.path.join(bag_dir, 'aip_1'),
                     os.path.join(bag_dir, 'aip_1', 'Test File.txt'),
@@ -41,7 +41,14 @@ class MyTestCase(unittest.TestCase):
                     os.path.join(bag_dir, 'folder', 'keep_bag', 'data', 'Test File.txt'),
                     os.path.join(bag_dir, 'folder', 'keep_bag', 'manifest-md5.txt'),
                     os.path.join(bag_dir, 'folder', 'keep_bag', 'tagmanifest-md5.txt')]
-        self.assertEqual(expected, result, "Problem with test for hierarchy")
+        self.assertEqual(expected, result, "Problem with test for hierarchy, directory")
+        
+        # Tests the log contents are correct.
+        result = csv_to_list(os.path.join(bag_dir, 'bag_undo_log.csv'))
+        expected = [['Bag_Path', 'Bag_Valid', 'Errors'],
+                    [os.path.join(bag_dir, 'aip_1_bag'), 'True', 'BLANK'],
+                    [os.path.join(bag_dir, 'aip_2_bag'), 'True', 'BLANK']]
+        self.assertEqual(expected, result, "Problem with test for hierarchy, log")
 
     def test_one(self):
         """Test for when there is one bag in bag_dir"""
@@ -55,12 +62,18 @@ class MyTestCase(unittest.TestCase):
         bag_dir = os.path.join(os.getcwd(), 'test_undo_bags', 'bag_dir')
         subprocess.run(f'python {script_path} {bag_dir}', shell=True)
 
-        # Tests that the contents of the folders are correct.
+        # Tests that the contents of the directory are correct.
         result = make_directory_list(bag_dir)
         expected = [os.path.join(bag_dir, 'aip_1'),
                     os.path.join(bag_dir, 'aip_1', 'Test File.txt'),
                     os.path.join(bag_dir, 'bag_undo_log.csv')]
-        self.assertEqual(expected, result, "Problem with test for one")
+        self.assertEqual(expected, result, "Problem with test for one, directory")
+
+        # Tests the log contents are correct.
+        result = csv_to_list(os.path.join(bag_dir, 'bag_undo_log.csv'))
+        expected = [['Bag_Path', 'Bag_Valid', 'Errors'],
+                    [os.path.join(bag_dir, 'aip_1_bag'), 'True', 'BLANK']]
+        self.assertEqual(expected, result, "Problem with test for one, log")
 
     def test_two(self):
         """Test for when there are two bags in bag_dir"""
@@ -74,7 +87,7 @@ class MyTestCase(unittest.TestCase):
         bag_dir = os.path.join(os.getcwd(), 'test_undo_bags', 'bag_dir')
         subprocess.run(f'python {script_path} {bag_dir}', shell=True)
 
-        # Tests that the contents of the folders are correct.
+        # Tests that the contents of the directory are correct.
         result = make_directory_list(bag_dir)
         expected = [os.path.join(bag_dir, 'aip_1'),
                     os.path.join(bag_dir, 'aip_1', 'Test File.txt'),
@@ -82,7 +95,14 @@ class MyTestCase(unittest.TestCase):
                     os.path.join(bag_dir, 'aip_2', 'File_One.txt'),
                     os.path.join(bag_dir, 'aip_2', 'File_Two.txt'),
                     os.path.join(bag_dir, 'bag_undo_log.csv')]
-        self.assertEqual(expected, result, "Problem with test for two")
+        self.assertEqual(expected, result, "Problem with test for two, directory")
+
+        # Tests the log contents are correct.
+        result = csv_to_list(os.path.join(bag_dir, 'bag_undo_log.csv'))
+        expected = [['Bag_Path', 'Bag_Valid', 'Errors'],
+                    [os.path.join(bag_dir, 'aip_1_bag'), 'True', 'BLANK'],
+                    [os.path.join(bag_dir, 'aip_2_bag'), 'True', 'BLANK']]
+        self.assertEqual(expected, result, "Problem with test for two, log")
 
     def test_unexpected_error(self):
         """Test for when a bag has other files and a folder mixed with the bag metadata files"""
@@ -96,7 +116,7 @@ class MyTestCase(unittest.TestCase):
         bag_dir = os.path.join(os.getcwd(), 'test_undo_bags', 'bag_dir')
         subprocess.run(f'python {script_path} {bag_dir}', shell=True)
 
-        # Tests that the contents of the folders are correct.
+        # Tests that the contents of the directory are correct.
         result = make_directory_list(bag_dir)
         expected = [os.path.join(bag_dir, 'aip_1_bag'),
                     os.path.join(bag_dir, 'aip_1_bag', 'a_extra_file.txt'),
@@ -106,7 +126,16 @@ class MyTestCase(unittest.TestCase):
                     os.path.join(bag_dir, 'aip_1_bag', 'data', 'Test File.txt'),
                     os.path.join(bag_dir, 'aip_1_bag', 'extra_file2.txt'),
                     os.path.join(bag_dir, 'bag_undo_log.csv')]
-        self.assertEqual(expected, result, "Problem with test for unexpected_error")
+        self.assertEqual(expected, result, "Problem with test for unexpected_error, directory")
+
+        # Tests the log contents are correct.
+        result = csv_to_list(os.path.join(bag_dir, 'bag_undo_log.csv'))
+        expected = [['Bag_Path', 'Bag_Valid', 'Errors'],
+                    [os.path.join(bag_dir, 'aip_1_bag'), 'True',
+                     f"Unexpected content mixed with bag metadata: {os.path.join(bag_dir, 'aip_1_bag', 'aip_1_FITS')}, "
+                     f"{os.path.join(bag_dir, 'aip_1_bag', 'a_extra_file.txt')}, "
+                     f"{os.path.join(bag_dir, 'aip_1_bag', 'extra_file2.txt')}"]]
+        self.assertEqual(expected, result, "Problem with test for unexpected_error, log")
 
     def test_validation_error(self):
         """Test for when there are two bags in bag_dir and one is not valid (is not undone)"""
@@ -120,7 +149,7 @@ class MyTestCase(unittest.TestCase):
         bag_dir = os.path.join(os.getcwd(), 'test_undo_bags', 'bag_dir')
         subprocess.run(f'python {script_path} {bag_dir}', shell=True)
 
-        # Tests that the contents of the folders are correct.
+        # Tests that the contents of the directory are correct.
         result = make_directory_list(bag_dir)
         expected = [os.path.join(bag_dir, 'bag_undo_log.csv'),
                     os.path.join(bag_dir, 'not_valid_bag'),
@@ -133,7 +162,15 @@ class MyTestCase(unittest.TestCase):
                     os.path.join(bag_dir, 'valid'),
                     os.path.join(bag_dir, 'valid', 'File_One.txt'),
                     os.path.join(bag_dir, 'valid', 'File_Two.txt')]
-        self.assertEqual(expected, result, "Problem with test for validation_error")
+        self.assertEqual(expected, result, "Problem with test for validation_error, directory")
+
+        # Tests the log contents are correct.
+        result = csv_to_list(os.path.join(bag_dir, 'bag_undo_log.csv'))
+        expected = [['Bag_Path', 'Bag_Valid', 'Errors'],
+                    [os.path.join(bag_dir, 'not_valid_bag'), 'False',
+                     'Payload-Oxum validation failed. Expected 1 files and 19 bytes but found 1 files and 40 bytes'],
+                    [os.path.join(bag_dir, 'valid_bag'), 'True', 'BLANK']]
+        self.assertEqual(expected, result, "Problem with test for validation_error, log")
 
 
 if __name__ == '__main__':
