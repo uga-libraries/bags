@@ -12,12 +12,13 @@ Parameter:
     bag_directory (required): path to the directory with the bag or bags
 
 Returns:
+    bag_undo_log.csv (in bag_directory)
     All folders originally within bags directly within the bag_directory will no longer be in bags:
     no bag manifests, no data folder, and "_bag" ending removed from the folder.
 """
 import os
 import sys
-from shared_functions import validate_bag
+from shared_functions import log, validate_bag
 
 
 def delete_metadata(bag):
@@ -49,7 +50,7 @@ def delete_metadata(bag):
     if len(unexpected_list) == 0:
         return None
     else:
-        return f"Unexpected files mixed with bag metadata: {', '.join(unexpected_list)}"
+        return f"Unexpected content mixed with bag metadata: {', '.join(unexpected_list)}"
 
 
 def reorganize(bag):
@@ -83,7 +84,16 @@ def rename(bag):
 
 
 if __name__ == '__main__':
+
+    # Parent folder of the bag(s) to be undone.
     bag_dir = sys.argv[1]
+
+    # Starts the bag validation log in the same folder as the bags.
+    log_file = log_path = os.path.join(bag_dir, 'bag_undo_log.csv')
+    log(log_file, ['Bag_Path', 'Bag_Valid', 'Errors'])
+
+    # Finds all bags directly within the bag directory, based on the folder naming convention,
+    # undoes the bag (stopping if there is an error) and logs the result.
     for folder in os.listdir(bag_dir):
         if folder.endswith('_bag'):
             bag_path = os.path.join(bag_dir, folder)
@@ -94,13 +104,14 @@ if __name__ == '__main__':
                 # Only continue with reorganizing the bag if there are no unexpected files mixed with bag metadata.
                 unexpected = delete_metadata(bag_path)
                 if unexpected:
-                    print(unexpected)
+                    log(log_path, [bag_path, True, unexpected])
                 else:
                     # Only continue with renaming the bag if the data folder was empty and could be deleted.
                     correct_reorg = reorganize(bag_path)
                     if correct_reorg:
                         rename(bag_path)
+                        log(log_path, [bag_path, True, None])
                     else:
-                        print("Error: data folder not empty after reorganize")
+                        log(log_path, [bag_path, True, 'data folder not empty after reorganize'])
             else:
-                print("Bag is not valid. Review before undoing.")
+                log(log_path, [bag_path, False, errors])
