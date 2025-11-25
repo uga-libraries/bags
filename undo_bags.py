@@ -49,7 +49,7 @@ def delete_metadata(bag):
     if len(unexpected_list) == 0:
         return None
     else:
-        return f"Unexpected files mixed with bag metadata: {', '.join(unexpected_list)}"
+        return f"Unexpected content mixed with bag metadata: {', '.join(unexpected_list)}"
 
 
 def reorganize(bag):
