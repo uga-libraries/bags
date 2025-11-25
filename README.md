@@ -103,6 +103,10 @@ This script is most commonly used when files are bagged for storage and later ne
 If a bag is not valid, it will print the error and not do the rest of the script,
 so the error can be investigated before the bag metadata needed for this review is deleted.
 
+If the bag_directory contains additional folders which themselves contain bags,
+those bags will not be impacted by the script.
+The script only acts on bags directly within the bag_directory so staff can easily determine all bags should be undone.
+
 ### update_bag.py
 
 Purpose: Update the manifest in a bag to match what is currently in the data folder and validates the bag.
