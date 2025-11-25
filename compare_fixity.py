@@ -11,6 +11,7 @@ This script is modeled after the function validate_bag_manifest() in validate_fi
 
 Parameters:
     bag_path (required): path to the bag folder
+    output_path (required): path to folder for output, use local machine if saving to Hub gives PermissionError
 
 Returns:
     compare_fixity_report.csv (saved to the parent folder of the bag_path)
