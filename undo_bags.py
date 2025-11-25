@@ -91,10 +91,12 @@ if __name__ == '__main__':
             is_valid, errors = validate_bag(bag_path)
             # Only continue with undoing the bag if the bag is valid.
             if is_valid:
+                # Only continue with reorganizing the bag if there are no unexpected files mixed with bag metadata.
                 unexpected = delete_metadata(bag_path)
                 if unexpected:
                     print(unexpected)
                 else:
+                    # Only continue with renaming the bag if the data folder was empty and could be deleted.
                     correct_reorg = reorganize(bag_path)
                     if correct_reorg:
                         rename(bag_path)
