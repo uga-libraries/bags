@@ -1,0 +1,1 @@
+Placeholder for when a folder of format information is incorrectly placed inside of a bag.

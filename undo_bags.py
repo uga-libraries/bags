@@ -21,13 +21,18 @@ from shared_functions import validate_bag
 
 
 def delete_metadata(bag):
-    """Delete all metadata files from the bag
+    """Delete all metadata files from the bag if only the expected metadata files are present
     Parameter: bag (string) - path to bag
-    Returns: None
+    Returns: unexpected (string, None) - paths for all unexpected files in one string or None if no unexpected
     """
+    # Variable for tracking unexpected files mixed with bag metadata.
+    unexpected_list = []
+
     # Matches the bag metadata file names as much as possible to avoid accidentally any other files.
     # There should only be bag metadata files in this location, but sometimes other things are saved here in error.
     for doc in os.listdir(bag):
+        if doc == 'data':
+            continue
         doc_path = os.path.join(bag, doc)
         # These bag metadata files always have the same name.
         if doc == 'bag-info.txt' or doc == 'bagit.txt':
@@ -37,6 +42,14 @@ def delete_metadata(bag):
             os.remove(doc_path)
         elif doc.startswith('tagmanifest-') and doc.endswith('.txt'):
             os.remove(doc_path)
+        else:
+            unexpected_list.append(doc_path)
+
+    # Return a string with the unexpected files or None.
+    if len(unexpected_list) == 0:
+        return None
+    else:
+        return f"Unexpected files mixed with bag metadata: {', '.join(unexpected_list)}"
 
 
 def reorganize(bag):
@@ -76,12 +89,18 @@ if __name__ == '__main__':
             bag_path = os.path.join(bag_dir, folder)
             print("Starting on", bag_path)
             is_valid, errors = validate_bag(bag_path)
+            # Only continue with undoing the bag if the bag is valid.
             if is_valid:
-                delete_metadata(bag_path)
-                correct_reorg = reorganize(bag_path)
-                if correct_reorg:
-                    rename(bag_path)
+                # Only continue with reorganizing the bag if there are no unexpected files mixed with bag metadata.
+                unexpected = delete_metadata(bag_path)
+                if unexpected:
+                    print(unexpected)
                 else:
-                    print("Error: data folder not empty after reorganize")
+                    # Only continue with renaming the bag if the data folder was empty and could be deleted.
+                    correct_reorg = reorganize(bag_path)
+                    if correct_reorg:
+                        rename(bag_path)
+                    else:
+                        print("Error: data folder not empty after reorganize")
             else:
                 print("Bag is not valid. Review before undoing.")
