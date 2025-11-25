@@ -1,16 +1,19 @@
-"""Remove content from one or more bags at any level in a directory structure, if the bag is valid
+"""Remove content from one or more bags within a given folder (bag_directory), if the bag is valid
 
 Bags should follow the naming convention of ending with "_bag".
 If a bag is not valid, it will print the error and not do the rest of the script,
 so the error can be investigated before the bag metadata needed for this review is deleted.
 
+If the bag_directory contains additional folders which themselves contain bags,
+those bags will not be impacted by the script.
+The script only acts on bags directly within the bag_directory so staff can easily determine all bags should be undone.
+
 Parameter:
     bag_directory (required): path to the directory with the bag or bags
 
 Returns:
-    Nothing.
-    All content originally in bags will be in folders without the "_bag" ending
-    and without the bag manifests or directory structure.
+    All folders originally within bags directly within the bag_directory will no longer be in bags:
+    no bag manifests, no data folder, and "_bag" ending removed from the folder.
 """
 import os
 import sys
