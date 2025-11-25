@@ -17,7 +17,7 @@ Returns:
 """
 import os
 import sys
-from shared_functions import validate_bag
+from shared_functions import log, validate_bag
 
 
 def delete_metadata(bag):
@@ -83,7 +83,16 @@ def rename(bag):
 
 
 if __name__ == '__main__':
+
+    # Parent folder of the bag(s) to be undone.
     bag_dir = sys.argv[1]
+
+    # Starts the bag validation log in the same folder as the bags.
+    log_file = log_path = os.path.join(bag_dir, 'bag_validation_log.csv')
+    log(log_file, ['Bag_Path', 'Bag_Valid', 'Errors'])
+
+    # Finds all bags directly within the bag directory, based on the folder naming convention,
+    # undoes the bag (stopping if there is an error) and logs the result.
     for folder in os.listdir(bag_dir):
         if folder.endswith('_bag'):
             bag_path = os.path.join(bag_dir, folder)
