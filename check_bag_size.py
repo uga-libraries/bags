@@ -9,11 +9,10 @@ Parameter:
 Returns:
     bag_size_check.csv in the bag_directory with the bag names, number of GB and files, and if they are over the maximum
 """
-import csv
 import bagit
 import os
 import sys
-
+from shared_functions import log
 
 if __name__ == '__main__':
 
@@ -22,9 +21,7 @@ if __name__ == '__main__':
 
     # Starts a log with a header for the results.
     log_path = os.path.join(bag_dir, 'bag_size_check.csv')
-    with open(log_path, 'w', newline='') as log:
-        log_writer = csv.writer(log)
-        log_writer.writerow(['Bag', 'Size_GB', 'Size_OK', 'Files', 'Files_OK'])
+    log(log_path, ['Bag', 'Size_GB', 'Size_OK', 'Files', 'Files_OK'])
 
     for bag in os.listdir(bag_dir):
 
@@ -43,6 +40,4 @@ if __name__ == '__main__':
 
         # Saves size information for the current bag to the log,
         # including comparing it to the desired maximums.
-        with open(log_path, 'a', newline='') as log:
-            log_writer = csv.writer(log)
-            log_writer.writerow([bag, size_bag, size_bag <= 100, files, files < 10000])
+        log(log_path, [bag, size_bag, size_bag <= 100, files, files < 10000])
