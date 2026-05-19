@@ -10,7 +10,7 @@ Parameter:
     bag_directory (required): path to the directory that contains the folders to bag
 
 Returns:
-    file_count_check.csv in the bag_directory
+    file_count_check.csv in the bag_directory with the folder names, number of files, and if they are over the maximum
 """
 import os
 import sys
