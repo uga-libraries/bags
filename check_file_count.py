@@ -1,4 +1,17 @@
-"""Check all folders in the provided directory for any that are above 10,000 files"""
+"""Check all folders in the provided directory for any that are above 10,000 files
+
+Run this script prior to converting a batch of folders into bags to check for any that might be too large.
+We recommend, but do not require, a maximum of 10,000 files per bag for more time efficient validation.
+Total size (recommended under 100 GB) is not checked because that takes longer to calculate.
+
+This is a companion to check_bag_size.py, which checks file count and total size in GB using the bag metadata.
+
+Parameter:
+    bag_directory (required): path to the directory that contains the folders to bag
+
+Returns:
+    file_count_check.csv in the bag_directory
+"""
 import csv
 import os
 import sys
