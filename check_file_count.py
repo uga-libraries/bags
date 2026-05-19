@@ -19,24 +19,28 @@ import sys
 
 if __name__ == '__main__':
 
+    # Parent folder of the folders to be bagged.
     bag_dir = sys.argv[1]
 
+    # Start a log with the results.
+    # This is fast enough the script doesn't need to be able to restart and can always start the log fresh.
     log_path = os.path.join(bag_dir, 'file_count_check.csv')
     with open(log_path, 'w', newline='') as log:
         log_writer = csv.writer(log)
         log_writer.writerow(['Folder', 'Files', 'Files_OK'])
 
     for folder_name in os.listdir(bag_dir):
-        # Skips metadata files.
+
+        # Skips any metadata files. All folders should be checked.
         if folder_name.endswith('.csv'):
             continue
 
-        # Gets the number of files at all levels.
+        # Gets the number of files at all levels within the current folder.
         file_count = 0
         for root, dirs, files in os.walk(os.path.join(bag_dir, folder_name)):
            file_count += len(files)
 
-        # Saves size information to a log, including comparing it to the desired maximum.
+        # Saves file count information to the log, including comparing it to the desired maximum.
         with open(log_path, 'a', newline='') as log:
             log_writer = csv.writer(log)
             log_writer.writerow([folder_name, file_count, file_count < 10000])
