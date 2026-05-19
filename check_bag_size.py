@@ -29,7 +29,7 @@ if __name__ == '__main__':
     for bag in os.listdir(bag_dir):
 
         # Skips any metadata files. All folders should be bags.
-        if bag.endswith('.csv'):
+        if os.path.isfile(os.path.join(bag_dir, bag)):
             continue
 
         # Gets size information from the bag payload.
