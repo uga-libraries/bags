@@ -17,8 +17,10 @@ import sys
 
 if __name__ == '__main__':
 
+    # Parent folder of the bags.
     bag_dir = sys.argv[1]
 
+    # Starts a log with a header for the results.
     log_path = os.path.join(bag_dir, 'bag_size_check.csv')
     with open(log_path, 'w', newline='') as log:
         log_writer = csv.writer(log)
@@ -26,19 +28,21 @@ if __name__ == '__main__':
 
     for bag in os.listdir(bag_dir):
 
-        # Skips log files that are also in this directory.
+        # Skips any metadata files. All folders should be bags.
         if bag.endswith('.csv'):
             continue
 
         # Gets size information from the bag payload.
         # File count is divided in half to exclude the metadata files (one FITS per file)
+        # It is often a decimal because of the preservation.xml and potentially other files made by the script.
         bag_instance = bagit.Bag(os.path.join(bag_dir, bag))
         bag_payload = bag_instance.info['Payload-Oxum']
         size_bytes, file_count = bag_payload.split('.')
         size_bag = int(size_bytes) / 1000000000
         files = int(file_count) / 2
 
-        # Saves size information to a log, including comparing it to the desired maximum.
+        # Saves size information for the current bag to the log,
+        # including comparing it to the desired maximums.
         with open(log_path, 'a', newline='') as log:
             log_writer = csv.writer(log)
             log_writer.writerow([bag, size_bag, size_bag <= 100, files, files < 10000])
