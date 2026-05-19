@@ -1,4 +1,14 @@
-"""Check all bags in the provided directory for any that are above 100 GB or 10,000 files"""
+"""Check all bags in the provided directory for any that are above 100 GB or 10,000 files
+
+This is used to double-check for bags over the recommended size for efficient validation.
+It is a companion to check_file_count.py, which is run prior to making the bags.
+
+Parameter:
+    bag_directory (required): path to the directory that contains the bags
+
+Returns:
+    bag_size_check.csv in the bag_directory with the bag names, number of GB and files, and if they are over the maximum
+"""
 import csv
 import bagit
 import os
