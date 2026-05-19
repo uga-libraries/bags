@@ -16,6 +16,10 @@ from shared_functions import log
 
 if __name__ == '__main__':
 
+    # Maximum number of GB and files desired. Update these numbers for other use cases.
+    MAX_GB = 100
+    MAX_FILES = 10000
+
     # Parent folder of the bags.
     bag_dir = sys.argv[1]
 
@@ -40,4 +44,4 @@ if __name__ == '__main__':
 
         # Saves size information for the current bag to the log,
         # including comparing it to the desired maximums.
-        log(log_path, [bag, size_bag, size_bag <= 100, files, files < 10000])
+        log(log_path, [bag, size_bag, size_bag < MAX_GB, files, files < MAX_FILES])
