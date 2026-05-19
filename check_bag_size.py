@@ -17,14 +17,14 @@ import sys
 
 if __name__ == '__main__':
 
-    bags_dir = sys.argv[1]
+    bag_dir = sys.argv[1]
 
-    log_path = os.path.join(bags_dir, 'bag_size_check.csv')
+    log_path = os.path.join(bag_dir, 'bag_size_check.csv')
     with open(log_path, 'w', newline='') as log:
         log_writer = csv.writer(log)
         log_writer.writerow(['Bag', 'Size_GB', 'Size_OK', 'Files', 'Files_OK'])
 
-    for bag in os.listdir(bags_dir):
+    for bag in os.listdir(bag_dir):
 
         # Skips log files that are also in this directory.
         if bag.endswith('.csv'):
@@ -32,7 +32,7 @@ if __name__ == '__main__':
 
         # Gets size information from the bag payload.
         # File count is divided in half to exclude the metadata files (one FITS per file)
-        bag_instance = bagit.Bag(os.path.join(bags_dir, bag))
+        bag_instance = bagit.Bag(os.path.join(bag_dir, bag))
         bag_payload = bag_instance.info['Payload-Oxum']
         size_bytes, file_count = bag_payload.split('.')
         size_bag = int(size_bytes) / 1000000000
