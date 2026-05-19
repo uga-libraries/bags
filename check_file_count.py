@@ -15,6 +15,7 @@ Returns:
 import csv
 import os
 import sys
+from shared_functions import log
 
 
 if __name__ == '__main__':
@@ -22,12 +23,9 @@ if __name__ == '__main__':
     # Parent folder of the folders to be bagged.
     bag_dir = sys.argv[1]
 
-    # Start a log with the results.
-    # This is fast enough the script doesn't need to be able to restart and can always start the log fresh.
+    # Start a log with a header for the results.
     log_path = os.path.join(bag_dir, 'file_count_check.csv')
-    with open(log_path, 'w', newline='') as log:
-        log_writer = csv.writer(log)
-        log_writer.writerow(['Folder', 'Files', 'Files_OK'])
+    log(log_path, ['Folder', 'Files', 'Files_OK'])
 
     for folder_name in os.listdir(bag_dir):
 
@@ -40,7 +38,6 @@ if __name__ == '__main__':
         for root, dirs, files in os.walk(os.path.join(bag_dir, folder_name)):
            file_count += len(files)
 
-        # Saves file count information to the log, including comparing it to the desired maximum.
-        with open(log_path, 'a', newline='') as log:
-            log_writer = csv.writer(log)
-            log_writer.writerow([folder_name, file_count, file_count < 10000])
+        # Saves file count information for the current folder to the log,
+        # including comparing it to the desired maximum.
+        log(log_path, [folder_name, file_count, file_count < 10000])
