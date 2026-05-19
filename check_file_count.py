@@ -32,7 +32,7 @@ if __name__ == '__main__':
     for folder_name in os.listdir(bag_dir):
 
         # Skips any metadata files. All folders should be checked.
-        if folder_name.endswith('.csv'):
+        if os.path.isfile(folder_name):
             continue
 
         # Gets the number of files at all levels within the current folder.
