@@ -12,13 +12,15 @@ Parameter:
 Returns:
     file_count_check.csv in the bag_directory
 """
-import csv
 import os
 import sys
 from shared_functions import log
 
 
 if __name__ == '__main__':
+
+    # Maximum number of files desired. Update this number for other use cases.
+    MAX_FILES = 10000
 
     # Parent folder of the folders to be bagged.
     bag_dir = sys.argv[1]
@@ -40,4 +42,4 @@ if __name__ == '__main__':
 
         # Saves file count information for the current folder to the log,
         # including comparing it to the desired maximum.
-        log(log_path, [folder_name, file_count, file_count < 10000])
+        log(log_path, [folder_name, file_count, file_count < MAX_FILES])
