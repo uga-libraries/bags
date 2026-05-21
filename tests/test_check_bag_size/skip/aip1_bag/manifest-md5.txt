@@ -1,0 +1,2 @@
+edc900745c5d15d773fbcdc0b376f00c  data/metadata/metadata.txt
+edc900745c5d15d773fbcdc0b376f00c  data/objects/doc.txt
