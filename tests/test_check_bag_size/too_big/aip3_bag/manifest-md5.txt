@@ -1,0 +1,5 @@
+edc900745c5d15d773fbcdc0b376f00c  data/metadata/metadata.txt
+edc900745c5d15d773fbcdc0b376f00c  data/metadata/metadata2.txt
+edc900745c5d15d773fbcdc0b376f00c  data/objects/doc.txt
+edc900745c5d15d773fbcdc0b376f00c  data/objects/doc2.txt
+edc900745c5d15d773fbcdc0b376f00c  data/objects/doc3y.txt
