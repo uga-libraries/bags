@@ -41,6 +41,17 @@ If the script breaks or needs to be interrupted, run it again with the same para
 after resetting the folder the script ends on if it was partially bagged.
 It will skip any folders already made into a bag and add to the existing log.
 
+### check_bag_size.py
+
+Purpose: Check all bags in the provided directory for any that are above 10,000 files or 100 GB
+
+Argument: bag_directory (required): path to the directory that contains the bags
+
+This script is primarily used after running the general_aip.py script to double-check the bags are small enough.
+We recommend, although do not require, bags have fewer than 10,000 files and 100 GB.
+
+This is a companion to check_file_count.py, which checks file count and is fast enough to do before bagging.
+
 ### check_file_count.py
 
 Purpose: Check all folders in the provided directory for any that are above 10,000 files prior to bagging
@@ -49,6 +60,7 @@ Argument: bag_directory (required): path to the directory that contains the fold
 
 This script is primarily used before running the general_aip.py script to ensure bags are small enough.
 We recommend, although do not require, bags have fewer than 10,000 files.
+Calculating file count is much faster than size and has mostly worked so far to identify AIPs to split.
 
 This is a companion to check_bag_size.py, which checks file count and total size in GB using the bag metadata.
 
