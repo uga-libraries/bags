@@ -27,6 +27,7 @@ if __name__ == '__main__':
     # validates and logs the result.
     for root, directory, folder in os.walk(bag_dir):
         if root.endswith('_bag'):
+            print('Starting on', root)
             try:
                 is_valid, errors = validate_bag(root)
             except FileNotFoundError:
