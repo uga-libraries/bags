@@ -27,5 +27,9 @@ if __name__ == '__main__':
     # validates and logs the result.
     for root, directory, folder in os.walk(bag_dir):
         if root.endswith('_bag'):
-            is_valid, errors = validate_bag(root)
+            try:
+                is_valid, errors = validate_bag(root)
+            except FileNotFoundError:
+                is_valid = 'TBD'
+                errors = 'FileNotFoundError'
             log(log_file, [root, is_valid, errors])
