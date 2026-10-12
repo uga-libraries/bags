@@ -2,6 +2,8 @@
 
 Use this script to skip reading through the extra text printed by bagit.py validation.
 Bags must be named with "_bag" on the end to be detected as a bag by the script.
+FileNotFoundError error handling is for path length issues when remoted into Hub,
+although they tend to validate over the network.
 
 Parameters:
     bag_directory (required): path to the directory with the bags
@@ -27,5 +29,10 @@ if __name__ == '__main__':
     # validates and logs the result.
     for root, directory, folder in os.walk(bag_dir):
         if root.endswith('_bag'):
-            is_valid, errors = validate_bag(root)
+            print('Starting on', root)
+            try:
+                is_valid, errors = validate_bag(root)
+            except FileNotFoundError:
+                is_valid = 'TBD'
+                errors = 'FileNotFoundError'
             log(log_file, [root, is_valid, errors])
